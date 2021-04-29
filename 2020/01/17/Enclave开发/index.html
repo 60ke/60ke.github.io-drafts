@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Enclave开发 | LookForAdmin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <meta name="description" content="学如逆水行舟,不进则退;心似平原跑马易放难收。">
+  
+  
+  
+    <link rel="alternate" href="/atom.xml" title="LookForAdmin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LookForAdmin</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">已是乾坤大，更怜草木青</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> 首页</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> 归档</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> 关于</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> 订阅</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Enclave开发" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Enclave开发
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2020-01-17T08:58:55.000Z" itemprop="datePublished">2020年01月17日</time>
+</span>
+      
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+<a href="/2020/01/17/Enclave%E5%BC%80%E5%8F%91/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  留言
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Enclave开发包括以下几个步骤："><a href="#Enclave开发包括以下几个步骤：" class="headerlink" title="Enclave开发包括以下几个步骤："></a>Enclave开发包括以下几个步骤：</h1><ol>
+<li>使用EDL文件定义不可信app和encalve(飞地)之间的接口(由ecall和ocall来实现)</li>
+<li>实现app和encalve函数。</li>
+<li>编译app和enclave。编译中，Edger8r生成可信和不可信的代理/桥函数，enclave签名工具生成enclave的metadata和签名。<a target="_blank" rel="noopener" href="https://github.com/Jianbo-Gao/RegChain/tree/master/TrustNode#%E7%94%9F%E6%88%90enclave_privatepem">需生成Enclave_private.pem</a></li>
+<li>在模拟和硬件模式下运行和调试app，详细看看调试飞地的内容。</li>
+<li>准备发布app和飞地。</li>
+</ol>
+<h2 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h2><ul>
+<li><p>EDL 即 Enclave Defination Language. 因为 Enclave 不同于共享的资源, 其与外部不可信内容的交互需要特定的规则进行限定. Intel SGX 给出了一种语言来抽象地描述 Enclave 内部函数的调用权限和数据的出入方式, 并通过 <a target="_blank" rel="noopener" href="https://github.com/intel/linux-sgx/blob/master/common/inc/sgx_edger8r.h">sgx_edger8r</a> 翻译成一系列可编译的代码.<br>EDL 提出了一种“边规则”(edge routine) 的概念. 一个 edge routine 即是运行于 Enclave 内部或外部的函数和它们与 Enclave 外部或内部的调用关系的总称.</p>
+</li>
+<li><p>ecall（Enclave Call） 是 Enclave 内部程序的接口函数.</p>
+</li>
+<li><p>ocall （Out Call）是可由 Enclave 内部代码调用的外部函数接口.</p>
+</li>
+</ul>
+<h2 id="具体开发实例"><a href="#具体开发实例" class="headerlink" title="具体开发实例"></a>具体开发实例</h2><p><a target="_blank" rel="noopener" href="https://github.com/60ke/rust_sgx_test/tree/master/ocall_beta">https://github.com/60ke/rust_sgx_test/tree/master/ocall_beta</a></p>
+<p>此实例是基于<a target="_blank" rel="noopener" href="https://github.com/apache/incubator-teaclave-sgx-sdk">incubator-teaclave-sgx-sdk</a> 即baidu rust sdk开发</p>
+<p>开发流程：</p>
+<ol>
+<li>首先需要放置基础依赖<a target="_blank" rel="noopener" href="https://github.com/60ke/rust_sgx_test/tree/master/ocall_beta/common/inc">common/inc</a>（c的头文件）和 <a target="_blank" rel="noopener" href="https://github.com/60ke/rust_sgx_test/tree/master/ocall_beta/edl">edl</a> </li>
+<li>使用<code>rust</code>编写 app 和 encalve</li>
+<li>编写Makefile文件(可参考<a target="_blank" rel="noopener" href="https://github.com/apache/incubator-teaclave-sgx-sdk/blob/master/samplecode/hello-rust/Makefile">Makefile</a>)</li>
+</ol>
+<p>1 和 3 的开发相对简单，不再具体描述。下面介绍使用<code>rust</code>编写 app 和 encalve</p>
+<p>代码结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">├── .vscode-------------------------- vscode配置文件，用于debug</span><br><span class="line">├── Cargo.toml--------------------------   定义workspace用于debug</span><br><span class="line">├── Makefile--------------------------   项目编译</span><br><span class="line">├── app</span><br><span class="line">│   ├── Cargo.toml-------------------------- app的cargo配置</span><br><span class="line">│   ├── build.rs-------------------------- app的build文件</span><br><span class="line">│   └── src --------------------------  rust代码目录</span><br><span class="line">│       └── main.rs-------------------------- app主函数文件</span><br><span class="line">├── bin-------------------------- 存放编译后的二进制文件夹</span><br><span class="line">├── common-------------------------- 引用自[common&#x2F;inc](https:&#x2F;&#x2F;github.com&#x2F;mesalock-linux&#x2F;adler32-rs-sgx&#x2F;tree&#x2F;master&#x2F;sgx&#x2F;adler32-rs-sgx-test&#x2F;common&#x2F;inc)</span><br><span class="line">├── edl-------------------------- 引用自[edl](https:&#x2F;&#x2F;github.com&#x2F;mesalock-linux&#x2F;adler32-rs-sgx&#x2F;tree&#x2F;master&#x2F;sgx&#x2F;adler32-rs-sgx-test&#x2F;edl)</span><br><span class="line">├── enclave</span><br><span class="line">│   ├── Cargo.toml-------------------------- enclave的cargo配置</span><br><span class="line">│   ├── Enclave.config.xml--------------定义 Enclave 的内存布局等高级特性</span><br><span class="line">│   ├── Enclave.edl--------------Edl文件</span><br><span class="line">│   ├── Enclave.lds--------------encalve链接脚本</span><br><span class="line">│   ├── Enclave_private.pem------------用户生成的私匙供 sgxsdk 签名使用</span><br><span class="line">│   ├── Makefile --------------------------                           Encalve编译</span><br><span class="line">│   └── src --------------------------  rust代码目录</span><br><span class="line">│       └── lib.rs-------------------------- enclave的lib文件</span><br></pre></td></tr></table></figure>
+<p>首先在encalve的<a target="_blank" rel="noopener" href="https://github.com/60ke/rust_sgx_test/blob/master/ocall_beta/enclave/Enclave.edl">Enclave.edl</a>中定义ecall和ocall函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">enclave &#123;</span><br><span class="line">  <span class="comment">//导入引用</span></span><br><span class="line">    from <span class="string">&quot;sgx_tstd.edl&quot;</span> <span class="keyword">import</span> *;</span><br><span class="line">    from <span class="string">&quot;sgx_stdio.edl&quot;</span> <span class="keyword">import</span> *;</span><br><span class="line">    from <span class="string">&quot;sgx_backtrace.edl&quot;</span> <span class="keyword">import</span> *;</span><br><span class="line">    from <span class="string">&quot;sgx_tstdc.edl&quot;</span> <span class="keyword">import</span> *;</span><br><span class="line"></span><br><span class="line">    include <span class="string">&quot;sgx_quote.h&quot;</span></span><br><span class="line">  </span><br><span class="line">    trusted &#123;</span><br><span class="line">	  <span class="comment">//定义ecall</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">sgx_status_t</span> <span class="title">say_something</span><span class="params">([in, size=len] <span class="keyword">const</span> <span class="keyword">uint8_t</span>* some_string, <span class="keyword">size_t</span> len)</span></span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    untrusted &#123;</span><br><span class="line">    <span class="comment">//定义ocall</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">ocall_get_quote</span><span class="params">([in, size = key_len] <span class="keyword">uint8_t</span> * key,<span class="keyword">uint32_t</span> key_len,[out,size = <span class="number">1000</span>] <span class="keyword">uint8_t</span>* value,[out] <span class="keyword">uint8_t</span>* value_len)</span></span>;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>ecall的入口在app部分，函数的具体实现在enclave中。先看ecall的edl函数定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">sgx_status_t</span> <span class="title">say_something</span><span class="params">([in, size=len] <span class="keyword">const</span> <span class="keyword">uint8_t</span>* some_string, <span class="keyword">size_t</span> len)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里ecall的调用传入的是一个c语言的常量字符串，为了便于c与rust的交互我们将char list(常量字符串)转换为ASCII码以指针的形式传递。这里的ecall直接使用<a target="_blank" rel="noopener" href="https://github.com/apache/incubator-teaclave-sgx-sdk">incubator-teaclave-sgx-sdk</a>中的<a target="_blank" rel="noopener" href="https://github.com/apache/incubator-teaclave-sgx-sdk/blob/master/samplecode/hello-rust/enclave/Enclave.edl">Enclave.edl</a> 首先声明public，返回的数据类型为<code>sgx_status_t</code> 函数名为<code>say_something</code>.ecall传入enclave需要用<code>[in]</code>修饰。由于我们传入的为常量需要加上size的参数<code>size=len</code> Edl的语法和C语言语法比较接近<code>uint8_t*</code>和<code>size_t</code>为数据类型，<code>some_string</code> 和为变量名<code>len</code>.</p>
+<p>enclave的<code>say_something</code>实现：<a target="_blank" rel="noopener" href="https://github.com/60ke/rust_sgx_test/blob/master/ocall_beta/enclave/src/lib.rs">lib.rs</a>，然后在app中引入：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">say_something</span></span>(eid: sgx_enclave_id_t, retval: *<span class="keyword">mut</span> sgx_status_t,</span><br><span class="line">                     some_string: *<span class="keyword">const</span> <span class="built_in">u8</span>, len: <span class="built_in">usize</span>) -&gt; sgx_status_t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在<a target="_blank" rel="noopener" href="https://github.com/60ke/rust_sgx_test/blob/master/ocall_beta/app/src/main.rs">main.rs</a>中的main函数对其调用。</p>
+<p>ocall的入口在enclave中，函数在app中实现。其Edl部分为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ocall_get_quote</span><span class="params">([in, size = key_len] <span class="keyword">uint8_t</span> * key,<span class="keyword">uint32_t</span> key_len,[out,size = <span class="number">1000</span>] <span class="keyword">uint8_t</span>* value,[out] <span class="keyword">uint8_t</span>* value_len)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>ocall的实现的功能为由enclave传出一个<code>key</code>到app，然后app生成一个对应的<code>value</code>再传入enclave。整体流程与ecall类似。需要注意的是，由于value的长度不固定，不能单纯定义为一个常量的类型。我们这里先定义了一个足够大的list（1000），然后再传递一个变量<code>value_len</code>来表示value的长度。然后在<code>enclave</code>对其进行截取来实现value由app到enclave的返回。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://blog.lao-yuan.com/2019/02/20/Linux-SGX-Demo.html#edl">https://blog.lao-yuan.com/2019/02/20/Linux-SGX-Demo.html#edl</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/39914622">https://zhuanlan.zhihu.com/p/39914622</a></p>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Enclave%E5%BC%80%E5%8F%91%E5%8C%85%E6%8B%AC%E4%BB%A5%E4%B8%8B%E5%87%A0%E4%B8%AA%E6%AD%A5%E9%AA%A4%EF%BC%9A"><span class="toc-text">Enclave开发包括以下几个步骤：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A"><span class="toc-text">名词解释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E5%BC%80%E5%8F%91%E5%AE%9E%E4%BE%8B"><span class="toc-text">具体开发实例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>原文链接: <a href="https://60ke.github.io/2020/01/17/Enclave开发/">https://60ke.github.io/2020/01/17/Enclave开发/</a></p>
+              <p>版权声明: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+    <div class="article-reward">
+        <a id="reward-btn" href="javascript:;">打赏</a>
+        <div id="reward-content">
+            <h6 class="reward-tit">“感谢你的支持，我会继续努力！”</h6>
+            <div>
+                <div class="reward-code">
+                    <img class="type-code" src="/css/images/wechat.jpg">
+                    <img class="er-code" src="/css/images/wechat-pay.jpeg">
+                </div>
+                <div class="reward-code">
+                    <img class="type-code" src="/css/images/alipay.jpg">
+                    <img class="er-code" src="/css/images/alipay-pay.jpeg">
+                </div>
+            </div>
+            <p class="reward-desc">扫码打赏，感谢支持</p>
+        </div>
+    </div>
+
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rust/" rel="tag">rust</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sgx/" rel="tag">sgx</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/2020/03/06/Mac%E5%AE%89%E8%A3%85LaTeX/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          Mac安装LaTeX
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/01/17/sgx/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">sgx开发</div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+  <div id="comments"></div>
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> 最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/04/29/%E7%BB%88%E7%AB%AF%E5%BD%95%E5%B1%8F/">终端录屏</a>
+          </li>
+        
+          <li>
+            <a href="/2021/04/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9F%A5%E6%89%BE/">数据结构之子字符串查找</a>
+          </li>
+        
+          <li>
+            <a href="/2021/04/06/go%E8%B0%83%E7%94%A8RUST/">go调用RUST</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/18/M1-vscode-lldb/">M1-vscode-lldb</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/03/%E6%9D%82%E8%B0%88/">杂谈</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/go/" style="font-size: 11.67px;">go</a> <a href="/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/tags/ios/" style="font-size: 10px;">ios</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/mac/" style="font-size: 16.67px;">mac</a> <a href="/tags/maomaomao/" style="font-size: 10px;">maomaomao</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/other/" style="font-size: 10px;">other</a> <a href="/tags/others/" style="font-size: 15px;">others</a> <a href="/tags/pycharm/" style="font-size: 10px;">pycharm</a> <a href="/tags/python/" style="font-size: 18.33px;">python</a> <a href="/tags/python%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">python基础</a> <a href="/tags/rust/" style="font-size: 20px;">rust</a> <a href="/tags/scrapy/" style="font-size: 13.33px;">scrapy</a> <a href="/tags/sgx/" style="font-size: 11.67px;">sgx</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/sublime/" style="font-size: 10px;">sublime</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/tags/xpath/" style="font-size: 10px;">xpath</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%AD%A3%E5%88%99/" style="font-size: 10px;">正则</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 15px;">爬虫</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 11.67px;">笔记</a> <a href="/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/" style="font-size: 10px;">路由器</a> <a href="/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/default/">default</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/">mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/old/">old</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/others/">others</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python%E7%88%AC%E8%99%AB/">python爬虫</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/rust/">rust</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/wasm/">wasm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A5%B9/">她</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E7%BB%AA/">杂绪</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年04月</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年12月</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年12月</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年11月</a><span class="archive-list-count">45</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年12月</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">网站地图</a>
+        <span> | </span><a href="/atom.xml">订阅本站</a>
+        <span> | </span><a href="/about/">联系博主</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2021 lsk.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        
+            <span>Count by <a href="http://busuanzi.ibruce.info/" target="_blank">busuanzi.</a></span>
+        
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+  
+<script src="/localshare/js/social-share.js"></script>
+
+  
+<script src="/localshare/js/qrcode.js"></script>
+
+
+
+
+
+  
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+
+  <script>
+    var gitalk = new Gitalk({
+      clientID: 'e28ce6e16ddbf9316a0d',
+      clientSecret: '89597d2b5d6ebeb5badc6d5930da2c08b76283dd',
+      repo: '60ke.github.io',
+      owner: '60ke',
+      admin: ['60ke'],
+      id: md5(window.location.pathname),
+      distractionFreeMode: false,
+      language: 'zh-CN',
+      pagerDirection: 'last'
+    });
+    gitalk.render('comments');
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</body>
+</html>

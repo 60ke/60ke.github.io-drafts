@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>高性能web服务与并发测试 | LookForAdmin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <meta name="description" content="学如逆水行舟,不进则退;心似平原跑马易放难收。">
+  
+  
+  
+    <link rel="alternate" href="/atom.xml" title="LookForAdmin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LookForAdmin</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">已是乾坤大，更怜草木青</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> 首页</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> 归档</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> 关于</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> 订阅</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-高性能web服务与并发测试" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      高性能web服务与并发测试
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2021-01-22T06:55:28.000Z" itemprop="datePublished">2021年01月22日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+<a href="/2021/01/22/%E9%AB%98%E6%80%A7%E8%83%BDweb%E6%9C%8D%E5%8A%A1%E4%B8%8E%E5%B9%B6%E5%8F%91%E6%B5%8B%E8%AF%95/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  留言
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="并发测试工具"><a href="#并发测试工具" class="headerlink" title="并发测试工具"></a>并发测试工具</h1><p>1.<a target="_blank" rel="noopener" href="http://httpd.apache.org/docs/2.2/programs/ab.html">Apache ab</a><br>2.<a target="_blank" rel="noopener" href="https://locust.io/">Python locust</a><br>3.<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/loadtest">nodejs loadtest</a><br>4.<a target="_blank" rel="noopener" href="https://redmine.lighttpd.net/projects/weighttp/wiki">weighttp</a><br>5.<a target="_blank" rel="noopener" href="https://jmeter.apache.org/">Apache JMeter</a><br>6.<a target="_blank" rel="noopener" href="https://github.com/wg/wrk">wrk</a></p>
+<h1 id="并发Web开发"><a href="#并发Web开发" class="headerlink" title="并发Web开发"></a>并发Web开发</h1><p>1.Python的并发服务:<a target="_blank" rel="noopener" href="https://cpp.la/439.html?utm_source=wechat_session&utm_medium=social&utm_oi=542263647259381760">Flask gevent 多进程WSGI（非gunicorn）</a>,这篇博客已经对并发进行分析测试了,为了防止失联,把代码搬运了:</p>
+<h2 id="server-py"><a href="#server-py" class="headerlink" title="server.py"></a>server.py</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding: utf-8</span></span><br><span class="line"><span class="comment"># code by https://cpp.la, 2020-04-20</span></span><br><span class="line"><span class="comment"># flask + gevent + multiprocess + wsgi</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> monkey</span><br><span class="line"><span class="keyword">from</span> gevent.pywsgi <span class="keyword">import</span> WSGIServer</span><br><span class="line">monkey.patch_all()</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> cpu_count, Process</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, jsonify</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">app = Flask(__name__)</span><br><span class="line"> </span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/&quot;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">function_benchmark</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;hello&quot;</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">MULTI_PROCESS</span>):</span></span><br><span class="line">    <span class="keyword">if</span> MULTI_PROCESS == <span class="literal">False</span>:</span><br><span class="line">        WSGIServer((<span class="string">&#x27;0.0.0.0&#x27;</span>, <span class="number">8080</span>), app).serve_forever()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        mulserver = WSGIServer((<span class="string">&#x27;0.0.0.0&#x27;</span>, <span class="number">8080</span>), app)</span><br><span class="line">        mulserver.start()</span><br><span class="line"> </span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">server_forever</span>():</span></span><br><span class="line">            mulserver.start_accepting()</span><br><span class="line">            mulserver._stop_event.wait()</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(cpu_count()):</span><br><span class="line">            p = Process(target=server_forever)</span><br><span class="line">            p.start()</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 单进程 + 协程</span></span><br><span class="line">    run(<span class="literal">False</span>)</span><br><span class="line">    <span class="comment"># 多进程 + 协程</span></span><br><span class="line">    <span class="comment"># run(True)</span></span><br></pre></td></tr></table></figure>
+<p>2.RUST并发服务<br><code>rust actix</code></p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> actix_web::&#123;get, web, App, HttpServer, Responder&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[get(<span class="meta-string">&quot;/&quot;</span>)]</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">index</span></span>(web::Path((id, name)): web::Path&lt;(<span class="built_in">u32</span>, <span class="built_in">String</span>)&gt;) -&gt; <span class="keyword">impl</span> Responder &#123;</span><br><span class="line">    <span class="built_in">format!</span>(<span class="string">&quot;Hello &#123;&#125;! id:&#123;&#125;&quot;</span>, name, id)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[actix_web::main]</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() -&gt; std::io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    HttpServer::new(|| App::new().service(index))</span><br><span class="line">        .bind(<span class="string">&quot;127.0.0.1:8080&quot;</span>)?</span><br><span class="line">        .run()</span><br><span class="line">        .<span class="keyword">await</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>actix 测试结果:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">wrk -c100 -t16 -d5s http://127.0.0.1:8080</span><br><span class="line">Running 5s <span class="built_in">test</span> @ http://127.0.0.1:8080</span><br><span class="line">  16 threads and 100 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   692.92us  671.89us  27.97ms   98.85%</span><br><span class="line">    Req/Sec     9.29k   829.44    20.49k    97.03%</span><br><span class="line">  746546 requests <span class="keyword">in</span> 5.10s, 58.38MB <span class="built_in">read</span></span><br><span class="line">  Non-2xx or 3xx responses: 746546</span><br><span class="line">Requests/sec: 146385.73</span><br><span class="line">Transfer/sec:     11.45MB</span><br><span class="line">./wrk -c1000 -t16 -d5s http://127.0.0.1:8080</span><br><span class="line">Running 5s <span class="built_in">test</span> @ http://127.0.0.1:8080</span><br><span class="line">  16 threads and 1000 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency     6.37ms    1.98ms  78.58ms   93.94%</span><br><span class="line">    Req/Sec     9.54k     3.48k   86.90k    92.16%</span><br><span class="line">  763414 requests <span class="keyword">in</span> 5.10s, 59.70MB <span class="built_in">read</span></span><br><span class="line">  Non-2xx or 3xx responses: 763414</span><br><span class="line">Requests/sec: 149702.90</span><br><span class="line">Transfer/sec:     11.71MB</span><br></pre></td></tr></table></figure>
+<p>测试机器为8核16线程的服务器,可以看到actix的性能还是相当强大的.另外突然想到了一个问题<br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/43590414">Linux中本机和本机Socket通信会走网卡吗？</a></p>
+<h1 id="并发测试"><a href="#并发测试" class="headerlink" title="并发测试"></a>并发测试</h1><p>起先用了<code>loadtest</code>测试,关于<code>Apache ab</code>,<code>weighttp</code>的性能<code>loadtest</code>中有提到,感觉并不理想,后来使用wrk发现性能更强,故使用<code>wrk</code>测试.<code>wrk</code>支持<code>lua</code>脚本的嵌入调用,支持<code>post</code>,<code>get</code>,等调用,亦可使用<code>lua</code>脚本同时对多个接口进行测试.</p>
+<h2 id="mul-lua多接口测试脚本"><a href="#mul-lua多接口测试脚本" class="headerlink" title="mul.lua多接口测试脚本"></a><code>mul.lua</code>多接口测试脚本</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- Resource: http://czerasz.com/2015/07/19/wrk-http-benchmarking-tool-example/</span></span><br><span class="line"><span class="comment">-- Module instantiation</span></span><br><span class="line"><span class="keyword">local</span> cjson = <span class="built_in">require</span> <span class="string">&quot;cjson&quot;</span></span><br><span class="line"><span class="keyword">local</span> cjson2 = cjson.new()</span><br><span class="line"><span class="keyword">local</span> cjson_safe = <span class="built_in">require</span> <span class="string">&quot;cjson.safe&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- Initialize the pseudo random number generator</span></span><br><span class="line"><span class="comment">-- Resource: http://lua-users.org/wiki/MathLibraryTutorial</span></span><br><span class="line"><span class="built_in">math</span>.<span class="built_in">randomseed</span>(<span class="built_in">os</span>.<span class="built_in">time</span>())</span><br><span class="line"><span class="built_in">math</span>.<span class="built_in">random</span>(); <span class="built_in">math</span>.<span class="built_in">random</span>(); <span class="built_in">math</span>.<span class="built_in">random</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">-- Shuffle array</span></span><br><span class="line"><span class="comment">-- Returns a randomly shuffled array</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">shuffle</span><span class="params">(paths)</span></span></span><br><span class="line">  <span class="keyword">local</span> j, k</span><br><span class="line">  <span class="keyword">local</span> n = #paths</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> i = <span class="number">1</span>, n <span class="keyword">do</span></span><br><span class="line">    j, k = <span class="built_in">math</span>.<span class="built_in">random</span>(n), <span class="built_in">math</span>.<span class="built_in">random</span>(n)</span><br><span class="line">    paths[j], paths[k] = paths[k], paths[j]</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> paths</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- Load URL paths from the file</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">load_request_objects_from_file</span><span class="params">(file)</span></span></span><br><span class="line">  <span class="keyword">local</span> data = &#123;&#125;</span><br><span class="line">  <span class="keyword">local</span> content</span><br><span class="line"></span><br><span class="line">  <span class="comment">-- Check if the file exists</span></span><br><span class="line">  <span class="comment">-- Resource: http://stackoverflow.com/a/4991602/325852</span></span><br><span class="line">  <span class="keyword">local</span> f=<span class="built_in">io</span>.<span class="built_in">open</span>(file,<span class="string">&quot;r&quot;</span>)</span><br><span class="line">  <span class="keyword">if</span> f~=<span class="literal">nil</span> <span class="keyword">then</span></span><br><span class="line">    content = f:<span class="built_in">read</span>(<span class="string">&quot;*all&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">io</span>.<span class="built_in">close</span>(f)</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="comment">-- Return the empty array</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">lines</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">-- Translate Lua value to/from JSON</span></span><br><span class="line">  data = cjson.decode(content)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> shuffle(data)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- Load URL requests from file</span></span><br><span class="line">requests = load_request_objects_from_file(<span class="string">&quot;./data/requests.json&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- Check if at least one path was found in the file</span></span><br><span class="line"><span class="keyword">if</span> #requests &lt;= <span class="number">0</span> <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&quot;multiplerequests: No requests found.&quot;</span>)</span><br><span class="line">  <span class="built_in">os</span>.<span class="built_in">exit</span>()</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;multiplerequests: Found &quot;</span> .. #requests .. <span class="string">&quot; requests&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- Initialize the requests array iterator</span></span><br><span class="line">counter = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">request = <span class="function"><span class="keyword">function</span><span class="params">()</span></span></span><br><span class="line">  <span class="comment">-- Get the next requests array element</span></span><br><span class="line">  <span class="keyword">local</span> request_object = requests[counter]</span><br><span class="line"></span><br><span class="line">  <span class="comment">-- Increment the counter</span></span><br><span class="line">  counter = counter + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">-- If the counter is longer than the requests array length then reset it</span></span><br><span class="line">  <span class="keyword">if</span> counter &gt; #requests <span class="keyword">then</span></span><br><span class="line">    counter = <span class="number">1</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">-- Return the request object with the current URL path</span></span><br><span class="line">  <span class="keyword">return</span> wrk.<span class="built_in">format</span>(request_object.method, request_object.<span class="built_in">path</span>, request_object.headers, request_object.body)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>上面脚本依赖<code>lua</code>的<code>cjson</code>包,其目的是解析<code>/data/requests.json</code>构造对应的<code>request</code>请求.</p>
+<h2 id="data-requests-json"><a href="#data-requests-json" class="headerlink" title="/data/requests.json"></a><code>/data/requests.json</code></h2><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">&quot;path&quot;</span>: <span class="string">&quot;/path-1&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;body&quot;</span>: <span class="string">&quot;&#123;\&quot;quote\&quot;: \&quot;\&quot;&#125;&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;method&quot;</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;headers&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;Content-Type&quot;</span>: <span class="string">&quot;application/json&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">// path 为web服务的url路径</span></span><br><span class="line">    <span class="attr">&quot;path&quot;</span>: <span class="string">&quot;/path-2&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;body&quot;</span>: <span class="string">&quot;&#123;\&quot;quote\&quot;: \&quot;\&quot;&#125;&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;method&quot;</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;headers&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;Content-Type&quot;</span>: <span class="string">&quot;application/json&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h2 id="测试命令"><a href="#测试命令" class="headerlink" title="测试命令"></a>测试命令</h2><p><code>./wrk -c100 -t16 -d5s -s ./mul.lua http://127.0.0.1:5000</code></p>
+<p><code>-c</code>:(concurrent)并发数</p>
+<p><code>-t</code>:(threads)线程数</p>
+<p><code>-d</code>:(duration)持续时间</p>
+<p>其它具体使用方法可去看文档及示例: <a target="_blank" rel="noopener" href="https://github.com/wg/wrk">https://github.com/wg/wrk</a></p>
+<h3 id="疑问-测试actix时-cpu-内存-网络占用-都特别低-cpu使用百分之一不到-说明程序还远未达到硬件的性能瓶颈"><a href="#疑问-测试actix时-cpu-内存-网络占用-都特别低-cpu使用百分之一不到-说明程序还远未达到硬件的性能瓶颈" class="headerlink" title="疑问 测试actix时,cpu,内存,网络占用,都特别低,cpu使用百分之一不到,说明程序还远未达到硬件的性能瓶颈"></a>疑问 测试actix时,cpu,内存,网络占用,都特别低,cpu使用百分之一不到,说明程序还远未达到硬件的性能瓶颈</h3><p>Linux的性能测试工具 <a target="_blank" rel="noopener" href="http://www.brendangregg.com/perf.html">Perf</a></p>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7"><span class="toc-text">并发测试工具</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91Web%E5%BC%80%E5%8F%91"><span class="toc-text">并发Web开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#server-py"><span class="toc-text">server.py</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E6%B5%8B%E8%AF%95"><span class="toc-text">并发测试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#mul-lua%E5%A4%9A%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95%E8%84%9A%E6%9C%AC"><span class="toc-text">mul.lua多接口测试脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#data-requests-json"><span class="toc-text">&#x2F;data&#x2F;requests.json</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E5%91%BD%E4%BB%A4"><span class="toc-text">测试命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%96%91%E9%97%AE-%E6%B5%8B%E8%AF%95actix%E6%97%B6-cpu-%E5%86%85%E5%AD%98-%E7%BD%91%E7%BB%9C%E5%8D%A0%E7%94%A8-%E9%83%BD%E7%89%B9%E5%88%AB%E4%BD%8E-cpu%E4%BD%BF%E7%94%A8%E7%99%BE%E5%88%86%E4%B9%8B%E4%B8%80%E4%B8%8D%E5%88%B0-%E8%AF%B4%E6%98%8E%E7%A8%8B%E5%BA%8F%E8%BF%98%E8%BF%9C%E6%9C%AA%E8%BE%BE%E5%88%B0%E7%A1%AC%E4%BB%B6%E7%9A%84%E6%80%A7%E8%83%BD%E7%93%B6%E9%A2%88"><span class="toc-text">疑问 测试actix时,cpu,内存,网络占用,都特别低,cpu使用百分之一不到,说明程序还远未达到硬件的性能瓶颈</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>原文链接: <a href="https://60ke.github.io/2021/01/22/高性能web服务与并发测试/">https://60ke.github.io/2021/01/22/高性能web服务与并发测试/</a></p>
+              <p>版权声明: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+    <div class="article-reward">
+        <a id="reward-btn" href="javascript:;">打赏</a>
+        <div id="reward-content">
+            <h6 class="reward-tit">“感谢你的支持，我会继续努力！”</h6>
+            <div>
+                <div class="reward-code">
+                    <img class="type-code" src="/css/images/wechat.jpg">
+                    <img class="er-code" src="/css/images/wechat-pay.jpeg">
+                </div>
+                <div class="reward-code">
+                    <img class="type-code" src="/css/images/alipay.jpg">
+                    <img class="er-code" src="/css/images/alipay-pay.jpeg">
+                </div>
+            </div>
+            <p class="reward-desc">扫码打赏，感谢支持</p>
+        </div>
+    </div>
+
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rust/" rel="tag">rust</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/2021/02/03/rust%E5%8C%85%E5%AF%BC%E5%85%A5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          rust包导入
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/01/08/rust%E7%B1%BB%E5%B1%9E%E6%80%A7%E5%AE%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">rust类属性宏</div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+  <div id="comments"></div>
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> 最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/04/29/%E7%BB%88%E7%AB%AF%E5%BD%95%E5%B1%8F/">终端录屏</a>
+          </li>
+        
+          <li>
+            <a href="/2021/04/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9F%A5%E6%89%BE/">数据结构之子字符串查找</a>
+          </li>
+        
+          <li>
+            <a href="/2021/04/06/go%E8%B0%83%E7%94%A8RUST/">go调用RUST</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/18/M1-vscode-lldb/">M1-vscode-lldb</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/03/%E6%9D%82%E8%B0%88/">杂谈</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/go/" style="font-size: 11.67px;">go</a> <a href="/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/tags/ios/" style="font-size: 10px;">ios</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/mac/" style="font-size: 16.67px;">mac</a> <a href="/tags/maomaomao/" style="font-size: 10px;">maomaomao</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/other/" style="font-size: 10px;">other</a> <a href="/tags/others/" style="font-size: 15px;">others</a> <a href="/tags/pycharm/" style="font-size: 10px;">pycharm</a> <a href="/tags/python/" style="font-size: 18.33px;">python</a> <a href="/tags/python%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">python基础</a> <a href="/tags/rust/" style="font-size: 20px;">rust</a> <a href="/tags/scrapy/" style="font-size: 13.33px;">scrapy</a> <a href="/tags/sgx/" style="font-size: 11.67px;">sgx</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/sublime/" style="font-size: 10px;">sublime</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/tags/xpath/" style="font-size: 10px;">xpath</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%AD%A3%E5%88%99/" style="font-size: 10px;">正则</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 15px;">爬虫</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 11.67px;">笔记</a> <a href="/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/" style="font-size: 10px;">路由器</a> <a href="/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/default/">default</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/">mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/old/">old</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/others/">others</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python%E7%88%AC%E8%99%AB/">python爬虫</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/rust/">rust</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/wasm/">wasm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A5%B9/">她</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E7%BB%AA/">杂绪</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年04月</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年12月</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年12月</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年11月</a><span class="archive-list-count">45</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年12月</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">网站地图</a>
+        <span> | </span><a href="/atom.xml">订阅本站</a>
+        <span> | </span><a href="/about/">联系博主</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2021 lsk.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        
+            <span>Count by <a href="http://busuanzi.ibruce.info/" target="_blank">busuanzi.</a></span>
+        
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+  
+<script src="/localshare/js/social-share.js"></script>
+
+  
+<script src="/localshare/js/qrcode.js"></script>
+
+
+
+
+
+  
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+
+  <script>
+    var gitalk = new Gitalk({
+      clientID: 'e28ce6e16ddbf9316a0d',
+      clientSecret: '89597d2b5d6ebeb5badc6d5930da2c08b76283dd',
+      repo: '60ke.github.io',
+      owner: '60ke',
+      admin: ['60ke'],
+      id: md5(window.location.pathname),
+      distractionFreeMode: false,
+      language: 'zh-CN',
+      pagerDirection: 'last'
+    });
+    gitalk.render('comments');
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</body>
+</html>

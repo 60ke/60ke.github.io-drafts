@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>django框架博客开发-2 | LookForAdmin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <meta name="description" content="学如逆水行舟,不进则退;心似平原跑马易放难收。">
+  
+  
+  
+    <link rel="alternate" href="/atom.xml" title="LookForAdmin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LookForAdmin</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">已是乾坤大，更怜草木青</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> 首页</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> 归档</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> 关于</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> 订阅</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-django框架博客开发-2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      django框架博客开发-2
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-04-10T00:27:00.000Z" itemprop="datePublished">2017年04月10日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+<a href="/2017/04/10/django%E6%A1%86%E6%9E%B6%E5%8D%9A%E5%AE%A2%E5%BC%80%E5%8F%91-2/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  留言
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="django的简单介绍"><a href="#django的简单介绍" class="headerlink" title="django的简单介绍"></a>django的简单介绍</h2><ul>
+<li><p>创建项目</p>
+<p> django-admin startproject myblog//项目名称；</p>
+</li>
+</ul>
+<span id="more"></span>
+
+
+<ul>
+<li><p>manage.py子命令</p>
+<p> python manage.py<br><img src="http://ww1.sinaimg.cn/large/6cf740f6gy1fehmrbsqlfj20hu0hsmxh.jpg"></p>
+</li>
+<li><p>启动服务器</p>
+<p> python manage.py runserver 8000//端口可以自定义</p>
+<h2 id="myblog项目目录介绍"><a href="#myblog项目目录介绍" class="headerlink" title="myblog项目目录介绍"></a>myblog项目目录介绍</h2><p>myblog目录：<br><img src="http://ww1.sinaimg.cn/mw690/6cf740f6gy1fehmzctavej20ko08y74m.jpg"><br>项目的一个容器<br>包含项目的最基本的一些配置<br>目录名称不建议修改</p>
+</li>
+<li><p>wsgi.py</p>
+</li>
+</ul>
+<p>WSGI(Python Web Server Gateway Interface)//Python服务网关接口<br>Python应用于web服务器之间的接口</p>
+<ul>
+<li>urls.py</li>
+</ul>
+<p>URL配置文件<br>django项目中所有页面都需要我们自己配置其URL</p>
+<ul>
+<li><p>settings.py<br>项目的总配置文件<br>里面包含了数据库，web应用，时间等各种配置</p>
+<p> import os</p>
+<h1 id="Build-paths-inside-the-project-like-this-os-path-join-BASE-DIR-…-项目根目录"><a href="#Build-paths-inside-the-project-like-this-os-path-join-BASE-DIR-…-项目根目录" class="headerlink" title="Build paths inside the project like this: os.path.join(BASE_DIR, …)//项目根目录"></a>Build paths inside the project like this: os.path.join(BASE_DIR, …)//项目根目录</h1><p> BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(<strong>file</strong>)))</p>
+<h1 id="Quick-start-development-settings-unsuitable-for-production"><a href="#Quick-start-development-settings-unsuitable-for-production" class="headerlink" title="Quick-start development settings - unsuitable for production"></a>Quick-start development settings - unsuitable for production</h1><h1 id="See-https-docs-djangoproject-com-en-1-11-howto-deployment-checklist"><a href="#See-https-docs-djangoproject-com-en-1-11-howto-deployment-checklist" class="headerlink" title="See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/"></a>See <a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/">https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/</a></h1><h1 id="SECURITY-WARNING-keep-the-secret-key-used-in-production-secret-django项目自动生产的安全码，项目启动必不可少"><a href="#SECURITY-WARNING-keep-the-secret-key-used-in-production-secret-django项目自动生产的安全码，项目启动必不可少" class="headerlink" title="SECURITY WARNING: keep the secret key used in production secret!//django项目自动生产的安全码，项目启动必不可少"></a>SECURITY WARNING: keep the secret key used in production secret!//django项目自动生产的安全码，项目启动必不可少</h1><p> SECRET_KEY = ‘1z*kh0w2bqn7kg)v#lv5xw4&amp;f2(19ckz-u=ci8)&amp;+(ow9i(6as’</p>
+<h1 id="SECURITY-WARNING-don’t-run-with-debug-turned-on-in-production-debug实际应用需要关闭"><a href="#SECURITY-WARNING-don’t-run-with-debug-turned-on-in-production-debug实际应用需要关闭" class="headerlink" title="SECURITY WARNING: don’t run with debug turned on in production!//debug实际应用需要关闭"></a>SECURITY WARNING: don’t run with debug turned on in production!//debug实际应用需要关闭</h1><p> DEBUG = True</p>
+<p> ALLOWED_HOSTS = []#允许访问网站的地址</p>
+<h1 id="Application-definition"><a href="#Application-definition" class="headerlink" title="Application definition"></a>Application definition</h1><p> INSTALLED_APPS = [</p>
+<pre><code> &#39;django.contrib.admin&#39;,#管理
+ &#39;django.contrib.auth&#39;,#认证
+ &#39;django.contrib.contenttypes&#39;,#内容类型
+ &#39;django.contrib.sessions&#39;,#session缓存
+ &#39;django.contrib.messages&#39;,#消息
+ &#39;django.contrib.staticfiles&#39;,#静态目录
+</code></pre>
+<p> ]</p>
+<p> MIDDLEWARE = [                    #中间键，django自带的工具集</p>
+<pre><code> &#39;django.middleware.security.SecurityMiddleware&#39;,
+ &#39;django.contrib.sessions.middleware.SessionMiddleware&#39;,
+ &#39;django.middleware.common.CommonMiddleware&#39;,
+ &#39;django.middleware.csrf.CsrfViewMiddleware&#39;,
+ &#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;,
+ &#39;django.contrib.messages.middleware.MessageMiddleware&#39;,
+ &#39;django.middleware.clickjacking.XFrameOptionsMiddleware&#39;,
+</code></pre>
+<p> ]</p>
+<p> ROOT_URLCONF = ‘myblog.urls’    #URL的根配置文件</p>
+<p> TEMPLATES = [                    #模版，在django里是一个个的html文件</p>
+<pre><code> &#123;
+     &#39;BACKEND&#39;: &#39;django.template.backends.django.DjangoTemplates&#39;,
+     &#39;DIRS&#39;: [],
+     &#39;APP_DIRS&#39;: True,
+     &#39;OPTIONS&#39;: &#123;
+         &#39;context_processors&#39;: [
+             &#39;django.template.context_processors.debug&#39;,
+             &#39;django.template.context_processors.request&#39;,
+             &#39;django.contrib.auth.context_processors.auth&#39;,
+             &#39;django.contrib.messages.context_processors.messages&#39;,
+         ],
+     &#125;,
+ &#125;,
+</code></pre>
+<p> ]</p>
+<p> WSGI_APPLICATION = ‘myblog.wsgi.application’</p>
+<h1 id="Database"><a href="#Database" class="headerlink" title="Database"></a>Database</h1><h1 id="https-docs-djangoproject-com-en-1-11-ref-settings-databases"><a href="#https-docs-djangoproject-com-en-1-11-ref-settings-databases" class="headerlink" title="https://docs.djangoproject.com/en/1.11/ref/settings/#databases"></a><a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/1.11/ref/settings/#databases">https://docs.djangoproject.com/en/1.11/ref/settings/#databases</a></h1><p> DATABASES = {                #数据库配置</p>
+<pre><code> &#39;default&#39;: &#123;
+     &#39;ENGINE&#39;: &#39;django.db.backends.sqlite3&#39;,
+     &#39;NAME&#39;: os.path.join(BASE_DIR, &#39;db.sqlite3&#39;),
+ &#125;
+</code></pre>
+<p> }</p>
+<h1 id="Password-validation"><a href="#Password-validation" class="headerlink" title="Password validation"></a>Password validation</h1><h1 id="https-docs-djangoproject-com-en-1-11-ref-settings-auth-password-validators"><a href="#https-docs-djangoproject-com-en-1-11-ref-settings-auth-password-validators" class="headerlink" title="https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators"></a><a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators">https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators</a></h1><p> AUTH_PASSWORD_VALIDATORS = [        #密码认证</p>
+<pre><code> &#123;
+     &#39;NAME&#39;: &#39;django.contrib.auth.password_validation.UserAttributeSimilarityValidator&#39;,
+ &#125;,
+ &#123;
+     &#39;NAME&#39;: &#39;django.contrib.auth.password_validation.MinimumLengthValidator&#39;,
+ &#125;,
+ &#123;
+     &#39;NAME&#39;: &#39;django.contrib.auth.password_validation.CommonPasswordValidator&#39;,
+ &#125;,
+ &#123;
+     &#39;NAME&#39;: &#39;django.contrib.auth.password_validation.NumericPasswordValidator&#39;,
+ &#125;,
+</code></pre>
+<p> ]</p>
+<h1 id="Internationalization"><a href="#Internationalization" class="headerlink" title="Internationalization"></a>Internationalization</h1><h1 id="https-docs-djangoproject-com-en-1-11-topics-i18n"><a href="#https-docs-djangoproject-com-en-1-11-topics-i18n" class="headerlink" title="https://docs.djangoproject.com/en/1.11/topics/i18n/"></a><a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/1.11/topics/i18n/">https://docs.djangoproject.com/en/1.11/topics/i18n/</a></h1><p> LANGUAGE_CODE = ‘en-us’</p>
+<p> TIME_ZONE = ‘UTC’</p>
+<p> USE_I18N = True</p>
+<p> USE_L10N = True</p>
+<p> USE_TZ = True</p>
+<h1 id="Static-files-CSS-JavaScript-Images"><a href="#Static-files-CSS-JavaScript-Images" class="headerlink" title="Static files (CSS, JavaScript, Images)"></a>Static files (CSS, JavaScript, Images)</h1><h1 id="https-docs-djangoproject-com-en-1-11-howto-static-files"><a href="#https-docs-djangoproject-com-en-1-11-howto-static-files" class="headerlink" title="https://docs.djangoproject.com/en/1.11/howto/static-files/"></a><a target="_blank" rel="noopener" href="https://docs.djangoproject.com/en/1.11/howto/static-files/">https://docs.djangoproject.com/en/1.11/howto/static-files/</a></h1><p> STATIC_URL = ‘/static/‘</p>
+</li>
+<li><p><em>init</em>.py<br>python中声明模块的文件<br>内容默认为空</p>
+</li>
+</ul>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#django%E7%9A%84%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D"><span class="toc-text">django的简单介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#myblog%E9%A1%B9%E7%9B%AE%E7%9B%AE%E5%BD%95%E4%BB%8B%E7%BB%8D"><span class="toc-text">myblog项目目录介绍</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Build-paths-inside-the-project-like-this-os-path-join-BASE-DIR-%E2%80%A6-%E9%A1%B9%E7%9B%AE%E6%A0%B9%E7%9B%AE%E5%BD%95"><span class="toc-text">Build paths inside the project like this: os.path.join(BASE_DIR, …)&#x2F;&#x2F;项目根目录</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Quick-start-development-settings-unsuitable-for-production"><span class="toc-text">Quick-start development settings - unsuitable for production</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#See-https-docs-djangoproject-com-en-1-11-howto-deployment-checklist"><span class="toc-text">See https:&#x2F;&#x2F;docs.djangoproject.com&#x2F;en&#x2F;1.11&#x2F;howto&#x2F;deployment&#x2F;checklist&#x2F;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SECURITY-WARNING-keep-the-secret-key-used-in-production-secret-django%E9%A1%B9%E7%9B%AE%E8%87%AA%E5%8A%A8%E7%94%9F%E4%BA%A7%E7%9A%84%E5%AE%89%E5%85%A8%E7%A0%81%EF%BC%8C%E9%A1%B9%E7%9B%AE%E5%90%AF%E5%8A%A8%E5%BF%85%E4%B8%8D%E5%8F%AF%E5%B0%91"><span class="toc-text">SECURITY WARNING: keep the secret key used in production secret!&#x2F;&#x2F;django项目自动生产的安全码，项目启动必不可少</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SECURITY-WARNING-don%E2%80%99t-run-with-debug-turned-on-in-production-debug%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E9%9C%80%E8%A6%81%E5%85%B3%E9%97%AD"><span class="toc-text">SECURITY WARNING: don’t run with debug turned on in production!&#x2F;&#x2F;debug实际应用需要关闭</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Application-definition"><span class="toc-text">Application definition</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Database"><span class="toc-text">Database</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#https-docs-djangoproject-com-en-1-11-ref-settings-databases"><span class="toc-text">https:&#x2F;&#x2F;docs.djangoproject.com&#x2F;en&#x2F;1.11&#x2F;ref&#x2F;settings&#x2F;#databases</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Password-validation"><span class="toc-text">Password validation</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#https-docs-djangoproject-com-en-1-11-ref-settings-auth-password-validators"><span class="toc-text">https:&#x2F;&#x2F;docs.djangoproject.com&#x2F;en&#x2F;1.11&#x2F;ref&#x2F;settings&#x2F;#auth-password-validators</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Internationalization"><span class="toc-text">Internationalization</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#https-docs-djangoproject-com-en-1-11-topics-i18n"><span class="toc-text">https:&#x2F;&#x2F;docs.djangoproject.com&#x2F;en&#x2F;1.11&#x2F;topics&#x2F;i18n&#x2F;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Static-files-CSS-JavaScript-Images"><span class="toc-text">Static files (CSS, JavaScript, Images)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#https-docs-djangoproject-com-en-1-11-howto-static-files"><span class="toc-text">https:&#x2F;&#x2F;docs.djangoproject.com&#x2F;en&#x2F;1.11&#x2F;howto&#x2F;static-files&#x2F;</span></a>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>原文链接: <a href="https://60ke.github.io/2017/04/10/django框架博客开发-2/">https://60ke.github.io/2017/04/10/django框架博客开发-2/</a></p>
+              <p>版权声明: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+    <div class="article-reward">
+        <a id="reward-btn" href="javascript:;">打赏</a>
+        <div id="reward-content">
+            <h6 class="reward-tit">“感谢你的支持，我会继续努力！”</h6>
+            <div>
+                <div class="reward-code">
+                    <img class="type-code" src="/css/images/wechat.jpg">
+                    <img class="er-code" src="/css/images/wechat-pay.jpeg">
+                </div>
+                <div class="reward-code">
+                    <img class="type-code" src="/css/images/alipay.jpg">
+                    <img class="er-code" src="/css/images/alipay-pay.jpeg">
+                </div>
+            </div>
+            <p class="reward-desc">扫码打赏，感谢支持</p>
+        </div>
+    </div>
+
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/2017/04/10/django%E6%A1%86%E6%9E%B6%E5%8D%9A%E5%AE%A2%E5%BC%80%E5%8F%91-3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          django框架博客开发-3
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/10/django%E6%A1%86%E6%9E%B6%E5%8D%9A%E5%AE%A2%E5%BC%80%E5%8F%91-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">django框架博客开发-1</div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+  <div id="comments"></div>
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> 最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/04/29/%E7%BB%88%E7%AB%AF%E5%BD%95%E5%B1%8F/">终端录屏</a>
+          </li>
+        
+          <li>
+            <a href="/2021/04/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9F%A5%E6%89%BE/">数据结构之子字符串查找</a>
+          </li>
+        
+          <li>
+            <a href="/2021/04/06/go%E8%B0%83%E7%94%A8RUST/">go调用RUST</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/18/M1-vscode-lldb/">M1-vscode-lldb</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/03/%E6%9D%82%E8%B0%88/">杂谈</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/go/" style="font-size: 11.67px;">go</a> <a href="/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/tags/ios/" style="font-size: 10px;">ios</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/mac/" style="font-size: 16.67px;">mac</a> <a href="/tags/maomaomao/" style="font-size: 10px;">maomaomao</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/other/" style="font-size: 10px;">other</a> <a href="/tags/others/" style="font-size: 15px;">others</a> <a href="/tags/pycharm/" style="font-size: 10px;">pycharm</a> <a href="/tags/python/" style="font-size: 18.33px;">python</a> <a href="/tags/python%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">python基础</a> <a href="/tags/rust/" style="font-size: 20px;">rust</a> <a href="/tags/scrapy/" style="font-size: 13.33px;">scrapy</a> <a href="/tags/sgx/" style="font-size: 11.67px;">sgx</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/sublime/" style="font-size: 10px;">sublime</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/tags/xpath/" style="font-size: 10px;">xpath</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%AD%A3%E5%88%99/" style="font-size: 10px;">正则</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 15px;">爬虫</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 11.67px;">笔记</a> <a href="/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/" style="font-size: 10px;">路由器</a> <a href="/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/default/">default</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/">mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/old/">old</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/others/">others</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python%E7%88%AC%E8%99%AB/">python爬虫</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/rust/">rust</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/wasm/">wasm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A5%B9/">她</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E7%BB%AA/">杂绪</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年04月</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年12月</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年12月</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年11月</a><span class="archive-list-count">45</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年12月</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">网站地图</a>
+        <span> | </span><a href="/atom.xml">订阅本站</a>
+        <span> | </span><a href="/about/">联系博主</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2021 lsk.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        
+            <span>Count by <a href="http://busuanzi.ibruce.info/" target="_blank">busuanzi.</a></span>
+        
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+  
+<script src="/localshare/js/social-share.js"></script>
+
+  
+<script src="/localshare/js/qrcode.js"></script>
+
+
+
+
+
+  
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+
+  <script>
+    var gitalk = new Gitalk({
+      clientID: 'e28ce6e16ddbf9316a0d',
+      clientSecret: '89597d2b5d6ebeb5badc6d5930da2c08b76283dd',
+      repo: '60ke.github.io',
+      owner: '60ke',
+      admin: ['60ke'],
+      id: md5(window.location.pathname),
+      distractionFreeMode: false,
+      language: 'zh-CN',
+      pagerDirection: 'last'
+    });
+    gitalk.render('comments');
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</body>
+</html>
