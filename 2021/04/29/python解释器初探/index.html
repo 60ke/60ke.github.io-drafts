@@ -139,36 +139,30 @@
     </div>
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="解释器概念"><a href="#解释器概念" class="headerlink" title="解释器概念"></a>解释器概念</h2><h3 id="先看wiki中的定义"><a href="#先看wiki中的定义" class="headerlink" title="先看wiki中的定义:"></a>先看wiki中的定义:</h3><pre><code>*In computer science, an interpreter is a computer program that directly executes instructions written in a programming or scripting language, without requiring them previously to have been compiled into a machine language program.*
+        <div id="flowchart-0" class="flow-chart"></div>
+<span id="more"></span>
+## 1.解释器概念
+### 1.1先看wiki中的定义:
 
-大意为:*解释器是一种可以执行无需编译为机器码的脚步或程序语言的计算机程序.*如果执行的程序由虚拟机器语言或类似于机器语言的程序设计语言写成,解释器也可被称作虚拟机。
-与解释器对应还有编译器.编译器（compiler）是一种计算机程序，它会将某种编程语言写成的源代码（原始语言）转换成另一种编程语言（目标语言）。通常会将源代码编译为机器语言。
-其实解释器编译器并没有一个标准的定义,随着计算机科学发发展他们之间的界限变得模糊。
-</code></pre>
-<h3 id="解释器种类"><a href="#解释器种类" class="headerlink" title="解释器种类"></a>解释器种类</h3><p>按照解释器执行程序的方法可将解释器分为以下三类:<br>1.直接执行高级语言(如shell内置的编译器)<br>2.转换高级编程语言到更有效率的字节码（Bytecode），并执行字节码(如:Python,Ruby,Perl,MATLAB)<br>3.用解释器包含的编译器对高级语言进行编译，并指示中央处理器执行编译后的程序（如：JIT）</p>
-<h3 id="解释器的优缺点"><a href="#解释器的优缺点" class="headerlink" title="解释器的优缺点"></a>解释器的优缺点</h3><p>以下为与编译器的对比:<br>1.优点<br>由于解释器是边解释边执行的,这就使得它具备动态优化,可以边运行边调试易于debug,开发效率高,跨平台<br>2.缺点<br>同样由于解释器边解释边执行的运行过程,导致其内存占用高,因为解释器需要保存更多程序的信息，运行时,同时其运行的本质是由运行时运行的,而运行时又是运行在物理机(虚拟机)之上,所以其运行时间也会加长。</p>
-<h2 id="简单的解释器实现"><a href="#简单的解释器实现" class="headerlink" title="简单的解释器实现"></a>简单的解释器实现</h2><p>我们要构造的解释器运行流程如下:<br><img src="https://gitee.com/worileqing/upic/raw/master/uPic/interpreter.png" alt="interpreter"><br>解释器的运行流程大体可分为:加载指令</p>
-<div id="flowchart-0" class="flow-chart"></div><script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.5/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display: none">start=>start: 开始
-input=>inputoutput: 输入
-operation=>operation: 操作
-condition=>condition: 操作出错？
-output=>inputoutput: 输出
-error=>operation: 请重新输入
-end=>end: 结束
-
-start->input
-input->operation
-operation->condition
-condition(no,bottom)->output
-condition(yes)->error(top)->input
-output->end</textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script>
+<p><em>In computer science, an interpreter is a computer program that directly executes instructions written in a programming or scripting language, without requiring them previously to have been compiled into a machine language program.</em></p>
+<p>大意为:*解释器是一种可以执行无需编译为机器码的脚步或程序语言的计算机程序.*如果执行的程序由虚拟机器语言或类似于机器语言的程序设计语言写成,解释器也可被称作虚拟机。<br>与解释器对应还有编译器.编译器（compiler）是一种计算机程序，它会将某种编程语言写成的源代码（原始语言）转换成另一种编程语言（目标语言）。通常会将源代码编译为机器语言。<br>其实解释器编译器并没有一个标准的定义,随着计算机科学发发展他们之间的界限变得模糊。</p>
+<h3 id="1-2解释器种类"><a href="#1-2解释器种类" class="headerlink" title="1.2解释器种类"></a>1.2解释器种类</h3><p>按照解释器执行程序的方法可将解释器分为以下三类:<br>1.直接执行高级语言(如shell内置的编译器)<br>2.转换高级编程语言到更有效率的字节码（Bytecode），并执行字节码(如:Python,Ruby,Perl,MATLAB)<br>3.用解释器包含的编译器对高级语言进行编译，并指示中央处理器执行编译后的程序（如：JIT）</p>
+<h3 id="1-3解释器的优缺点"><a href="#1-3解释器的优缺点" class="headerlink" title="1.3解释器的优缺点"></a>1.3解释器的优缺点</h3><p>以下为与编译器的对比:<br>1.优点<br>由于解释器是边解释边执行的,这就使得它具备动态优化,可以边运行边调试易于debug,开发效率高,跨平台<br>2.缺点<br>同样由于解释器边解释边执行的运行过程,导致其内存占用高,因为解释器需要保存更多程序的信息，运行时,同时其运行的本质是由运行时运行的,而运行时又是运行在物理机(虚拟机)之上,所以其运行时间也会加长。</p>
+<h2 id="2简单的解释器实现"><a href="#2简单的解释器实现" class="headerlink" title="2简单的解释器实现"></a>2简单的解释器实现</h2><p>我们要构造的解释器运行流程如下:<br><img src="https://gitee.com/worileqing/upic/raw/master/uPic/interpreter.png" alt="interpreter"><br>解释器的运行流程大体可分为:加载指令</p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.5/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display: none">    operation1=>operation: 加载指令
+    operation2=>operation: 解析指令
+    operation3=>operation: 运行指令
+    operation4=>operation: 输出结果
+    operation1->operation2
+    operation2->operation3
+    operation3->operation4</textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script>
         
             <div id="toc-article">
                 
   <div class="widget-wrap" id="toc-wrap">
     <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
     <div class="widget">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E5%99%A8%E6%A6%82%E5%BF%B5"><span class="toc-text">解释器概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%88%E7%9C%8Bwiki%E4%B8%AD%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">先看wiki中的定义:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E5%99%A8%E7%A7%8D%E7%B1%BB"><span class="toc-text">解释器种类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E5%99%A8%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-text">解释器的优缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E8%A7%A3%E9%87%8A%E5%99%A8%E5%AE%9E%E7%8E%B0"><span class="toc-text">简单的解释器实现</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2%E8%A7%A3%E9%87%8A%E5%99%A8%E7%A7%8D%E7%B1%BB"><span class="toc-text">1.2解释器种类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3%E8%A7%A3%E9%87%8A%E5%99%A8%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-text">1.3解释器的优缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E7%AE%80%E5%8D%95%E7%9A%84%E8%A7%A3%E9%87%8A%E5%99%A8%E5%AE%9E%E7%8E%B0"><span class="toc-text">2简单的解释器实现</span></a>
     </div>
   </div>
 
