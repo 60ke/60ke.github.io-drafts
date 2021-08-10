@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>go语言圣经8.5--goroutine解惑 | LookForAdmin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <meta name="description" content="学如逆水行舟,不进则退;心似平原跑马易放难收。">
+  
+  
+  
+    <link rel="alternate" href="/atom.xml" title="LookForAdmin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LookForAdmin</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">已是乾坤大，更怜草木青</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> 首页</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> 归档</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> 关于</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> 订阅</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-go语言圣经8-5-goroutine解惑" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      go语言圣经8.5--goroutine解惑
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2021-08-10T10:21:51.000Z" itemprop="datePublished">2021年08月10日</time>
+</span>
+      
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+<a href="/2021/08/10/go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F8-5-goroutine%E8%A7%A3%E6%83%91/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  留言
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>下面的代码是修改过的,中文版的go程序设计语言,8.5并行循环的最后一个示例:<br>代码虽有修改,但是只改变了并发的功能,并发的逻辑与源码没什么区别</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;sync&quot;</span></span><br><span class="line">	<span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">	sizes := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int64</span>)</span><br><span class="line">	wg.Add(<span class="number">1</span>)</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">defer</span> wg.Done()</span><br><span class="line">		<span class="keyword">defer</span> fmt.Println(<span class="string">&quot;send size 11&quot;</span>)</span><br><span class="line">		sizes &lt;- <span class="number">11</span></span><br><span class="line">	&#125;()</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">2</span>; i++ &#123;</span><br><span class="line">		wg.Add(<span class="number">1</span>)</span><br><span class="line">		t := i</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(t <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">			<span class="keyword">defer</span> wg.Done()</span><br><span class="line">			<span class="keyword">defer</span> fmt.Printf(<span class="string">&quot;send size: %d\n&quot;</span>, t)</span><br><span class="line">			sizes &lt;- <span class="keyword">int64</span>(t)</span><br><span class="line">		&#125;(t)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Println(<span class="string">&quot;waiting for all goroutine &quot;</span>)</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		wg.Wait()</span><br><span class="line">		time.Sleep(time.Second * <span class="number">4</span>)</span><br><span class="line">		fmt.Println(<span class="string">&quot;wg done&quot;</span>)</span><br><span class="line">		<span class="comment">// close(sizes)</span></span><br><span class="line">	&#125;()</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		time.Sleep(time.Second * <span class="number">8</span>)</span><br><span class="line">		fmt.Println(<span class="string">&quot;time sleep 8s&quot;</span>)</span><br><span class="line">	&#125;()</span><br><span class="line">	<span class="comment">// wg.Wait()</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;All goroutines finished!&quot;</span>)</span><br><span class="line">	<span class="comment">// fmt.Println(&lt;-sizes)</span></span><br><span class="line">	<span class="comment">// time.Sleep(time.Second * 3)</span></span><br><span class="line">	<span class="keyword">var</span> total <span class="keyword">int64</span></span><br><span class="line">	<span class="keyword">for</span> size := <span class="keyword">range</span> sizes &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;get size:&quot;</span>, size)</span><br><span class="line">		total += size</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// close(sizes)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>中文版关于这段的代码的描述是:</p>
+<blockquote>
+<p>注意Add和Done方法的不对称性。Add递增计数器，它必须在工作goroutine开始之前执行，而不是在中间。另一方面，不能保证Add在关闭者goroutine调用Wait之前发生。另外，Add有一个参数，但Done没有，它等价于Add(-1)。使用defer来确保在发送错误的情况下计数器可以递减。使用defer来确保在发送错误的情况下计数器可以递减。在不知道迭代次数的情况下，上面的代码结构是通用的，符合习惯的并行循环模式。</p>
+</blockquote>
+<blockquote>
+<p>sizes通道将每一个文件的大小带回主goroutine，它使用range循环进行接收然后计算总和。注意，在关闭者goroutine中，在关闭sizes通道之前,等待所有的工作者结束。这里两个操作（等待和关闭）必须在sizes通道上面的迭代并行执行。考虑替代方案：如果我们将等待操作放在循环之前的主goroutine中，因为通道会满，它将永不结束；如果放在循环后面，它将不可达，因为没有任何东西可用来关闭通道，循环可能永不结束。</p>
+</blockquote>
+<p>不得不承认，这个代码的中文描述的前三句话就给我整懵了:<code>注意Add和Done方法的不对称性。Add递增计数器，它必须在工作goroutine开始之前执行，而不是在中间。另一方面，不能保证Add在关闭者goroutine调用Wait之前发生。</code>第一句话很容易理解：因为<code>Add</code>函数是在<code>main</code>函数里面的,而<code>Done</code>函数是在goroutine中的（不是都在<code>main</code>中或都在<code>goroutine</code>中），所以它们是不对称的。接着看第二句：前半句<code>Add递增计数器</code>指的是<code>wg.Add(1)</code>，这个就是字面意思，是说这个操作会将<code>wg+1</code>,后面<code>它必须在工作goroutine开始之前执行，而不是在中间。</code>就开始不将人话了(词汇有限，没有侮辱的意思)。盲猜这个话的意思应该是：<code>Add操作，需要在其后面的代码</code>:<code>go func()&#123;...&#125;</code>之前执行，而不是放在<code>go func()&#123;这里（即中间）&#125;</code>执行，既然是盲猜，那还得接着看才好验证：<code>另一方面，不能保证Add在关闭者goroutine调用Wait之前发生。</code>另一方面，另一方面呃呃呃，关闭者goroutine应该是那个含有<code>wg.Wait()</code>的goroutine，不能保证Add函数在其之前发生是什么意思：<code>合着这个代码可能还没运行Add就运行了Wait呗</code>，那这段代码的意义何在！！！！！</p>
+<p>然后就有了上面的代码实测，搞了一下午终于弄明白了，这话说错了，对我产生了误导，很大的误导。<br>先不说代码的证明，先看看英文版原书是怎么描述的吧:</p>
+<blockquote>
+<p>Note the asymmetry in the Add and Done methods. Add, which increments the counter, must be called before the worker goroutine starts, not within it; otherwise we would not be sure that theAddhappensbeforethe‘‘closer’’goroutinecallsWait. Also,Addtakesaparameter,but Done does not; it’s equivalent to Add(-1). We use defer to ensure that the counter is decremented even in the error case. The structure of the code above is a common and idiomatic pattern for looping in parallel when we don’t know the number of iterations.<br>The sizes channel carries each file size back to the main goroutine, which receives them using a range loop and computes the sum. Observe how we create a closer goroutine that waits for the workers to finish before closing the sizes channel. These two operations, wait and close, must be concurrent with the loop over sizes. Consider the alternatives: if the wait operation were placed in the main goroutine before the loop, it would never end, and if placed after the loop, it would be unreachable since with nothing closing the channel, the loop would never terminate.</p>
+</blockquote>
+<p>好家伙，原来我看见的中文版的三句话是两句：<code>Note the asymmetry in the Add and Done methods. Add, which increments the counter, must be called before the worker goroutine starts, not within it; otherwise we would not be sure that theAddhappensbeforethe‘‘closer’’goroutinecallsWait. </code>看了英文我突然觉得英文版的比中文还好理解，且不说那个<code>工作goroutine</code>跟个机翻似的，也不说那个<code>within it</code>被他翻译成了<code>在中间</code>,最过分的是英文这里的分号<code>;</code>,中文给来了个句号，<code>otherwise</code>被他翻译成了<code>另一方面</code>，直接把意思给弄反。我来用我拙劣的言语把第二句给个中文翻译吧:<code>Add操作是计数器wg递增，它必须运行在将要运行的goroutine(这里为包含有wg.Done的goroutine)之外，因为（不运行在之外的话）就无法保证Add在Wait之前运行了</code>。也就是说这个Add函数现在的位置恰恰就是为了保证Add在Wait之前运行的！！！！</p>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
+    <div class="widget">
+      
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>原文链接: <a href="https://60ke.github.io/2021/08/10/go语言圣经8-5-goroutine解惑/">https://60ke.github.io/2021/08/10/go语言圣经8-5-goroutine解惑/</a></p>
+              <p>版权声明: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+    <div class="article-reward">
+        <a id="reward-btn" href="javascript:;">打赏</a>
+        <div id="reward-content">
+            <h6 class="reward-tit">“感谢你的支持，我会继续努力！”</h6>
+            <div>
+                <div class="reward-code">
+                    <img class="type-code" src="/css/images/wechat.jpg">
+                    <img class="er-code" src="/css/images/wechat-pay.jpeg">
+                </div>
+                <div class="reward-code">
+                    <img class="type-code" src="/css/images/alipay.jpg">
+                    <img class="er-code" src="/css/images/alipay-pay.jpeg">
+                </div>
+            </div>
+            <p class="reward-desc">扫码打赏，感谢支持</p>
+        </div>
+    </div>
+
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" rel="tag">并发编程</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+  
+    <a href="/2021/05/11/antlr4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">write a antlr4 visitor with golang</div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+  <div id="comments"></div>
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> 最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/08/10/go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F8-5-goroutine%E8%A7%A3%E6%83%91/">go语言圣经8.5--goroutine解惑</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/11/antlr4/">write a antlr4 visitor with golang</a>
+          </li>
+        
+          <li>
+            <a href="/2021/04/29/python%E8%A7%A3%E9%87%8A%E5%99%A8%E5%88%9D%E6%8E%A2/">python解释器初探</a>
+          </li>
+        
+          <li>
+            <a href="/2021/04/29/%E7%BB%88%E7%AB%AF%E5%BD%95%E5%B1%8F/">终端录屏</a>
+          </li>
+        
+          <li>
+            <a href="/2021/04/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9F%A5%E6%89%BE/">数据结构之子字符串查找</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/go/" style="font-size: 11.67px;">go</a> <a href="/tags/golang/" style="font-size: 11.67px;">golang</a> <a href="/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/tags/ios/" style="font-size: 10px;">ios</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/mac/" style="font-size: 16.67px;">mac</a> <a href="/tags/maomaomao/" style="font-size: 10px;">maomaomao</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/other/" style="font-size: 10px;">other</a> <a href="/tags/others/" style="font-size: 15px;">others</a> <a href="/tags/pycharm/" style="font-size: 10px;">pycharm</a> <a href="/tags/python/" style="font-size: 18.33px;">python</a> <a href="/tags/python%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">python基础</a> <a href="/tags/rust/" style="font-size: 20px;">rust</a> <a href="/tags/scrapy/" style="font-size: 13.33px;">scrapy</a> <a href="/tags/sgx/" style="font-size: 11.67px;">sgx</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/sublime/" style="font-size: 10px;">sublime</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/tags/xpath/" style="font-size: 10px;">xpath</a> <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">并发编程</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%AD%A3%E5%88%99/" style="font-size: 10px;">正则</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 15px;">爬虫</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 11.67px;">笔记</a> <a href="/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/" style="font-size: 10px;">路由器</a> <a href="/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/default/">default</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/">mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/old/">old</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/others/">others</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python%E7%88%AC%E8%99%AB/">python爬虫</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/rust/">rust</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/wasm/">wasm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A5%B9/">她</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E7%BB%AA/">杂绪</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年08月</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年12月</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年12月</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年11月</a><span class="archive-list-count">45</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年12月</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">网站地图</a>
+        <span> | </span><a href="/atom.xml">订阅本站</a>
+        <span> | </span><a href="/about/">联系博主</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2021 lsk.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        
+            <span>Count by <a href="http://busuanzi.ibruce.info/" target="_blank">busuanzi.</a></span>
+        
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a4bf52d7269ab655ac8b068d702a6ef7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+  
+<script src="/localshare/js/social-share.js"></script>
+
+  
+<script src="/localshare/js/qrcode.js"></script>
+
+
+
+
+
+  
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+
+  <script>
+    var gitalk = new Gitalk({
+      clientID: 'e28ce6e16ddbf9316a0d',
+      clientSecret: '89597d2b5d6ebeb5badc6d5930da2c08b76283dd',
+      repo: '60ke.github.io',
+      owner: '60ke',
+      admin: ['60ke'],
+      id: md5(window.location.pathname),
+      distractionFreeMode: false,
+      language: 'zh-CN',
+      pagerDirection: 'last'
+    });
+    gitalk.render('comments');
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</body>
+</html>
