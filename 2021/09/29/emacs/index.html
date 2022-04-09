@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>emacs | LookForAdmin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <meta name="description" content="学如逆水行舟,不进则退;心似平原跑马易放难收。">
+  
+  
+  
+    <link rel="alternate" href="/old_blogs/atom.xml" title="LookForAdmin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/old_blogs/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/old_blogs/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/old_blogs/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/old_blogs/localshare/css/share.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/old_blogs/" id="logo">LookForAdmin</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/old_blogs/" id="subtitle">已是乾坤大，更怜草木青</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/old_blogs/."><i class="fa fa-home"></i> 首页</a>
+        
+          <a class="main-nav-link" href="/old_blogs/archives/"><i class="fa fa-archive"></i> 归档</a>
+        
+          <a class="main-nav-link" href="/old_blogs/about/"><i class="fa fa-user"></i> 关于</a>
+        
+          <a class="main-nav-link" href="/old_blogs/atom.xml"><i class="fa fa-rss"></i> 订阅</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-emacs" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      emacs
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2021-09-29T15:06:54.000Z" itemprop="datePublished">2021年09月29日</time>
+</span>
+      
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+<a href="/old_blogs/2021/09/29/emacs/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  留言
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="emacs-介绍"><a href="#emacs-介绍" class="headerlink" title="emacs 介绍"></a>emacs 介绍</h1><h2 id="关于emacs的一些疑问"><a href="#关于emacs的一些疑问" class="headerlink" title="关于emacs的一些疑问"></a>关于emacs的一些疑问</h2><h2 id="What-English-abbreviations-are-“setq”-“car”-and-“cdr”-in-LISP"><a href="#What-English-abbreviations-are-“setq”-“car”-and-“cdr”-in-LISP" class="headerlink" title="What English abbreviations are “setq”, “car”, and “cdr” in LISP?"></a><a target="_blank" rel="noopener" href="https://www.quora.com/What-English-abbreviations-are-setq-car-and-cdr-in-LISP">What English abbreviations are “setq”, “car”, and “cdr” in LISP?</a></h2><p>author:<a target="_blank" rel="noopener" href="https://www.quora.com/profile/Rich-Alderson">Rich-Alderson</a></p>
+<blockquote>
+<p>EDIT: I misremembered the computer model number, which Panicz Godek points out. It was the IBM 704, rather than the related 709.</p>
+</blockquote>
+<blockquote>
+<p>What English abbreviations are “setq”, “car”, and “cdr” in LISP?</p>
+</blockquote>
+<blockquote>
+<p>This question takes us back to the 1950s and the architecture of the IBM 704 computer on which LISP was first implemented.</p>
+</blockquote>
+<blockquote>
+<p>First, let’s look at the special form SETQ, which assigns a value to an atom. Originally, there was only the special form SET, which evaluates the first argument to get the atom to which to assign the value of the evaluated second argument: (SET (A) B). Because this was such a common idiom, a new special form SETQ, meaning “set-quote”, was created: (SETQ A B) gives the same result as the previous form.</p>
+</blockquote>
+<blockquote>
+<p>Now, on to the 704. You need to learn some different terminology here. Storage words were called registers; they are not what are we call registers today, which were specialized and had unique names: The accumulator or AC, the multiply-quotient or MQ, and the indexes. Memory referred to tape or disk.</p>
+</blockquote>
+<blockquote>
+<p>Words were 36 bits long; addresses were 15 bits, allowing a whopping 32K of storage. Each word was divided into 4 parts: The address and the decrement were each 15 bits long, the index and tag were each 3 bits long. Thus, a word could hold 2 addresses and 2 other quantities.</p>
+</blockquote>
+<blockquote>
+<p>In the original LISP, all 4 parts of the word were usable, and the functions which referenced these were named for these parts: The Content-of-the-Address-part-of the-Register was CAR, the Content-of-the-Decrement-part-of-the-Register or CDR, and similarly for CIR and CTR. These latter 2 were quickly dropped as not having any real use, so we were left with just CAR and CDR.</p>
+</blockquote>
+<blockquote>
+<p>I refer you to Herbert Stoyan’s paper in the proceedings of the 1984 ACM Conference on Lisp and Functional Programming entitled “Early LISP History (1956-1959)”, which I had the pleasure of hearing in person (Austin, Texas, August 1984): Early LISP history (1956 - 1959)</p>
+</blockquote>
+<h2 id="Curiosity-What-does-progn-stands-for"><a href="#Curiosity-What-does-progn-stands-for" class="headerlink" title="Curiosity: What does progn stands for?"></a><a target="_blank" rel="noopener" href="https://emacs.stackexchange.com/questions/5829/curiosity-what-does-progn-stands-for">Curiosity: What does progn stands for?</a></h2><ul>
+<li><p>progn is a special form borrowed from CL-like Lisp dialects. In their implementations it’s composed from multiple progs, expressions that are evaluated and a number that specifies which expression value is returned. prog1 for instance evaluates all expressions and returns the value of the first, prog2 evaluates all expressions and returns the value of the second, progn evaluates all expressions and returns the n’th, or rather, the last expression’s value.</p>
+</li>
+<li><p>progn in Emacs Lisp is the equivalent of Clojure’s do which is used as means to bundle multiple expressions into a single one. You’ll need to use it for Clojure’s if conditional for instance.</p>
+</li>
+</ul>
+<h1 id="lisp-学习"><a href="#lisp-学习" class="headerlink" title="lisp 学习"></a><a target="_blank" rel="noopener" href="https://learnxinyminutes.com/docs/zh-cn/elisp-cn/">lisp 学习</a></h1><h2 id="15分钟学会Emacs-Lisp-v0-2a"><a href="#15分钟学会Emacs-Lisp-v0-2a" class="headerlink" title="15分钟学会Emacs Lisp (v0.2a)"></a>15分钟学会Emacs Lisp (v0.2a)</h2><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">;; 15分钟学会Emacs Lisp (v0.2a)</span></span><br><span class="line"><span class="comment">;;（作者：bzg，https://github.com/bzg </span></span><br><span class="line"><span class="comment">;;  译者：lichenbo，http://douban.com/people/lichenbo）</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; 请先阅读Peter Norvig的一篇好文:</span></span><br><span class="line"><span class="comment">;; http://norvig.com/21-days.html</span></span><br><span class="line"><span class="comment">;; （译者注：中文版请见http://blog.youxu.info/21-days/）</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; 之后安装GNU Emacs 24.3:</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; Debian: apt-get install emacs (视具体发行版而定)</span></span><br><span class="line"><span class="comment">;; MacOSX: http://emacsformacosx.com/emacs-builds/Emacs-24.3-universal-10.6.8.dmg</span></span><br><span class="line"><span class="comment">;; Windows: http://ftp.gnu.org/gnu/windows/emacs/emacs-24.3-bin-i386.zip</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; 更多信息可以在这里找到:</span></span><br><span class="line"><span class="comment">;; http://www.gnu.org/software/emacs/#Obtaining</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 很重要的警告:</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; 按照这个教程来学习并不会对你的电脑有任何损坏</span></span><br><span class="line"><span class="comment">;; 除非你自己在学习的过程中愤怒地把它砸了</span></span><br><span class="line"><span class="comment">;; 如果出现了这种情况，我不会承担任何责任</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;</span></span><br><span class="line"><span class="comment">;; </span></span><br><span class="line"><span class="comment">;; 打开emacs</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; 按&#x27;q&#x27;消除欢迎界面</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; 现在请注意窗口底部的那一个灰色长条</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; &quot;*scratch*&quot; 是你现在编辑界面的名字。</span></span><br><span class="line"><span class="comment">;; 这个编辑界面叫做一个&quot;buffer&quot;。</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; 每当你打开Emacs时，都会默认打开这个scratch buffer</span></span><br><span class="line"><span class="comment">;; 此时你并没有在编辑任何文件，而是在编辑一个buffer</span></span><br><span class="line"><span class="comment">;; 之后你可以将这个buffer保存到一个文件中。</span></span><br><span class="line"><span class="comment">;; </span></span><br><span class="line"><span class="comment">;; 之后的&quot;Lisp interaction&quot; 则是表明我们可以用的某组命令</span></span><br><span class="line"><span class="comment">;; </span></span><br><span class="line"><span class="comment">;; Emacs在每个buffer中都有一组内置的命令</span></span><br><span class="line"><span class="comment">;; 而当你激活某种特定的模式时，就可以使用相应的命令</span></span><br><span class="line"><span class="comment">;; 这里我们使用`lisp-interaction-mode&#x27;，</span></span><br><span class="line"><span class="comment">;; 这样我们就可以使用内置的Emacs Lisp（以下简称Elisp）命令了。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; 分号是注释开始的标志</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; Elisp 是由符号表达式构成的 (即&quot;s-表达式&quot;或&quot;s式&quot;):</span></span><br><span class="line">(<span class="name">+</span> <span class="number">2</span> <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 这个s式的意思是 &quot;对2进行加2操作&quot;.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; s式周围有括号，而且也可以嵌套:</span></span><br><span class="line">(<span class="name">+</span> <span class="number">2</span> (<span class="name">+</span> <span class="number">1</span> <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 一个s式可以包含原子符号或者其他s式</span></span><br><span class="line"><span class="comment">;; 在上面的例子中，1和2是原子符号</span></span><br><span class="line"><span class="comment">;; (+ 2 (+ 1 1)) 和 (+ 1 1) 是s式.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 在 `lisp-interaction-mode&#x27; 中你可以计算s式.</span></span><br><span class="line"><span class="comment">;; 把光标移到闭括号后，之后按下ctrl+j（以后简写为&#x27;C-j&#x27;）</span></span><br><span class="line"></span><br><span class="line">(<span class="name">+</span> <span class="number">3</span> (<span class="name">+</span> <span class="number">1</span> <span class="number">2</span>))</span><br><span class="line"><span class="comment">;;           ^ 光标放到这里</span></span><br><span class="line"><span class="comment">;; 按下`C-j&#x27; 就会输出 6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; `C-j&#x27; 会在buffer中插入当前运算的结果</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 而`C-xC-e&#x27; 则会在emacs最底部显示结果，也就是被称作&quot;minibuffer&quot;的区域</span></span><br><span class="line"><span class="comment">;; 为了避免把我们的buffer填满无用的结果，我们以后会一直用`C-xC-e&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; `setq&#x27; 可以将一个值赋给一个变量</span></span><br><span class="line">(<span class="name">setq</span> my-name <span class="string">&quot;Bastien&quot;</span>)</span><br><span class="line"><span class="comment">;; `C-xC-e&#x27; 输出 &quot;Bastien&quot; (在 mini-buffer 中显示)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; `insert&#x27; 会在光标处插入字符串:</span></span><br><span class="line">(<span class="name">insert</span> <span class="string">&quot;Hello!&quot;</span>)</span><br><span class="line"><span class="comment">;; `C-xC-e&#x27; 输出 &quot;Hello!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 在这里我们只传给了insert一个参数&quot;Hello!&quot;, 但是</span></span><br><span class="line"><span class="comment">;; 我们也可以传给它更多的参数，比如2个：</span></span><br><span class="line"></span><br><span class="line">(<span class="name">insert</span> <span class="string">&quot;Hello&quot;</span> <span class="string">&quot; world!&quot;</span>)</span><br><span class="line"><span class="comment">;; `C-xC-e&#x27; 输出 &quot;Hello world!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 你也可以用变量名来代替字符串</span></span><br><span class="line">(<span class="name">insert</span> <span class="string">&quot;Hello, I am &quot;</span> my-name)</span><br><span class="line"><span class="comment">;; `C-xC-e&#x27; 输出 &quot;Hello, I am Bastien&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 你可以把s式嵌入函数中</span></span><br><span class="line">(<span class="name">defun</span> hello () (<span class="name">insert</span> <span class="string">&quot;Hello, I am &quot;</span> my-name))</span><br><span class="line"><span class="comment">;; `C-xC-e&#x27; 输出 hello</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 现在执行这个函数</span></span><br><span class="line">(<span class="name">hello</span>)</span><br><span class="line"><span class="comment">;; `C-xC-e&#x27; 输出 Hello, I am Bastien</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 函数中空括号的意思是我们不需要接受任何参数</span></span><br><span class="line"><span class="comment">;; 但是我们不能一直总是用my-name这个变量</span></span><br><span class="line"><span class="comment">;; 所以我们现在使我们的函数接受一个叫做&quot;name&quot;的参数 </span></span><br><span class="line"></span><br><span class="line">(<span class="name">defun</span> hello (<span class="name">name</span>) (<span class="name">insert</span> <span class="string">&quot;Hello &quot;</span> name))</span><br><span class="line"><span class="comment">;; `C-xC-e&#x27; 输出 hello</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 现在我们调用这个函数，并且将&quot;you&quot;作为参数传递</span></span><br><span class="line"></span><br><span class="line">(<span class="name">hello</span> <span class="string">&quot;you&quot;</span>)</span><br><span class="line"><span class="comment">;; `C-xC-e&#x27; 输出 &quot;Hello you&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 成功！</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 现在我们可以休息一下</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; 下面我们在新的窗口中新建一个名为 &quot;*test*&quot; 的buffer:</span></span><br><span class="line"></span><br><span class="line">(<span class="name">switch-to-buffer-other-window</span> <span class="string">&quot;*test*&quot;</span>)</span><br><span class="line"><span class="comment">;; `C-xC-e&#x27; 这时屏幕上会显示两个窗口，而光标此时位于*test* buffer内</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 用鼠标单击上面的buffer就会使光标移回。</span></span><br><span class="line"><span class="comment">;; 或者你可以使用 `C-xo&#x27; 使得光标跳到另一个窗口中</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 你可以用 `progn&#x27;命令将s式结合起来:</span></span><br><span class="line">(<span class="name">progn</span></span><br><span class="line">  (<span class="name">switch-to-buffer-other-window</span> <span class="string">&quot;*test*&quot;</span>)</span><br><span class="line">  (<span class="name">hello</span> <span class="string">&quot;you&quot;</span>))</span><br><span class="line"><span class="comment">;; `C-xC-e&#x27; 此时屏幕分为两个窗口，并且在*test* buffer中显示&quot;Hello you&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 现在为了简洁，我们需要在每个s式后面都使用`C-xC-e&#x27;来执行，后面就不再说明了</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 记得可以用过鼠标或者`C-xo&#x27;回到*scratch*这个buffer。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 清除当前buffer也是常用操作之一：</span></span><br><span class="line">(<span class="name">progn</span></span><br><span class="line">  (<span class="name">switch-to-buffer-other-window</span> <span class="string">&quot;*test*&quot;</span>)</span><br><span class="line">  (<span class="name">erase-buffer</span>)</span><br><span class="line">  (<span class="name">hello</span> <span class="string">&quot;there&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 也可以回到其他的窗口中</span></span><br><span class="line">(<span class="name">progn</span></span><br><span class="line">  (<span class="name">switch-to-buffer-other-window</span> <span class="string">&quot;*test*&quot;</span>)</span><br><span class="line">  (<span class="name">erase-buffer</span>)</span><br><span class="line">  (<span class="name">hello</span> <span class="string">&quot;you&quot;</span>)</span><br><span class="line">  (<span class="name">other-window</span> <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 你可以用 `let&#x27; 将一个值和一个局部变量绑定:</span></span><br><span class="line">(<span class="name">let</span> ((<span class="name">local-name</span> <span class="string">&quot;you&quot;</span>))</span><br><span class="line">  (<span class="name">switch-to-buffer-other-window</span> <span class="string">&quot;*test*&quot;</span>)</span><br><span class="line">  (<span class="name">erase-buffer</span>)</span><br><span class="line">  (<span class="name">hello</span> local-name)</span><br><span class="line">  (<span class="name">other-window</span> <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 这里我们就不需要使用 `progn&#x27; 了， 因为 `let&#x27; 也可以将很多s式组合起来。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 格式化字符串的方法：</span></span><br><span class="line">(<span class="name">format</span> <span class="string">&quot;Hello %s!\n&quot;</span> <span class="string">&quot;visitor&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; %s 是字符串占位符，这里被&quot;visitor&quot;替代.</span></span><br><span class="line"><span class="comment">;; \n 是换行符。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 现在我们用格式化的方法再重写一下我们的函数:</span></span><br><span class="line">(<span class="name">defun</span> hello (<span class="name">name</span>)</span><br><span class="line">  (<span class="name">insert</span> (<span class="name">format</span> <span class="string">&quot;Hello %s!\n&quot;</span> name)))</span><br><span class="line"></span><br><span class="line">(<span class="name">hello</span> <span class="string">&quot;you&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 我们再用`let&#x27;新建另一个函数:</span></span><br><span class="line">(<span class="name">defun</span> greeting (<span class="name">name</span>)</span><br><span class="line">  (<span class="name">let</span> ((<span class="name">your-name</span> <span class="string">&quot;Bastien&quot;</span>))</span><br><span class="line">    (<span class="name">insert</span> (<span class="name">format</span> <span class="string">&quot;Hello %s!\n\nI am %s.&quot;</span></span><br><span class="line">                    name       <span class="comment">; the argument of the function</span></span><br><span class="line">                    your-name  <span class="comment">; the let-bound variable &quot;Bastien&quot;</span></span><br><span class="line">                    ))))</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 之后执行:</span></span><br><span class="line">(<span class="name">greeting</span> <span class="string">&quot;you&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 有些函数可以和用户交互:</span></span><br><span class="line">(<span class="name">read-from-minibuffer</span> <span class="string">&quot;Enter your name: &quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 这个函数会返回在执行时用户输入的信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 现在我们让`greeting&#x27;函数显示你的名字:</span></span><br><span class="line">(<span class="name">defun</span> greeting (<span class="name">from-name</span>)</span><br><span class="line">  (<span class="name">let</span> ((<span class="name">your-name</span> (<span class="name">read-from-minibuffer</span> <span class="string">&quot;Enter your name: &quot;</span>)))</span><br><span class="line">    (<span class="name">insert</span> (<span class="name">format</span> <span class="string">&quot;Hello!\n\nI am %s and you are %s.&quot;</span></span><br><span class="line">                    from-name <span class="comment">; the argument of the function</span></span><br><span class="line">                    your-name <span class="comment">; the let-bound var, entered at prompt</span></span><br><span class="line">                    ))))</span><br><span class="line"></span><br><span class="line">(<span class="name">greeting</span> <span class="string">&quot;Bastien&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 我们让结果在另一个窗口中显示:</span></span><br><span class="line">(<span class="name">defun</span> greeting (<span class="name">from-name</span>)</span><br><span class="line">  (<span class="name">let</span> ((<span class="name">your-name</span> (<span class="name">read-from-minibuffer</span> <span class="string">&quot;Enter your name: &quot;</span>)))</span><br><span class="line">    (<span class="name">switch-to-buffer-other-window</span> <span class="string">&quot;*test*&quot;</span>)</span><br><span class="line">    (<span class="name">erase-buffer</span>)</span><br><span class="line">    (<span class="name">insert</span> (<span class="name">format</span> <span class="string">&quot;Hello %s!\n\nI am %s.&quot;</span> your-name from-name))</span><br><span class="line">    (<span class="name">other-window</span> <span class="number">1</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 测试一下：</span></span><br><span class="line">(<span class="name">greeting</span> <span class="string">&quot;Bastien&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 第二节结束，休息一下吧。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; 我们将一些名字存到列表中：</span></span><br><span class="line">(<span class="name">setq</span> list-of-names &#x27;(<span class="string">&quot;Sarah&quot;</span> <span class="string">&quot;Chloe&quot;</span> <span class="string">&quot;Mathilde&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 用 `car&#x27;来取得第一个名字：</span></span><br><span class="line">(<span class="name">car</span> list-of-names)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 用 `cdr&#x27;取得剩下的名字:</span></span><br><span class="line">(<span class="name">cdr</span> list-of-names)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 用 `push&#x27;把名字添加到列表的开头:</span></span><br><span class="line">(<span class="name">push</span> <span class="string">&quot;Stephanie&quot;</span> list-of-names)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 注意: `car&#x27; 和 `cdr&#x27; 并不修改列表本身, 但是 `push&#x27; 却会对列表本身进行操作.</span></span><br><span class="line"><span class="comment">;; 这个区别是很重要的: 有些函数没有任何副作用（比如`car&#x27;）</span></span><br><span class="line"><span class="comment">;; 但还有一些却是有的 (比如 `push&#x27;).</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 我们来对`list-of-names&#x27;列表中的每一个元素都使用hello函数:</span></span><br><span class="line">(<span class="name">mapcar</span> &#x27;hello list-of-names)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 将 `greeting&#x27; 改进，使的我们能够对`list-of-names&#x27;中的所有名字执行:</span></span><br><span class="line">(<span class="name">defun</span> greeting ()</span><br><span class="line">    (<span class="name">switch-to-buffer-other-window</span> <span class="string">&quot;*test*&quot;</span>)</span><br><span class="line">    (<span class="name">erase-buffer</span>)</span><br><span class="line">    (<span class="name">mapcar</span> &#x27;hello list-of-names)</span><br><span class="line">    (<span class="name">other-window</span> <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">(<span class="name">greeting</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 记得我们之前定义的 `hello&#x27; 函数吗？ 这个函数接受一个参数，名字。</span></span><br><span class="line"><span class="comment">;; `mapcar&#x27; 调用 `hello&#x27;, 并将`list-of-names&#x27;作为参数先后传给`hello&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 现在我们对显示的buffer中的内容进行一些更改：</span></span><br><span class="line"></span><br><span class="line">(<span class="name">defun</span> replace-hello-by-bonjour ()</span><br><span class="line">    (<span class="name">switch-to-buffer-other-window</span> <span class="string">&quot;*test*&quot;</span>)</span><br><span class="line">    (<span class="name">goto-char</span> (<span class="name">point-min</span>))</span><br><span class="line">    (<span class="name">while</span> (<span class="name">search-forward</span> <span class="string">&quot;Hello&quot;</span>)</span><br><span class="line">      (<span class="name">replace-match</span> <span class="string">&quot;Bonjour&quot;</span>))</span><br><span class="line">    (<span class="name">other-window</span> <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">;; (goto-char (point-min)) 将光标移到buffer的开始</span></span><br><span class="line"><span class="comment">;; (search-forward &quot;Hello&quot;) 查找字符串&quot;Hello&quot;</span></span><br><span class="line"><span class="comment">;; (while x y) 当x返回某个值时执行y这个s式</span></span><br><span class="line"><span class="comment">;; 当x返回`nil&#x27; (空), 退出循环</span></span><br><span class="line"></span><br><span class="line">(<span class="name">replace-hello-by-bonjour</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 你会看到所有在*test* buffer中出现的&quot;Hello&quot;字样都被换成了&quot;Bonjour&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 你也会得到以下错误提示: &quot;Search failed: Hello&quot;.</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; 如果要避免这个错误, 你需要告诉 `search-forward&#x27; 这个命令是否在</span></span><br><span class="line"><span class="comment">;; buffer的某个地方停止查找, 并且在什么都没找到时是否应该不给出错误提示</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; (search-forward &quot;Hello&quot; nil t) 可以达到这个要求:</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; `nil&#x27; 参数的意思是 : 查找并不限于某个范围内</span></span><br><span class="line"><span class="comment">;; `t&#x27; 参数的意思是: 当什么都没找到时，不给出错误提示</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 在下面的函数中，我们用到了s式，并且不给出任何错误提示:</span></span><br><span class="line"></span><br><span class="line">(<span class="name">defun</span> hello-to-bonjour ()</span><br><span class="line">    (<span class="name">switch-to-buffer-other-window</span> <span class="string">&quot;*test*&quot;</span>)</span><br><span class="line">    (<span class="name">erase-buffer</span>)</span><br><span class="line">    <span class="comment">;; 为`list-of-names&#x27;中的每个名字调用hello</span></span><br><span class="line">    (<span class="name">mapcar</span> &#x27;hello list-of-names)</span><br><span class="line">    (<span class="name">goto-char</span> (<span class="name">point-min</span>))</span><br><span class="line">    <span class="comment">;; 将&quot;Hello&quot; 替换为&quot;Bonjour&quot;</span></span><br><span class="line">    (<span class="name">while</span> (<span class="name">search-forward</span> <span class="string">&quot;Hello&quot;</span> <span class="literal">nil</span> <span class="literal">t</span>)</span><br><span class="line">      (<span class="name">replace-match</span> <span class="string">&quot;Bonjour&quot;</span>))</span><br><span class="line">    (<span class="name">other-window</span> <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">(<span class="name">hello-to-bonjour</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 给这些名字加粗:</span></span><br><span class="line"></span><br><span class="line">(<span class="name">defun</span> boldify-names ()</span><br><span class="line">    (<span class="name">switch-to-buffer-other-window</span> <span class="string">&quot;*test*&quot;</span>)</span><br><span class="line">    (<span class="name">goto-char</span> (<span class="name">point-min</span>))</span><br><span class="line">    (<span class="name">while</span> (<span class="name">re-search-forward</span> <span class="string">&quot;Bonjour \\(.+\\)!&quot;</span> <span class="literal">nil</span> <span class="literal">t</span>)</span><br><span class="line">      (<span class="name">add-text-properties</span> (<span class="name">match-beginning</span> <span class="number">1</span>)</span><br><span class="line">                           (<span class="name">match-end</span> <span class="number">1</span>)</span><br><span class="line">                           (<span class="name">list</span> &#x27;face &#x27;bold)))</span><br><span class="line">    (<span class="name">other-window</span> <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">;; 这个函数使用了 `re-search-forward&#x27;:</span></span><br><span class="line"><span class="comment">;; 和查找一个字符串不同，你用这个命令可以查找一个模式，即正则表达式</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 正则表达式 &quot;Bonjour \\(.+\\)!&quot; 的意思是:</span></span><br><span class="line"><span class="comment">;; 字符串 &quot;Bonjour &quot;, 之后跟着</span></span><br><span class="line"><span class="comment">;; 一组           |  \\( ... \\) 结构</span></span><br><span class="line"><span class="comment">;; 任意字符       |  . 的含义</span></span><br><span class="line"><span class="comment">;; 有可能重复的   |  + 的含义</span></span><br><span class="line"><span class="comment">;; 之后跟着 &quot;!&quot; 这个字符串</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 准备好了？试试看。</span></span><br><span class="line"></span><br><span class="line">(<span class="name">boldify-names</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">;; `add-text-properties&#x27; 可以添加文字属性, 比如文字样式</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 好的，我们成功了！</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 如果你想对一个变量或者函数有更多的了解：</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; C-h v 变量 回车</span></span><br><span class="line"><span class="comment">;; C-h f 函数 回车</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; 阅读Emacs Lisp官方文档:</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; C-h i m elisp 回车</span></span><br><span class="line"><span class="comment">;;</span></span><br><span class="line"><span class="comment">;; 在线阅读Emacs Lisp文档:</span></span><br><span class="line"><span class="comment">;; https://www.gnu.org/software/emacs/manual/html_node/eintr/index.html</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 感谢以下同学的建议和反馈:</span></span><br><span class="line"><span class="comment">;; - Wes Hardaker</span></span><br><span class="line"><span class="comment">;; - notbob</span></span><br><span class="line"><span class="comment">;; - Kevin Montuori</span></span><br><span class="line"><span class="comment">;; - Arne Babenhauserheide</span></span><br><span class="line"><span class="comment">;; - Alan Schmitt</span></span><br><span class="line"><span class="comment">;; - spacegoing</span></span><br></pre></td></tr></table></figure>
+<h2 id="Spacemacs-Rocks-第二季"><a href="#Spacemacs-Rocks-第二季" class="headerlink" title="Spacemacs Rocks 第二季"></a><a target="_blank" rel="noopener" href="http://book.emacs-china.org/">Spacemacs Rocks 第二季</a></h2>
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#emacs-%E4%BB%8B%E7%BB%8D"><span class="toc-text">emacs 介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Eemacs%E7%9A%84%E4%B8%80%E4%BA%9B%E7%96%91%E9%97%AE"><span class="toc-text">关于emacs的一些疑问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#What-English-abbreviations-are-%E2%80%9Csetq%E2%80%9D-%E2%80%9Ccar%E2%80%9D-and-%E2%80%9Ccdr%E2%80%9D-in-LISP"><span class="toc-text">What English abbreviations are “setq”, “car”, and “cdr” in LISP?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Curiosity-What-does-progn-stands-for"><span class="toc-text">Curiosity: What does progn stands for?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lisp-%E5%AD%A6%E4%B9%A0"><span class="toc-text">lisp 学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#15%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9AEmacs-Lisp-v0-2a"><span class="toc-text">15分钟学会Emacs Lisp (v0.2a)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spacemacs-Rocks-%E7%AC%AC%E4%BA%8C%E5%AD%A3"><span class="toc-text">Spacemacs Rocks 第二季</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>原文链接: <a href="https://60ke.github.io/old_blogs/2021/09/29/emacs/">https://60ke.github.io/old_blogs/2021/09/29/emacs/</a></p>
+              <p>版权声明: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+    <div class="article-reward">
+        <a id="reward-btn" href="javascript:;">打赏</a>
+        <div id="reward-content">
+            <h6 class="reward-tit">“感谢你的支持，我会继续努力！”</h6>
+            <div>
+                <div class="reward-code">
+                    <img class="type-code" src="/old_blogs/css/images/wechat.jpg">
+                    <img class="er-code" src="/css/images/wechat-pay.jpeg">
+                </div>
+                <div class="reward-code">
+                    <img class="type-code" src="/old_blogs/css/images/alipay.jpg">
+                    <img class="er-code" src="/css/images/alipay-pay.jpeg">
+                </div>
+            </div>
+            <p class="reward-desc">扫码打赏，感谢支持</p>
+        </div>
+    </div>
+
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/old_blogs/tags/emacs/" rel="tag">emacs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/old_blogs/tags/lisp/" rel="tag">lisp</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/old_blogs/2021/10/08/%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          一些问题
+        
+      </div>
+    </a>
+  
+  
+    <a href="/old_blogs/2021/09/27/linux%E7%AC%94%E8%AE%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">linux笔记</div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+  <div id="comments"></div>
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> 最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/old_blogs/2022/03/29/go%E6%B3%9B%E5%9E%8B%E5%AE%9E%E8%B7%B5/">go泛型实践</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/12/20/go%E7%9A%84%E6%84%9A%E8%A0%A2bug/">go的愚蠢bug</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/12/13/go%E6%B1%87%E7%BC%96/">go汇编</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/11/08/golang%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/10/29/%E5%BD%BB%E5%BA%95%E6%90%9E%E6%87%82gcc/">彻底搞懂gcc</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/old_blogs/tags/blog/" style="font-size: 10px;">blog</a> <a href="/old_blogs/tags/c/" style="font-size: 11.67px;">c</a> <a href="/old_blogs/tags/emacs/" style="font-size: 11.67px;">emacs</a> <a href="/old_blogs/tags/gcc/" style="font-size: 10px;">gcc</a> <a href="/old_blogs/tags/go/" style="font-size: 15px;">go</a> <a href="/old_blogs/tags/golang/" style="font-size: 15px;">golang</a> <a href="/old_blogs/tags/go%E6%B1%87%E7%BC%96/" style="font-size: 10px;">go汇编</a> <a href="/old_blogs/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/old_blogs/tags/ios/" style="font-size: 10px;">ios</a> <a href="/old_blogs/tags/linux/" style="font-size: 15px;">linux</a> <a href="/old_blogs/tags/lisp/" style="font-size: 10px;">lisp</a> <a href="/old_blogs/tags/mac/" style="font-size: 16.67px;">mac</a> <a href="/old_blogs/tags/maomaomao/" style="font-size: 10px;">maomaomao</a> <a href="/old_blogs/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/old_blogs/tags/other/" style="font-size: 10px;">other</a> <a href="/old_blogs/tags/others/" style="font-size: 15px;">others</a> <a href="/old_blogs/tags/pycharm/" style="font-size: 10px;">pycharm</a> <a href="/old_blogs/tags/python/" style="font-size: 18.33px;">python</a> <a href="/old_blogs/tags/python%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">python基础</a> <a href="/old_blogs/tags/rust/" style="font-size: 20px;">rust</a> <a href="/old_blogs/tags/scrapy/" style="font-size: 13.33px;">scrapy</a> <a href="/old_blogs/tags/sgx/" style="font-size: 11.67px;">sgx</a> <a href="/old_blogs/tags/shell/" style="font-size: 11.67px;">shell</a> <a href="/old_blogs/tags/sublime/" style="font-size: 10px;">sublime</a> <a href="/old_blogs/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/old_blogs/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/old_blogs/tags/xpath/" style="font-size: 10px;">xpath</a> <a href="/old_blogs/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a> <a href="/old_blogs/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">并发编程</a> <a href="/old_blogs/tags/%E5%BC%80%E5%8F%91/" style="font-size: 10px;">开发</a> <a href="/old_blogs/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/old_blogs/tags/%E6%AD%A3%E5%88%99/" style="font-size: 10px;">正则</a> <a href="/old_blogs/tags/%E6%B3%9B%E5%9E%8B/" style="font-size: 10px;">泛型</a> <a href="/old_blogs/tags/%E7%88%AC%E8%99%AB/" style="font-size: 15px;">爬虫</a> <a href="/old_blogs/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 11.67px;">笔记</a> <a href="/old_blogs/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" style="font-size: 10px;">跨平台</a> <a href="/old_blogs/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/" style="font-size: 10px;">路由器</a> <a href="/old_blogs/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/MySQL/">MySQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/default/">default</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/go/">go</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/mac/">mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/old/">old</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/others/">others</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/php/">php</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/python/">python</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/python%E7%88%AC%E8%99%AB/">python爬虫</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/rust/">rust</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/wasm/">wasm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/%E5%A5%B9/">她</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/%E6%9D%82%E7%BB%AA/">杂绪</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2022/">2022年03月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2021/">2021年12月</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2020/">2020年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2019/">2019年12月</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2018/">2018年12月</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2017/">2017年11月</a><span class="archive-list-count">45</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2016/">2016年12月</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/old_blogs/sitemap.xml">网站地图</a>
+        <span> | </span><a href="/old_blogs/atom.xml">订阅本站</a>
+        <span> | </span><a href="/old_blogs/about/">联系博主</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2022 lsk.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        
+            <span>Count by <a href="http://busuanzi.ibruce.info/" target="_blank">busuanzi.</a></span>
+        
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+<script src="/old_blogs/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/old_blogs/js/search.json.js"></script>
+
+
+  
+<script src="/old_blogs/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/old_blogs/js/script.js"></script>
+
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a4bf52d7269ab655ac8b068d702a6ef7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+  
+<script src="/old_blogs/localshare/js/social-share.js"></script>
+
+  
+<script src="/old_blogs/localshare/js/qrcode.js"></script>
+
+
+
+
+
+  
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+
+  <script>
+    var gitalk = new Gitalk({
+      clientID: 'e28ce6e16ddbf9316a0d',
+      clientSecret: '89597d2b5d6ebeb5badc6d5930da2c08b76283dd',
+      repo: '60ke.github.io',
+      owner: '60ke',
+      admin: ['60ke'],
+      id: md5(window.location.pathname),
+      distractionFreeMode: false,
+      language: 'zh-CN',
+      pagerDirection: 'last'
+    });
+    gitalk.render('comments');
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</body>
+</html>

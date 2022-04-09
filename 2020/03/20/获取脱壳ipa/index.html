@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>获取ipa、脱壳 | LookForAdmin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <meta name="description" content="学如逆水行舟,不进则退;心似平原跑马易放难收。">
+  
+  
+  
+    <link rel="alternate" href="/old_blogs/atom.xml" title="LookForAdmin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/old_blogs/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/old_blogs/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/old_blogs/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/old_blogs/localshare/css/share.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/old_blogs/" id="logo">LookForAdmin</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/old_blogs/" id="subtitle">已是乾坤大，更怜草木青</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/old_blogs/."><i class="fa fa-home"></i> 首页</a>
+        
+          <a class="main-nav-link" href="/old_blogs/archives/"><i class="fa fa-archive"></i> 归档</a>
+        
+          <a class="main-nav-link" href="/old_blogs/about/"><i class="fa fa-user"></i> 关于</a>
+        
+          <a class="main-nav-link" href="/old_blogs/atom.xml"><i class="fa fa-rss"></i> 订阅</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-获取脱壳ipa" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      获取ipa、脱壳
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2020-03-20T21:19:49.000Z" itemprop="datePublished">2020年03月20日</time>
+</span>
+      
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+<a href="/old_blogs/2020/03/20/%E8%8E%B7%E5%8F%96%E8%84%B1%E5%A3%B3ipa/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  留言
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="获取ipa"><a href="#获取ipa" class="headerlink" title="获取ipa"></a>获取ipa</h2><h3 id="1-抓包获取"><a href="#1-抓包获取" class="headerlink" title="1.抓包获取"></a>1.抓包获取</h3><p>1.手机上有thos可以实现全局抓包获取<br>特别注意的是，手机的全局代理在运行商店的时候，网络可能会出现问题。比较稳妥的操作是连2.4G的wifi(5Gwifi商店没网了但是其它APP正常，不知道是不是thos版本的问题)，提前购买了APP(这样可以避免下载的时候的账号验证)<br>2.电脑上可以使用Charles或者其他抓包工具<br>抓包可以获取到App Store的ipa链接，可以直接http下载。但是下载下来的ipa文件无法解压。</p>
+<h3 id="2-使用appleconfigurator-2"><a href="#2-使用appleconfigurator-2" class="headerlink" title="2.使用appleconfigurator 2"></a>2.使用appleconfigurator 2</h3><p>使用苹果自己的软件，登录账户，在操作菜单中点击添加找到自己想获取的app，提示app已存在时，不做任何操作，打开finder command+shift+g 到<code>~/Library/Group Containers/K36BKF7T3D.group.com.apple.configurator/Library/Caches/Assets/TemporaryItems/MobileApps/</code>就能看到ipa文件了，值得注意的是这里的ipa可解压。不过有加壳。<br>先看解压的文件结构：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">tree</span><br><span class="line"></span><br><span class="line">├── META-INF</span><br><span class="line">│   ├── com.apple.FixedZipMetadata.bin</span><br><span class="line">│   └── com.apple.ZipMetadata.plist</span><br><span class="line">├── Payload</span><br><span class="line">│   └── caiyunInterpreter.app</span><br><span class="line">├── iTunesArtwork</span><br><span class="line">└── iTunesMetadata.plist</span><br></pre></td></tr></table></figure>
+<p>显示caiyunInterpreter.app的包内容，可以按文件大小排序可以看到最大的二进制文件<code>caiyunInterpreter</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">otool -l caiyunInterpreter |grep crypt</span><br><span class="line">     cryptoff 16384</span><br><span class="line">    cryptsize 8273920</span><br><span class="line">      cryptid 1</span><br><span class="line">     cryptoff 16384</span><br><span class="line">    cryptsize 8945664</span><br><span class="line">      cryptid 1</span><br></pre></td></tr></table></figure>
+<p>使用otool命令，查看cyptid。其值为1表示加壳，0表示未加壳。</p>
+<h2 id="脱壳"><a href="#脱壳" class="headerlink" title="脱壳"></a>脱壳</h2><h3 id="1-Clutch"><a href="#1-Clutch" class="headerlink" title="1.Clutch"></a>1.Clutch</h3><p>脱壳工具Clush可在github上看到源代码。下载其编译好后的二进制，scp到手机的<code>/usr/bin</code>目录。使用<code>Clutch -i</code>查看已安装的软件列表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Installed apps:</span><br><span class="line">1:   QQ邮箱 &lt;com.tencent.qqmail&gt;</span><br><span class="line">2:   微信 &lt;com.tencent.xin&gt;</span><br><span class="line">3:   优酷视频-刘老根3精彩呈现 &lt;com.youku.YouKu&gt;</span><br><span class="line">4:   米家-精品商城 智能生活 &lt;com.xiaomi.mihome&gt;</span><br><span class="line">5:   YouTube &lt;com.google.ios.youtube&gt;</span><br><span class="line">6:   当当-9.9元超值购物秒杀 &lt;com.dangdang.iphone&gt;</span><br><span class="line">7:   有道云笔记 - 扫描王版 &lt;com.youdao.note.iphone&gt;</span><br><span class="line">8:   拉勾招聘-互联网求职找工作必备 &lt;com.lagou.lagouhr&gt;</span><br><span class="line">9:   支付宝 - 让生活更简单 &lt;com.alipay.iphoneclient&gt;</span><br></pre></td></tr></table></figure>
+<p>对微信进行脱壳：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Clutch -d com.tencent.xin</span><br></pre></td></tr></table></figure>
+<p>当然了并不能成功。</p>
+<h3 id="2-dumpdecrypted"><a href="#2-dumpdecrypted" class="headerlink" title="2.dumpdecrypted"></a>2.dumpdecrypted</h3><p>dumpdecrypted也是在github上有源代码，但是需要自己编译。下载源码运行<code>make</code>的时候报错了，错误信息大致如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">xcrun: error: SDK <span class="string">&quot;iphoneos&quot;</span>cannot be located</span><br><span class="line"></span><br><span class="line">xcrun: error: unableto lookup item <span class="string">&#x27;Path&#x27;</span>inSDK <span class="string">&#x27;iphoneos&#x27;</span></span><br><span class="line"></span><br><span class="line">clang: warning: nosuch sysroot directory: <span class="string">&#x27;-F/System/Library/Frameworks&#x27;</span> [-Wmissing-sysroot]</span><br><span class="line"></span><br><span class="line">dumpdecrypted.c:27:10:fatal error: <span class="string">&#x27;stdio.h&#x27;</span> file not found</span><br></pre></td></tr></table></figure>
+<p>无法找到对应的 SDK 和 stdio.h 文件, 这种问题大多数是 Xcode 路径造成的.</p>
+<p>使用下面的命令看一下系统指向的 Xcode 路径:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xcode-select -p</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/Library/Developer/CommandLineTools</span><br></pre></td></tr></table></figure>
+<p>显然不是 Xcode 的路径, 那只能重新切换一下其路径即指向正确的 Xcode 路径即可.</p>
+<p>命令如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo xcode-select --switch /Applications/Xcode.app</span><br><span class="line">make</span><br><span class="line">tree</span><br><span class="line">.</span><br><span class="line">├── Makefile</span><br><span class="line">├── README</span><br><span class="line">├── dumpdecrypted.c</span><br><span class="line">├── dumpdecrypted.dylib</span><br><span class="line">└── dumpdecrypted.o</span><br></pre></td></tr></table></figure>
+<p>编译 dumpdecrypted成功.然后需要对<code>dumpdecrypted.dylib</code>进行签名<br>两种方式：<br>1.ldid<br><code>ldid -S dumpdecrypted.dylib</code><br>2.codesign</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codesign -f -s - ./dumpdecrypted.dylib</span><br></pre></td></tr></table></figure>
+<p>scp到ios <code>/usr/bin</code><br>具体使用教程可百度</p>
+<h3 id="3-binject"><a href="#3-binject" class="headerlink" title="3.binject"></a>3.binject</h3><p>以上的两个脱壳软件针对的是ios11之前了，binject可支持ios11–ios11.2。由于现在都是IOS13了直接跳过。</p>
+<h3 id="4-crackerxi-ios11–ios13"><a href="#4-crackerxi-ios11–ios13" class="headerlink" title="4.crackerxi (ios11–ios13)"></a>4.crackerxi (ios11–ios13)</h3><p>cydia添加源<a target="_blank" rel="noopener" href="http://cydia.iphonecake.com/,setting%E9%99%A4%E4%BA%86fakesign%E9%83%BD%E6%89%93%E9%92%A9%EF%BC%8C%E7%9B%B4%E6%8E%A5%E7%94%9F%E6%88%90%E8%84%B1%E5%A3%B3%E5%90%8E%E7%9A%84ipa%E4%B8%80%E6%AD%A5%E5%88%B0%E4%BD%8D%E3%80%82">http://cydia.iphonecake.com/,setting除了fakesign都打钩，直接生成脱壳后的ipa一步到位。</a></p>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96ipa"><span class="toc-text">获取ipa</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%8A%93%E5%8C%85%E8%8E%B7%E5%8F%96"><span class="toc-text">1.抓包获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8appleconfigurator-2"><span class="toc-text">2.使用appleconfigurator 2</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%84%B1%E5%A3%B3"><span class="toc-text">脱壳</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Clutch"><span class="toc-text">1.Clutch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-dumpdecrypted"><span class="toc-text">2.dumpdecrypted</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-binject"><span class="toc-text">3.binject</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-crackerxi-ios11%E2%80%93ios13"><span class="toc-text">4.crackerxi (ios11–ios13)</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>原文链接: <a href="https://60ke.github.io/old_blogs/2020/03/20/获取脱壳ipa/">https://60ke.github.io/old_blogs/2020/03/20/获取脱壳ipa/</a></p>
+              <p>版权声明: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+    <div class="article-reward">
+        <a id="reward-btn" href="javascript:;">打赏</a>
+        <div id="reward-content">
+            <h6 class="reward-tit">“感谢你的支持，我会继续努力！”</h6>
+            <div>
+                <div class="reward-code">
+                    <img class="type-code" src="/old_blogs/css/images/wechat.jpg">
+                    <img class="er-code" src="/css/images/wechat-pay.jpeg">
+                </div>
+                <div class="reward-code">
+                    <img class="type-code" src="/old_blogs/css/images/alipay.jpg">
+                    <img class="er-code" src="/css/images/alipay-pay.jpeg">
+                </div>
+            </div>
+            <p class="reward-desc">扫码打赏，感谢支持</p>
+        </div>
+    </div>
+
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/old_blogs/tags/ios/" rel="tag">ios</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/old_blogs/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/old_blogs/2020/09/09/rust%E6%B5%8B%E8%AF%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          rust测试
+        
+      </div>
+    </a>
+  
+  
+    <a href="/old_blogs/2020/03/18/homebrew%E7%9A%84%E5%9D%91/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">homebrew的坑</div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+  <div id="comments"></div>
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> 最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/old_blogs/2022/03/29/go%E6%B3%9B%E5%9E%8B%E5%AE%9E%E8%B7%B5/">go泛型实践</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/12/20/go%E7%9A%84%E6%84%9A%E8%A0%A2bug/">go的愚蠢bug</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/12/13/go%E6%B1%87%E7%BC%96/">go汇编</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/11/08/golang%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/10/29/%E5%BD%BB%E5%BA%95%E6%90%9E%E6%87%82gcc/">彻底搞懂gcc</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/old_blogs/tags/blog/" style="font-size: 10px;">blog</a> <a href="/old_blogs/tags/c/" style="font-size: 11.67px;">c</a> <a href="/old_blogs/tags/emacs/" style="font-size: 11.67px;">emacs</a> <a href="/old_blogs/tags/gcc/" style="font-size: 10px;">gcc</a> <a href="/old_blogs/tags/go/" style="font-size: 15px;">go</a> <a href="/old_blogs/tags/golang/" style="font-size: 15px;">golang</a> <a href="/old_blogs/tags/go%E6%B1%87%E7%BC%96/" style="font-size: 10px;">go汇编</a> <a href="/old_blogs/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/old_blogs/tags/ios/" style="font-size: 10px;">ios</a> <a href="/old_blogs/tags/linux/" style="font-size: 15px;">linux</a> <a href="/old_blogs/tags/lisp/" style="font-size: 10px;">lisp</a> <a href="/old_blogs/tags/mac/" style="font-size: 16.67px;">mac</a> <a href="/old_blogs/tags/maomaomao/" style="font-size: 10px;">maomaomao</a> <a href="/old_blogs/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/old_blogs/tags/other/" style="font-size: 10px;">other</a> <a href="/old_blogs/tags/others/" style="font-size: 15px;">others</a> <a href="/old_blogs/tags/pycharm/" style="font-size: 10px;">pycharm</a> <a href="/old_blogs/tags/python/" style="font-size: 18.33px;">python</a> <a href="/old_blogs/tags/python%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">python基础</a> <a href="/old_blogs/tags/rust/" style="font-size: 20px;">rust</a> <a href="/old_blogs/tags/scrapy/" style="font-size: 13.33px;">scrapy</a> <a href="/old_blogs/tags/sgx/" style="font-size: 11.67px;">sgx</a> <a href="/old_blogs/tags/shell/" style="font-size: 11.67px;">shell</a> <a href="/old_blogs/tags/sublime/" style="font-size: 10px;">sublime</a> <a href="/old_blogs/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/old_blogs/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/old_blogs/tags/xpath/" style="font-size: 10px;">xpath</a> <a href="/old_blogs/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a> <a href="/old_blogs/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">并发编程</a> <a href="/old_blogs/tags/%E5%BC%80%E5%8F%91/" style="font-size: 10px;">开发</a> <a href="/old_blogs/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/old_blogs/tags/%E6%AD%A3%E5%88%99/" style="font-size: 10px;">正则</a> <a href="/old_blogs/tags/%E6%B3%9B%E5%9E%8B/" style="font-size: 10px;">泛型</a> <a href="/old_blogs/tags/%E7%88%AC%E8%99%AB/" style="font-size: 15px;">爬虫</a> <a href="/old_blogs/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 11.67px;">笔记</a> <a href="/old_blogs/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" style="font-size: 10px;">跨平台</a> <a href="/old_blogs/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/" style="font-size: 10px;">路由器</a> <a href="/old_blogs/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/MySQL/">MySQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/default/">default</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/go/">go</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/mac/">mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/old/">old</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/others/">others</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/php/">php</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/python/">python</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/python%E7%88%AC%E8%99%AB/">python爬虫</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/rust/">rust</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/wasm/">wasm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/%E5%A5%B9/">她</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/%E6%9D%82%E7%BB%AA/">杂绪</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2022/">2022年03月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2021/">2021年12月</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2020/">2020年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2019/">2019年12月</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2018/">2018年12月</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2017/">2017年11月</a><span class="archive-list-count">45</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2016/">2016年12月</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/old_blogs/sitemap.xml">网站地图</a>
+        <span> | </span><a href="/old_blogs/atom.xml">订阅本站</a>
+        <span> | </span><a href="/old_blogs/about/">联系博主</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2022 lsk.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        
+            <span>Count by <a href="http://busuanzi.ibruce.info/" target="_blank">busuanzi.</a></span>
+        
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+<script src="/old_blogs/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/old_blogs/js/search.json.js"></script>
+
+
+  
+<script src="/old_blogs/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/old_blogs/js/script.js"></script>
+
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a4bf52d7269ab655ac8b068d702a6ef7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+  
+<script src="/old_blogs/localshare/js/social-share.js"></script>
+
+  
+<script src="/old_blogs/localshare/js/qrcode.js"></script>
+
+
+
+
+
+  
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+
+  <script>
+    var gitalk = new Gitalk({
+      clientID: 'e28ce6e16ddbf9316a0d',
+      clientSecret: '89597d2b5d6ebeb5badc6d5930da2c08b76283dd',
+      repo: '60ke.github.io',
+      owner: '60ke',
+      admin: ['60ke'],
+      id: md5(window.location.pathname),
+      distractionFreeMode: false,
+      language: 'zh-CN',
+      pagerDirection: 'last'
+    });
+    gitalk.render('comments');
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</body>
+</html>

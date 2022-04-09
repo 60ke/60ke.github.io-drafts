@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>python爬虫之——网页解析 | LookForAdmin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <meta name="description" content="学如逆水行舟,不进则退;心似平原跑马易放难收。">
+  
+  
+  
+    <link rel="alternate" href="/old_blogs/atom.xml" title="LookForAdmin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/old_blogs/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/old_blogs/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/old_blogs/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/old_blogs/localshare/css/share.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/old_blogs/" id="logo">LookForAdmin</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/old_blogs/" id="subtitle">已是乾坤大，更怜草木青</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/old_blogs/."><i class="fa fa-home"></i> 首页</a>
+        
+          <a class="main-nav-link" href="/old_blogs/archives/"><i class="fa fa-archive"></i> 归档</a>
+        
+          <a class="main-nav-link" href="/old_blogs/about/"><i class="fa fa-user"></i> 关于</a>
+        
+          <a class="main-nav-link" href="/old_blogs/atom.xml"><i class="fa fa-rss"></i> 订阅</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-python爬虫之——网页解析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      python爬虫之——网页解析
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-08-17T10:18:00.000Z" itemprop="datePublished">2017年08月17日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/old_blogs/categories/python%E7%88%AC%E8%99%AB/">python爬虫</a>
+  </div>
+
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+<a href="/old_blogs/2017/08/17/python%E7%88%AC%E8%99%AB%E4%B9%8B%E2%80%94%E2%80%94%E7%BD%91%E9%A1%B5%E8%A7%A3%E6%9E%90/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  留言
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="常用的正则"><a href="#常用的正则" class="headerlink" title="常用的正则"></a>常用的正则</h1><p>首先导入第三方包</p>
+<pre><code>import re
+</code></pre>
+<p>常用的正则函数：</p>
+<h2 id="re-findall"><a href="#re-findall" class="headerlink" title="re.findall()"></a>re.findall()</h2><p>re.findall()这个函数之前用的已经比较多了，除了以前提到的re.findall(“”,target)在“”中放入（.+?）来匹配要查找到内容，还可以结合python中 r+“”的特性，来进行正则查找，同时还可以使用多个（）来查找多个，之后再加上“”.jion(list)来实现list转字符串，然后又可以利用str.replace(“”,””)来实现字符串的替换，talk is cheap，show you code</p>
+<pre><code>import requests
+import re
+
+url = &quot;http://        \&quot;www.baidu.com http://www.baidu.com http://www.baidu.com http://www.baidu.com http://www.baidu.com&quot;
+
+target_r = re.findall(r&quot;http:(.+?)        \&quot;&quot;,url)
+target = &quot;&quot;.join(re.findall(&quot;http:(.+?)        \&quot;&quot;,url)).replace(&quot;//&quot;,&quot;haha&quot;)
+print(target_r)
+print(target)
+</code></pre>
+<p>输出的结果：<br>[‘//‘]<br>haha</p>
+<h2 id="re-compile"><a href="#re-compile" class="headerlink" title="re.compile()"></a>re.compile()</h2><pre><code>import re
+cveid = &quot;CVE-2015-3456&quot;
+pat = re.compile(&#39;CVE-(\d+)-\d+&#39;)
+m = pat.search(cveid)
+year = m.group(1)
+
+print(pat)
+print(m)
+print(year)
+</code></pre>
+<p>输出结果：</p>
+<pre><code>re.compile(&#39;CVE-(\\d+)-\\d+&#39;)
+&lt;_sre.SRE_Match object; span=(0, 13), match=&#39;CVE-2015-3456&#39;&gt;
+2015
+</code></pre>
+<h2 id="beautifulsoup"><a href="#beautifulsoup" class="headerlink" title="beautifulsoup"></a>beautifulsoup</h2><p>beautifulsoup 以我最近写的代码为例</p>
+<pre><code># -*- coding: utf-8 -*-
+import os
+import re
+import requests
+from bs4 import BeautifulSoup
+import json
+
+
+
+url = &quot;http://www.huawei.com/cn/psirt/security-advisories/huawei-sa-20160706-01-openssl-cn&quot;
+page = requests.get(url=str(url)).text
+html = requests.get(url=str(url)).content
+soup = BeautifulSoup(page,&quot;html.parser&quot;)
+
+content = soup.find(attrs=&#123;&#39;class&#39;:&#39;col-sm-9 psiet-detail&#39;&#125;)
+
+published_datetime = content.find(attrs=&#123;&#39;id&#39;:&#39;indexmain_0_liInieialReleaseDate&#39;&#125;).text
+
+a = re.findall(r&#39;(\d+-\d+-\d+)&#39;,published_datetime)[0]
+
+last_modified_datetime = content.find(attrs=&#123;&#39;id&#39;:&#39;indexmain_0_liLastReleaseDate&#39;&#125;).text
+
+b = re.findall(r&#39;(\d+-\d+-\d+)&#39;,last_modified_datetime)[0]
+
+name = content.find(attrs=&#123;&#39;class&#39;:&#39;bor-btom&#39;&#125;).text.strip()
+
+cvss_score = content.find(attrs=&#123;&#39;class&#39;: &#39;psirt-list-out&#39;&#125;).find_all(attrs=&#123;&quot;class&quot;: &quot;psirt-set-out&quot;&#125;)[3].find(attrs=&#123;&quot;class&quot;:&quot;moreinfo&quot;&#125;).text
+tab = soup.findAll(&#39;table&#39;)[0]
+vulnerable_software_list = []
+for tr in tab.findAll(&#39;tr&#39;):  
+    #print((tr.text))
+    vulnerable_software_list.append(tr.text)
+
+print(vulnerable_software_list)
+</code></pre>
+<p>输出结果</p>
+<pre><code>[&#39;\n\n产品名称\n\n\n版本号\n\n\n修复版本号\n\n&#39;, &#39;\n\n9032\n\n\nV100R001C00\n\n\nV100R001C00SPC101\n\n&#39;, &#39;\n\n\xa0Agile Controller-Campus\n\n\nV100R001C00\n\n\nUpgrade to V100R002C10SPC400\n\n&#39;, &#39;\n\nV100R002C00\n\n&#39;, &#39;\n\nV100R002C10\n\n\nV100R002C10SPC400\n\n&#39;, &#39;\n\nAnyOffice\n\n\nV200R002C20\n\n\nUpgrade to V200R006C00\n\n&#39;, &#39;\n\nV200R003C00\n\n&#39;, &#39;\n\nV200R005C00\n\n&#39;, &#39;\n\n\xa0AR510\n\n\nV200R005C30\n\n\nUpgrade to V200R008C20\n\n&#39;, &#39;\n\n\xa0BH620\n\n\nV100R001C00\n\n\nV100R001C00SPC106\xa0 \n\n&#39;, &#39;\n\n\xa0BH620 V2\n\n\nV100R002C00\n\n\nV100R002C00SPC301B010\n\n&#39;, &#39;\n\n\xa0CH221\n\n\nV100R001C00\n\n\nV100R001C00SPC266\n\n&#39;, &#39;\n\nCH225 V3\n\n\nV100R001C00\n\n\nV100R001C00SPC102\n\n&#39;, &#39;\n\nE5372s\n\n\nE5372s-32TCPU-V200R001B290D23SP00C00\n\n\nE5372s-32TCPU-V200R001B290D25SP00C00 \n\n&#39;, &#39;\n\nE5377Bs\n\n\nE5377Bs-605TCPU-V200R001B305D09SP00C00\n\n\nE5377Bs-605TCPU-V200R001B313D13SP00C00\n\n&#39;, &#39;\n\nE5786s\n\n\nE5786s-32aTCPU-V200R001B313D15SP00C00\n\n\nE5786s-32aTCPU-V200R001B313D17SP00C00\n\n&#39;, &#39;\n\nE5878s\n\n\nE5878s-32TCPU-V200R001B305D11SP00C00\n\n\nE5878s-32TCPU-V200R001B313D13SP00C00 \n\n&#39;, &#39;\n\nE6000 Chassis\n\n\nV100R001C00\n\n\nV100R001C00SPC501B010\n\n&#39;, &#39;\n\nE9000 Chassis\n\n\nV100R001C00\n\n\nV100R001C00SPC296\n\n&#39;, &#39;\n\nEEM\n\n\nV200R007C00\n\n\nUpgrade to V200R008C10\n\n&#39;, &#39;\n\nV200R007C10\n\n&#39;, &#39;\n\nV200R007C20\n\n&#39;, &#39;\n\nV200R008C00\n\n&#39;, &#39;\n\neLog\n\n\nV200R005C00\n\n\nV200R005C00SPC101\n\n&#39;, &#39;\n\neSDK Platform \n\n\nV100R005C30\n\n\nUpgrade to V100R005C60\n\n&#39;, &#39;\n\neSight Network\n\n\nV300R003C20\n\n\nV300R003C20SPC106\n\n&#39;, &#39;\n\nV300R005C00\n\n\nV300R005C00SPC302\n\n&#39;, &#39;\n\neSpace IVS\n\n\neSpace IVS V100R001C02SPC100\n\n\nUpgrade to eSpace VCN3000 V100R001C01SPC132\n\n&#39;, &#39;\n\nEudemon8000E-X8\n\n\nV300R001C01\n\n\nV300R001C01SPCA00\n\n&#39;, &#39;\n\nV500R001C00\n\n\nUpgrade to V500R002C00SPC100\n\n&#39;, &#39;\n\nFireHunter6000\n\n\nV100R001C20\n\n\nV100R001C20SPC101\n\n&#39;, &#39;\n\nFusionAccess\n\n\nV100R003C00\n\n\nUpgrade to V100R006C00\n\n&#39;, &#39;\n\nV100R005C10\n\n&#39;, &#39;\n\nV100R005C20\n\n&#39;, &#39;\n\nV100R005C30\n\n&#39;, &#39;\n\nFusionInsight HD\n\n\nV100R002C50\n\n\nUpgrade to V100R002C60SPC200\n\n&#39;, &#39;\n\nFusionInsight\n\n\nFusionInsight V100R002C30\n\n\nUpgrade to FusionInsight HD V100R002C60SPC200\n\n&#39;, &#39;\n\nFusionManager\n\n\nFusionManager V100R003C10\n\n\nUpgrade to FusionSphere OpenStack V100R006C00RC3B036\n\n&#39;, &#39;\n\nFusionManager V100R005C00\n\n&#39;, &#39;\n\nFusionManager V100R005C10SPC700\n\n&#39;, &#39;\n\nFusionManager V100R006C00\n\n&#39;, &#39;\n\nFusionStorage DSware\n\n\nFusionStorage DSware V100R003C02\n\n\nUpgrade to FusionStorage V100R003C30U1SPC001\n\n&#39;, &#39;\n\nFusionStorage DSware V100R003C30\n\n\nUpgrade to FusionStorage V100R003C30U1SPC001\n\n&#39;, &#39;\n\nFusionStorage\n\n\nV100R003C00\n\n\nUpgrade to V100R003C30U1SPC001\n\n&#39;, &#39;\n\nG710-C00\n\n\nV100R001C92B118\n\n\nV100R001C92B135\n\n&#39;, &#39;\n\nHG253s V2-20\n\n\nV100R001C205B027\n\n\nV100R001C205B052\n\n&#39;, &#39;\n\nHG255s-10\n\n\nV100R001C163B013\n\n\nV100R001C163B026\n\n&#39;, &#39;\n\xa0\n            HiSTBAndroid\n\n\nV600R001C00SPC060\n\n\xa0\n            V600R001C00CP0013\n\n&#39;, &#39;\n\niBMC\n\n\nV100R002C10\n\n\nUpgrade to \xa0V200R002C10\n\n&#39;, &#39;\n\nV100R002C30\n\n&#39;, &#39;\n\nIVS\n\n\nIVS V100R002C10\n\n\nUpgrade to eSpace VCN3000 V100R002C10SPC108\n\n&#39;, &#39;\n\nLogCenter\n\n\nV100R001C10\n\n\nUpgrade to V100R001C20SPC102\n\n&#39;, &#39;\n\nV100R001C20\n\n\nV100R001C20SPC102\n\n&#39;, &#39;\n\nMT992-10\n\n\nMV100R001C01B002\n\n\nV100R001C01B019\n\n&#39;, &#39;\n\nOceanStor 18500\n\n\nV100R001C10\n\n\nUpgrade to V100R001C30SPC201\n\n&#39;, &#39;\n\nOceanStor 18800 V3\n\n\nV300R003C00\n\n\nUpgrade to V300R003C10SPC100\n\n&#39;, &#39;\n\nOceanStor 2860 V3\n\n\nOceanStor 2860 V3 V300R001C00T\n\n\nUpgrade to OceanStor 2800 V300R003C20\n\n&#39;, &#39;\n\nOceanStor 5600 V3\n\n\nV300R001C00\n\n\nUpgrade to \xa0V300R003C10SPC100\n\n&#39;, &#39;\n\nOceanStor 5600 V3\n\n\nV300R003C00\n\n\nUpgrade to V300R003C10SPC100\n\n&#39;, &#39;\n\nOceanStor 5600 V3\n\n\nV300R003C10\n\n\nV300R003C10SPC100\n\n&#39;, &#39;\n\nOceanStor 5800 V3\n\n\nV300R002C00\n\n\nUpgrade to V300R003C10SPC100\n\n&#39;, &#39;\n\nOceanStor 9000\n\n\nO\xa0 V100R001C01\n\n\nUpgrade to V300R005C00SPC170\n\n&#39;, &#39;\n\nV100R001C30\n\n\nOV300R005C00SPC170\n\n&#39;, &#39;\n\nOceanStor 9000E\n\n\nOceanStor 9000E V100R001C01\n\n\nUpgrade to OceanStor 9000 V300R005C00SPC170\n\n&#39;, &#39;\n\nOceanStor 9000E V100R002C00\n\n&#39;, &#39;\n\nOceanStor 9000E V100R002C19\n\n&#39;, &#39;\n\nOceanStor Backup \xa0Software\n\n\nV100R002C00\n\n\nV100R002C00LHWS01SPC100\n\n&#39;, &#39;\n\nOceanStor BCManager\n\n\nV100R005C00\n\n\nUpgrade to V200R001C00\n\n&#39;, &#39;\n\nOceanStor CSE\n\n\nOceanStor CSE V100R002C00LSFM01B010\n\n\nUpgrade to OceanStor Onebox V100R002C00LSFM01SPC108\n\n&#39;, &#39;\n\nOceanStor HVS85T\n\n\nOceanStor HVS85T V100R001C30\n\n\nOceanStor 18500 V100R001C30SPC201\n\n&#39;, &#39;\n\nOceanStor HVS85T\n\n\nOceanStor HVS85T V100R001C30\n\n\nOceanStor 18500 V100R001C30SPC201\n\n&#39;, &#39;\n\nOceanStor N8500\n\n\nV200R001C09\n\n\nV200R001C09SPC506\n\n&#39;, &#39;\n\nV200R001C91\n\n\nV200R001C91SPC902\n\n&#39;, &#39;\n\nPolicy Center\n\n\nPolicy Center V100R003C00\n\n\nUpgrade to Agile Controller-Campus V100R002C10SPC400\xa0 \n\n&#39;, &#39;\n\nPolicy Center V100R003C10\n\n&#39;, &#39;\n\nPublic Cloud Solution\n\n\nPublic Cloud Solution OpsTools 1.0.3\n\n\nPublic Cloud Solution 1.0.9\n\n&#39;, &#39;\n\nPublic Cloud Solution V100R001C00\n\n&#39;, &#39;\n\nRH1288 V3\n\n\nV100R003C00SPC100\n\n\nV100R003C00SPC613\n\n&#39;, &#39;\n\nRH2285H V2\n\n\nV100R002C00\n\n\nV100R002C00SPC505\n\n&#39;, &#39;\n\nRH5885 V2\n\n\nV100R001C00\n\n\nUpgrade to V100R001C02SPC302\n\n&#39;, &#39;\n\nRH5885 V3\n\n\nV100R003C00\n\n\nUpgrade to V100R003C10SPC102\n\n&#39;, &#39;\n\nV100R003C01\n\n\nUpgrade to V100R003C10SPC102\n\n&#39;, &#39;\n\nRH8100 V3\n\n\nV100R003C00\n\n\nV100R003C00SPC207\n\n&#39;, &#39;\n\nSoftVCN\n\n\nV100R002C20\n\n\nV100R002C20SPC100\n\n&#39;, &#39;\n\npeedport Hybrid\n\n\nV100R001C01B021\n\n\nUpgrade to V100R001C03B012\n\n&#39;, &#39;\n\nUSG9560\n\n\nUSG9560 V300R001C20\n\n\nUpgrade to USG9500 V500R001C30\n\n&#39;, &#39;\n\nUSG9560 V300R002C00\n\n\nUpgrade to USG9500 V500R001C30\xa0 \n\n&#39;, &#39;\n\nVCM\n\n\nV100R001C10\n\n\nV100R001C10SPC006\n\n&#39;, &#39;\n\nVCM5010\n\n\nVCM5010 V100R002C20\n\n\nUpgrade to VCM5020 V100R002C20\n\n&#39;, &#39;\n\nXH320\n\n\nXH320 V100R001C00\n\n\nUpgrade to Tecal X6000 V100R001C02\n\n&#39;, &#39;\n\nXH620\n\n\nXH620 V100R001C00\n\n\nUpgrade to XH620 V3 V100R003C00\n\n&#39;]
+</code></pre>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>以前用BeautifulSoup一直用的”html.parser”的解析器，今天补充一下其他的<br><a target="_blank" rel="noopener" href="http://bbs.csdn.net/topics/392161042?list=lz">http://bbs.csdn.net/topics/392161042?list=lz</a></p>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E6%AD%A3%E5%88%99"><span class="toc-text">常用的正则</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#re-findall"><span class="toc-text">re.findall()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#re-compile"><span class="toc-text">re.compile()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#beautifulsoup"><span class="toc-text">beautifulsoup</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A5%E5%85%85"><span class="toc-text">补充</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>原文链接: <a href="https://60ke.github.io/old_blogs/2017/08/17/python爬虫之——网页解析/">https://60ke.github.io/old_blogs/2017/08/17/python爬虫之——网页解析/</a></p>
+              <p>版权声明: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+    <div class="article-reward">
+        <a id="reward-btn" href="javascript:;">打赏</a>
+        <div id="reward-content">
+            <h6 class="reward-tit">“感谢你的支持，我会继续努力！”</h6>
+            <div>
+                <div class="reward-code">
+                    <img class="type-code" src="/old_blogs/css/images/wechat.jpg">
+                    <img class="er-code" src="/css/images/wechat-pay.jpeg">
+                </div>
+                <div class="reward-code">
+                    <img class="type-code" src="/old_blogs/css/images/alipay.jpg">
+                    <img class="er-code" src="/css/images/alipay-pay.jpeg">
+                </div>
+            </div>
+            <p class="reward-desc">扫码打赏，感谢支持</p>
+        </div>
+    </div>
+
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/old_blogs/2017/08/18/ubuntu%E5%B8%B8%E7%94%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AE%BE%E7%BD%AE/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          ubuntu常用的一些设置
+        
+      </div>
+    </a>
+  
+  
+    <a href="/old_blogs/2017/06/26/%E7%88%AC%E8%99%AB%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6-1--%E4%BF%9D%E5%AD%98%E4%B8%80%E5%BC%A0%E5%9B%BE%E7%89%87/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">爬虫入门到进阶-1--保存一张图片</div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+  <div id="comments"></div>
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> 最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/old_blogs/2022/03/29/go%E6%B3%9B%E5%9E%8B%E5%AE%9E%E8%B7%B5/">go泛型实践</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/12/20/go%E7%9A%84%E6%84%9A%E8%A0%A2bug/">go的愚蠢bug</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/12/13/go%E6%B1%87%E7%BC%96/">go汇编</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/11/08/golang%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/10/29/%E5%BD%BB%E5%BA%95%E6%90%9E%E6%87%82gcc/">彻底搞懂gcc</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/old_blogs/tags/blog/" style="font-size: 10px;">blog</a> <a href="/old_blogs/tags/c/" style="font-size: 11.67px;">c</a> <a href="/old_blogs/tags/emacs/" style="font-size: 11.67px;">emacs</a> <a href="/old_blogs/tags/gcc/" style="font-size: 10px;">gcc</a> <a href="/old_blogs/tags/go/" style="font-size: 15px;">go</a> <a href="/old_blogs/tags/golang/" style="font-size: 15px;">golang</a> <a href="/old_blogs/tags/go%E6%B1%87%E7%BC%96/" style="font-size: 10px;">go汇编</a> <a href="/old_blogs/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/old_blogs/tags/ios/" style="font-size: 10px;">ios</a> <a href="/old_blogs/tags/linux/" style="font-size: 15px;">linux</a> <a href="/old_blogs/tags/lisp/" style="font-size: 10px;">lisp</a> <a href="/old_blogs/tags/mac/" style="font-size: 16.67px;">mac</a> <a href="/old_blogs/tags/maomaomao/" style="font-size: 10px;">maomaomao</a> <a href="/old_blogs/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/old_blogs/tags/other/" style="font-size: 10px;">other</a> <a href="/old_blogs/tags/others/" style="font-size: 15px;">others</a> <a href="/old_blogs/tags/pycharm/" style="font-size: 10px;">pycharm</a> <a href="/old_blogs/tags/python/" style="font-size: 18.33px;">python</a> <a href="/old_blogs/tags/python%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">python基础</a> <a href="/old_blogs/tags/rust/" style="font-size: 20px;">rust</a> <a href="/old_blogs/tags/scrapy/" style="font-size: 13.33px;">scrapy</a> <a href="/old_blogs/tags/sgx/" style="font-size: 11.67px;">sgx</a> <a href="/old_blogs/tags/shell/" style="font-size: 11.67px;">shell</a> <a href="/old_blogs/tags/sublime/" style="font-size: 10px;">sublime</a> <a href="/old_blogs/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/old_blogs/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/old_blogs/tags/xpath/" style="font-size: 10px;">xpath</a> <a href="/old_blogs/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a> <a href="/old_blogs/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">并发编程</a> <a href="/old_blogs/tags/%E5%BC%80%E5%8F%91/" style="font-size: 10px;">开发</a> <a href="/old_blogs/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/old_blogs/tags/%E6%AD%A3%E5%88%99/" style="font-size: 10px;">正则</a> <a href="/old_blogs/tags/%E6%B3%9B%E5%9E%8B/" style="font-size: 10px;">泛型</a> <a href="/old_blogs/tags/%E7%88%AC%E8%99%AB/" style="font-size: 15px;">爬虫</a> <a href="/old_blogs/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 11.67px;">笔记</a> <a href="/old_blogs/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" style="font-size: 10px;">跨平台</a> <a href="/old_blogs/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/" style="font-size: 10px;">路由器</a> <a href="/old_blogs/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/MySQL/">MySQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/default/">default</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/go/">go</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/mac/">mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/old/">old</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/others/">others</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/php/">php</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/python/">python</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/python%E7%88%AC%E8%99%AB/">python爬虫</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/rust/">rust</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/wasm/">wasm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/%E5%A5%B9/">她</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/%E6%9D%82%E7%BB%AA/">杂绪</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2022/">2022年03月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2021/">2021年12月</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2020/">2020年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2019/">2019年12月</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2018/">2018年12月</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2017/">2017年11月</a><span class="archive-list-count">45</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2016/">2016年12月</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/old_blogs/sitemap.xml">网站地图</a>
+        <span> | </span><a href="/old_blogs/atom.xml">订阅本站</a>
+        <span> | </span><a href="/old_blogs/about/">联系博主</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2022 lsk.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        
+            <span>Count by <a href="http://busuanzi.ibruce.info/" target="_blank">busuanzi.</a></span>
+        
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+<script src="/old_blogs/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/old_blogs/js/search.json.js"></script>
+
+
+  
+<script src="/old_blogs/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/old_blogs/js/script.js"></script>
+
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a4bf52d7269ab655ac8b068d702a6ef7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+  
+<script src="/old_blogs/localshare/js/social-share.js"></script>
+
+  
+<script src="/old_blogs/localshare/js/qrcode.js"></script>
+
+
+
+
+
+  
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+
+  <script>
+    var gitalk = new Gitalk({
+      clientID: 'e28ce6e16ddbf9316a0d',
+      clientSecret: '89597d2b5d6ebeb5badc6d5930da2c08b76283dd',
+      repo: '60ke.github.io',
+      owner: '60ke',
+      admin: ['60ke'],
+      id: md5(window.location.pathname),
+      distractionFreeMode: false,
+      language: 'zh-CN',
+      pagerDirection: 'last'
+    });
+    gitalk.render('comments');
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</body>
+</html>

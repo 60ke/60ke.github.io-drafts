@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Python 文件读写操作实例详解 | LookForAdmin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <meta name="description" content="学如逆水行舟,不进则退;心似平原跑马易放难收。">
+  
+  
+  
+    <link rel="alternate" href="/old_blogs/atom.xml" title="LookForAdmin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/old_blogs/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/old_blogs/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/old_blogs/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/old_blogs/localshare/css/share.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/old_blogs/" id="logo">LookForAdmin</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/old_blogs/" id="subtitle">已是乾坤大，更怜草木青</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/old_blogs/."><i class="fa fa-home"></i> 首页</a>
+        
+          <a class="main-nav-link" href="/old_blogs/archives/"><i class="fa fa-archive"></i> 归档</a>
+        
+          <a class="main-nav-link" href="/old_blogs/about/"><i class="fa fa-user"></i> 关于</a>
+        
+          <a class="main-nav-link" href="/old_blogs/atom.xml"><i class="fa fa-rss"></i> 订阅</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Python 文件读写操作实例详解" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Python 文件读写操作实例详解
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-04-21T08:23:00.000Z" itemprop="datePublished">2017年04月21日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/old_blogs/categories/python/">python</a>
+  </div>
+
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+<a href="/old_blogs/2017/04/21/Python%20%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C%E5%AE%9E%E4%BE%8B%E8%AF%A6%E8%A7%A3/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  留言
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>脚本之家网上搜出来的，转给自己看</p>
+<span id="more"></span>
+
+<h2 id="一、python中对文件、文件夹操作时经常用到的os模块和shutil模块常用方法。"><a href="#一、python中对文件、文件夹操作时经常用到的os模块和shutil模块常用方法。" class="headerlink" title="一、python中对文件、文件夹操作时经常用到的os模块和shutil模块常用方法。"></a>一、python中对文件、文件夹操作时经常用到的os模块和shutil模块常用方法。</h2><p>1.得到当前工作目录，即当前Python脚本工作的目录路径: os.getcwd()<br>2.返回指定目录下的所有文件和目录名:os.listdir()<br>3.函数用来删除一个文件:os.remove()<br>4.删除多个目录：os.removedirs(r”c：\python”)<br>5.检验给出的路径是否是一个文件：os.path.isfile()<br>6.检验给出的路径是否是一个目录：os.path.isdir()<br>7.判断是否是绝对路径：os.path.isabs()<br>8.检验给出的路径是否真地存:os.path.exists()<br>9.返回一个路径的目录名和文件名:os.path.split()<br>例子：</p>
+<pre><code>os.path.split(&#39;/home/swaroop/byte/code/poem.txt&#39;) 结果：(&#39;/home/swaroop/byte/code&#39;, &#39;poem.txt&#39;)
+</code></pre>
+<p>10.分离扩展名：os.path.splitext()<br>11.获取路径名：os.path.dirname()<br>12.获取文件名：os.path.basename()<br>13.运行shell命令: os.system()<br>14.读取和设置环境变量:os.getenv() 与os.putenv()<br>15.给出当前平台使用的行终止符:os.linesep    Windows使用’\r\n’，Linux使用’\n’而Mac使用’\r’<br>16.指示你正在使用的平台：os.name       对于Windows，它是’nt’，而对于Linux/Unix用户，它是’posix’<br>17.重命名：os.rename(old， new)<br>18.创建多级目录：os.makedirs(r”c：\python\test”)<br>19.创建单个目录：os.mkdir(“test”)<br>20.获取文件属性：os.stat(file)<br>21.修改文件权限与时间戳：os.chmod(file)<br>22.终止当前进程：os.exit()<br>23.获取文件大小：os.path.getsize(filename)</p>
+<h2 id="二、文件操作方法大全"><a href="#二、文件操作方法大全" class="headerlink" title="二、文件操作方法大全"></a>二、文件操作方法大全</h2><p>1.os.mknod(“test.txt”)        创建空文件<br>2.fp = open(“test.txt”,w)     直接打开一个文件，如果文件不存在则创建文件<br>3.关于open 模式：</p>
+<pre><code>w：以写方式打开，
+a：以追加模式打开 (从 EOF 开始, 必要时创建新文件)
+r+：以读写模式打开
+w+：以读写模式打开 (参见 w )
+a+：以读写模式打开 (参见 a )
+rb：以二进制读模式打开
+wb：以二进制写模式打开 (参见 w )
+ab：以二进制追加模式打开 (参见 a )
+rb+：以二进制读写模式打开 (参见 r+ )
+wb+：以二进制读写模式打开 (参见 w+ )
+ab+：以二进制读写模式打开 (参见 a+ )
+</code></pre>
+<p>fp.read([size])                     #size为读取的长度，以byte为单位<br>fp.readline([size])                 #读一行，如果定义了size，有可能返回的只是一行的一部分<br>fp.readlines([size])                #把文件每一行作为一个list的一个成员，并返回这个list。其实它的内部是通过循环调用readline()来实现的。如果提供size参数，size是表示读取内容的总长，也就是说可能只读到文件的一部分。<br>fp.write(str)                       #把str写到文件中，write()并不会在str后加上一个换行符<br>fp.writelines(seq)                  #把seq的内容全部写到文件中(多行一次性写入)。这个函数也只是忠实地写入，不会在每行后面加上任何东西。<br>fp.close()                          #关闭文件。python会在一个文件不用后自动关闭文件，不过这一功能没有保证，最好还是养成自己关闭的习惯。  如果一个文件在关闭后还对其进行操作会产生ValueError<br>fp.flush()                          #把缓冲区的内容写入硬盘<br>fp.fileno()                         #返回一个长整型的”文件标签”<br>fp.isatty()                         #文件是否是一个终端设备文件（unix系统中的）<br>fp.tell()                           #返回文件操作标记的当前位置，以文件的开头为原点<br>fp.next()                           #返回下一行，并将文件操作标记位移到下一行。把一个file用于for … in file这样的语句时，就是调用next()函数来实现遍历的。<br>fp.seek(offset[,whence])            #将文件打操作标记移到offset的位置。这个offset一般是相对于文件的开头来计算的，一般为正数。但如果提供了whence参数就不一定了，whence可以为0表示从头开始计算，1表示以当前位置为原点计算。2表示以文件末尾为原点进行计算。需要注意，如果文件以a或a+的模式打开，每次进行写操作时，文件操作标记会自动返回到文件末尾。<br>fp.truncate([size])                 #把文件裁成规定的大小，默认的是裁到当前文件操作标记的位置。如果size比文件的大小还要大，依据系统的不同可能是不改变文件，也可能是用0把文件补到相应的大小，也可能是以一些随机的内容加上去。</p>
+<h2 id="三、目录操作方法大全"><a href="#三、目录操作方法大全" class="headerlink" title="三、目录操作方法大全"></a>三、目录操作方法大全</h2><p>1.创建目录</p>
+<pre><code>os.mkdir(&quot;file&quot;)                   
+</code></pre>
+<p>2.复制文件：</p>
+<pre><code>shutil.copyfile(&quot;oldfile&quot;,&quot;newfile&quot;)        #oldfile和newfile都只能是文件
+shutil.copy(&quot;oldfile&quot;,&quot;newfile&quot;)            #oldfile只能是文件夹，newfile可以是文件，也可以是目标目录
+</code></pre>
+<p>3.复制文件夹：<br>4.<code>shutil.copytree(&quot;olddir&quot;,&quot;newdir&quot;)        #olddir和newdir都只能是目录，且newdir必须不存在</code><br>5.重命名文件（目录）</p>
+<pre><code>os.rename(&quot;oldname&quot;,&quot;newname&quot;)              #文件或目录都是使用这条命令
+</code></pre>
+<p>6.移动文件（目录）</p>
+<pre><code>shutil.move(&quot;oldpos&quot;,&quot;newpos&quot;)   
+</code></pre>
+<p>7.删除文件</p>
+<pre><code>os.remove(&quot;file&quot;)
+</code></pre>
+<p>8.删除目录</p>
+<pre><code>os.rmdir(&quot;dir&quot;)                             #只能删除空目录
+shutil.rmtree(&quot;dir&quot;)                        #空目录、有内容的目录都可以删
+</code></pre>
+<p>9.转换目录</p>
+<pre><code>os.chdir(&quot;path&quot;)                            #换路径
+</code></pre>
+<h2 id="四、文件综合操作实例"><a href="#四、文件综合操作实例" class="headerlink" title="四、文件综合操作实例"></a>四、文件综合操作实例</h2><p>将文件夹下所有图片名称加上’_fc’<br>python代码:</p>
+<pre><code># -*- coding:utf-8 -*-
+import re
+import os
+import time
+#str.split(string)分割字符串
+#&#39;连接符&#39;.join(list) 将列表组成字符串
+def change_name(path):
+    global i
+    if not os.path.isdir(path) and not os.path.isfile(path):
+        return False
+    if os.path.isfile(path):
+        file_path = os.path.split(path) #分割出目录与文件
+        lists = file_path[1].split(&#39;.&#39;) #分割出文件与文件扩展名
+        file_ext = lists[-1] #取出后缀名(列表切片操作)
+        img_ext = [&#39;bmp&#39;,&#39;jpeg&#39;,&#39;gif&#39;,&#39;psd&#39;,&#39;png&#39;,&#39;jpg&#39;]
+        if file_ext in img_ext:
+            os.rename(path,file_path[0]+&#39;/&#39;+lists[0]+&#39;_fc.&#39;+file_ext)
+            i+=1 #注意这里的i是一个陷阱
+        #或者
+        #img_ext = &#39;bmp|jpeg|gif|psd|png|jpg&#39;
+        #if file_ext in img_ext:
+        #    print(&#39;ok---&#39;+file_ext)
+    elif os.path.isdir(path):
+        for x in os.listdir(path):
+            change_name(os.path.join(path,x)) #os.path.join()在路径处理上很有用
+img_dir = &#39;D:\\xx\\xx\\images&#39;
+img_dir = img_dir.replace(&#39;\\&#39;,&#39;/&#39;)
+start = time.time()
+i = 0
+change_name(img_dir)
+c = time.time() - start
+print(&#39;程序运行耗时:%0.2f&#39;%(c))
+print(&#39;总共处理了 %s 张图片&#39;%(i))
+</code></pre>
+<p>输出结果：</p>
+<pre><code>程序运行耗时:0.11
+总共处理了 109 张图片
+</code></pre>
+<h2 id="PS：输出指定文件夹下的所有文件名"><a href="#PS：输出指定文件夹下的所有文件名" class="headerlink" title="PS：输出指定文件夹下的所有文件名"></a>PS：输出指定文件夹下的所有文件名</h2><p>代码示例：</p>
+<pre><code>import os
+
+dir = os.getcwd()+&quot;/data&quot;
+
+for i in os.walk(dir):
+    for name in i[2]:
+        print(name)
+</code></pre>
+<h2 id="python集合求差"><a href="#python集合求差" class="headerlink" title="python集合求差"></a>python集合求差</h2><p>参考脚本之家<br><a target="_blank" rel="noopener" href="http://www.jb51.net/article/56980.htm">http://www.jb51.net/article/56980.htm</a></p>
+<ol>
+<li><p>正常的方式<br>复制代码 代码如下:</p>
+<p> ret = []<br> for i in a:</p>
+<pre><code> if i not in b:
+     ret.append(i)
+</code></pre>
+</li>
+<li><p>浓缩版<br>复制代码 代码如下:</p>
+<p> ret = [ i for i in a if i not in b ]</p>
+</li>
+<li><p>另一版<br>复制代码 代码如下:</p>
+<p> ret = list(set(a) ^ set(b))</p>
+</li>
+</ol>
+<p>二. 获取两个list 的并集</p>
+<p>复制代码 代码如下:</p>
+<pre><code>print list(set(a).union(set(b)))
+</code></pre>
+<p>三. 获取两个 list 的差集<br>复制代码 代码如下:</p>
+<pre><code>print list(set(b).difference(set(a))) # b中有而a中没有的
+</code></pre>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81python%E4%B8%AD%E5%AF%B9%E6%96%87%E4%BB%B6%E3%80%81%E6%96%87%E4%BB%B6%E5%A4%B9%E6%93%8D%E4%BD%9C%E6%97%B6%E7%BB%8F%E5%B8%B8%E7%94%A8%E5%88%B0%E7%9A%84os%E6%A8%A1%E5%9D%97%E5%92%8Cshutil%E6%A8%A1%E5%9D%97%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E3%80%82"><span class="toc-text">一、python中对文件、文件夹操作时经常用到的os模块和shutil模块常用方法。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95%E5%A4%A7%E5%85%A8"><span class="toc-text">二、文件操作方法大全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95%E5%A4%A7%E5%85%A8"><span class="toc-text">三、目录操作方法大全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%96%87%E4%BB%B6%E7%BB%BC%E5%90%88%E6%93%8D%E4%BD%9C%E5%AE%9E%E4%BE%8B"><span class="toc-text">四、文件综合操作实例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PS%EF%BC%9A%E8%BE%93%E5%87%BA%E6%8C%87%E5%AE%9A%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%8B%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E5%90%8D"><span class="toc-text">PS：输出指定文件夹下的所有文件名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python%E9%9B%86%E5%90%88%E6%B1%82%E5%B7%AE"><span class="toc-text">python集合求差</span></a></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>原文链接: <a href="https://60ke.github.io/old_blogs/2017/04/21/Python 文件读写操作实例详解/">https://60ke.github.io/old_blogs/2017/04/21/Python 文件读写操作实例详解/</a></p>
+              <p>版权声明: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+    <div class="article-reward">
+        <a id="reward-btn" href="javascript:;">打赏</a>
+        <div id="reward-content">
+            <h6 class="reward-tit">“感谢你的支持，我会继续努力！”</h6>
+            <div>
+                <div class="reward-code">
+                    <img class="type-code" src="/old_blogs/css/images/wechat.jpg">
+                    <img class="er-code" src="/css/images/wechat-pay.jpeg">
+                </div>
+                <div class="reward-code">
+                    <img class="type-code" src="/old_blogs/css/images/alipay.jpg">
+                    <img class="er-code" src="/css/images/alipay-pay.jpeg">
+                </div>
+            </div>
+            <p class="reward-desc">扫码打赏，感谢支持</p>
+        </div>
+    </div>
+
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/old_blogs/tags/python/" rel="tag">python</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/old_blogs/2017/04/21/%E7%85%8E%E8%9B%8B%E7%BD%91%E5%A6%B9%E5%AD%90%E5%9B%BE%E6%8A%93%E5%8F%96/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          煎蛋网妹子图抓取
+        
+      </div>
+    </a>
+  
+  
+    <a href="/old_blogs/2017/04/19/%E7%88%AC%E5%8F%96%E8%B5%B7%E7%82%B9%E4%B8%AD%E6%96%87%E7%BD%91%E6%9C%88%E7%A5%A8%E6%A6%9C%E5%89%8D500%E5%90%8D%E7%BD%91%E7%BB%9C%E5%B0%8F%E8%AF%B4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">爬取起点中文网月票榜前500名网络小说</div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+  <div id="comments"></div>
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> 最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/old_blogs/2022/03/29/go%E6%B3%9B%E5%9E%8B%E5%AE%9E%E8%B7%B5/">go泛型实践</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/12/20/go%E7%9A%84%E6%84%9A%E8%A0%A2bug/">go的愚蠢bug</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/12/13/go%E6%B1%87%E7%BC%96/">go汇编</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/11/08/golang%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/10/29/%E5%BD%BB%E5%BA%95%E6%90%9E%E6%87%82gcc/">彻底搞懂gcc</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/old_blogs/tags/blog/" style="font-size: 10px;">blog</a> <a href="/old_blogs/tags/c/" style="font-size: 11.67px;">c</a> <a href="/old_blogs/tags/emacs/" style="font-size: 11.67px;">emacs</a> <a href="/old_blogs/tags/gcc/" style="font-size: 10px;">gcc</a> <a href="/old_blogs/tags/go/" style="font-size: 15px;">go</a> <a href="/old_blogs/tags/golang/" style="font-size: 15px;">golang</a> <a href="/old_blogs/tags/go%E6%B1%87%E7%BC%96/" style="font-size: 10px;">go汇编</a> <a href="/old_blogs/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/old_blogs/tags/ios/" style="font-size: 10px;">ios</a> <a href="/old_blogs/tags/linux/" style="font-size: 15px;">linux</a> <a href="/old_blogs/tags/lisp/" style="font-size: 10px;">lisp</a> <a href="/old_blogs/tags/mac/" style="font-size: 16.67px;">mac</a> <a href="/old_blogs/tags/maomaomao/" style="font-size: 10px;">maomaomao</a> <a href="/old_blogs/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/old_blogs/tags/other/" style="font-size: 10px;">other</a> <a href="/old_blogs/tags/others/" style="font-size: 15px;">others</a> <a href="/old_blogs/tags/pycharm/" style="font-size: 10px;">pycharm</a> <a href="/old_blogs/tags/python/" style="font-size: 18.33px;">python</a> <a href="/old_blogs/tags/python%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">python基础</a> <a href="/old_blogs/tags/rust/" style="font-size: 20px;">rust</a> <a href="/old_blogs/tags/scrapy/" style="font-size: 13.33px;">scrapy</a> <a href="/old_blogs/tags/sgx/" style="font-size: 11.67px;">sgx</a> <a href="/old_blogs/tags/shell/" style="font-size: 11.67px;">shell</a> <a href="/old_blogs/tags/sublime/" style="font-size: 10px;">sublime</a> <a href="/old_blogs/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/old_blogs/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/old_blogs/tags/xpath/" style="font-size: 10px;">xpath</a> <a href="/old_blogs/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a> <a href="/old_blogs/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">并发编程</a> <a href="/old_blogs/tags/%E5%BC%80%E5%8F%91/" style="font-size: 10px;">开发</a> <a href="/old_blogs/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/old_blogs/tags/%E6%AD%A3%E5%88%99/" style="font-size: 10px;">正则</a> <a href="/old_blogs/tags/%E6%B3%9B%E5%9E%8B/" style="font-size: 10px;">泛型</a> <a href="/old_blogs/tags/%E7%88%AC%E8%99%AB/" style="font-size: 15px;">爬虫</a> <a href="/old_blogs/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 11.67px;">笔记</a> <a href="/old_blogs/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" style="font-size: 10px;">跨平台</a> <a href="/old_blogs/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/" style="font-size: 10px;">路由器</a> <a href="/old_blogs/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/MySQL/">MySQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/default/">default</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/go/">go</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/mac/">mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/old/">old</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/others/">others</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/php/">php</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/python/">python</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/python%E7%88%AC%E8%99%AB/">python爬虫</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/rust/">rust</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/wasm/">wasm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/%E5%A5%B9/">她</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/%E6%9D%82%E7%BB%AA/">杂绪</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2022/">2022年03月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2021/">2021年12月</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2020/">2020年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2019/">2019年12月</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2018/">2018年12月</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2017/">2017年11月</a><span class="archive-list-count">45</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2016/">2016年12月</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/old_blogs/sitemap.xml">网站地图</a>
+        <span> | </span><a href="/old_blogs/atom.xml">订阅本站</a>
+        <span> | </span><a href="/old_blogs/about/">联系博主</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2022 lsk.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        
+            <span>Count by <a href="http://busuanzi.ibruce.info/" target="_blank">busuanzi.</a></span>
+        
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+<script src="/old_blogs/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/old_blogs/js/search.json.js"></script>
+
+
+  
+<script src="/old_blogs/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/old_blogs/js/script.js"></script>
+
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a4bf52d7269ab655ac8b068d702a6ef7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+  
+<script src="/old_blogs/localshare/js/social-share.js"></script>
+
+  
+<script src="/old_blogs/localshare/js/qrcode.js"></script>
+
+
+
+
+
+  
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+
+  <script>
+    var gitalk = new Gitalk({
+      clientID: 'e28ce6e16ddbf9316a0d',
+      clientSecret: '89597d2b5d6ebeb5badc6d5930da2c08b76283dd',
+      repo: '60ke.github.io',
+      owner: '60ke',
+      admin: ['60ke'],
+      id: md5(window.location.pathname),
+      distractionFreeMode: false,
+      language: 'zh-CN',
+      pagerDirection: 'last'
+    });
+    gitalk.render('comments');
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</body>
+</html>

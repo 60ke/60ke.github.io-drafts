@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>ewasm虚拟机开发 | LookForAdmin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <meta name="description" content="学如逆水行舟,不进则退;心似平原跑马易放难收。">
+  
+  
+  
+    <link rel="alternate" href="/old_blogs/atom.xml" title="LookForAdmin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/old_blogs/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/old_blogs/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/old_blogs/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/old_blogs/localshare/css/share.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/old_blogs/" id="logo">LookForAdmin</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/old_blogs/" id="subtitle">已是乾坤大，更怜草木青</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/old_blogs/."><i class="fa fa-home"></i> 首页</a>
+        
+          <a class="main-nav-link" href="/old_blogs/archives/"><i class="fa fa-archive"></i> 归档</a>
+        
+          <a class="main-nav-link" href="/old_blogs/about/"><i class="fa fa-user"></i> 关于</a>
+        
+          <a class="main-nav-link" href="/old_blogs/atom.xml"><i class="fa fa-rss"></i> 订阅</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-ewasm虚拟机开发" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      ewasm虚拟机开发
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2020-09-22T11:05:04.000Z" itemprop="datePublished">2020年09月22日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/old_blogs/categories/wasm/">wasm</a>
+  </div>
+
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+<a href="/old_blogs/2020/09/22/ewasm%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%BC%80%E5%8F%91/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  留言
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><h2 id="解析wasm字节码"><a href="#解析wasm字节码" class="headerlink" title="解析wasm字节码"></a>解析wasm字节码</h2><p><a target="_blank" rel="noopener" href="https://webassembly.github.io/spec/core/intro/overview.html">wasm概览</a><br><a target="_blank" rel="noopener" href="https://webassembly.github.io/spec/core/binary/instructions.html#">wasm指令集</a><br><a target="_blank" rel="noopener" href="https://webassembly.github.io/spec/core/binary/types.html">wasm类型</a><br><img src="http://ww1.sinaimg.cn/large/6cf740f6ly1gizds6acxgj20f50hr0tf.jpg" alt="wasm格式"></p>
+<span id="more"></span>
+<p>wasm包含12种section:<br><img src="http://ww1.sinaimg.cn/large/6cf740f6ly1gizdyr165zj20a308ywek.jpg" alt="undefined"><br>每个section包括:</p>
+<ul>
+<li>section id(大小1字节)</li>
+<li>section size(格式为u32记录section大小)</li>
+<li>data(section中保存的内容，格式取决于section id)</li>
+</ul>
+<p>每个 section 都是可选的, 如果某个 wasm 模块省略了某个 section, 则等同于存在一个内容为空的 section.</p>
+<p><a target="_blank" rel="noopener" href="https://wasdk.github.io/WasmFiddle/?%E8%BF%99%E4%B8%AA%E7%BD%91%E7%AB%99%E5%8F%AF%E4%BB%A5%E7%BC%96%E8%AF%91c/c++%E4%B8%BAwasm%E6%A0%BC%E5%BC%8F%E3%80%82">https://wasdk.github.io/WasmFiddle/?这个网站可以编译c/c++为wasm格式。</a><br>用一个简单的例子来说明对wasm二进制的解析:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123; </span><br><span class="line">  <span class="keyword">return</span> <span class="number">42</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应的wast格式:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(module</span><br><span class="line"> (table 0 anyfunc)</span><br><span class="line"> (memory $0 1)</span><br><span class="line"> (export &quot;memory&quot; (memory $0))</span><br><span class="line"> (export &quot;main&quot; (func $main))</span><br><span class="line"> (func $main (; 0 ;) (result i32)</span><br><span class="line">  (i32.const 42)</span><br><span class="line"> )</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>对应的二进制:<br><img src="http://ww1.sinaimg.cn/large/6cf740f6ly1gizf1xbp18j21120640ub.jpg" alt="411600756416_.pic.jpg"></p>
+<p>二进制码:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x61</span>&#x27;, &#x27;<span class="number">0x73</span>&#x27;, &#x27;<span class="number">0x6d</span>&#x27;, &#x27;<span class="number">0x1</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x1</span>&#x27;, &#x27;<span class="number">0x85</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x1</span>&#x27;, &#x27;<span class="number">0x60</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x1</span>&#x27;, &#x27;<span class="number">0x7f</span>&#x27;, &#x27;<span class="number">0x3</span>&#x27;, &#x27;<span class="number">0x82</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x1</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x4</span>&#x27;, &#x27;<span class="number">0x84</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x1</span>&#x27;, &#x27;<span class="number">0x70</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x5</span>&#x27;, &#x27;<span class="number">0x83</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x1</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x1</span>&#x27;, &#x27;<span class="number">0x6</span>&#x27;, &#x27;<span class="number">0x81</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x7</span>&#x27;, &#x27;<span class="number">0x91</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x2</span>&#x27;, &#x27;<span class="number">0x6</span>&#x27;, &#x27;<span class="number">0x6d</span>&#x27;, &#x27;<span class="number">0x65</span>&#x27;, &#x27;<span class="number">0x6d</span>&#x27;, &#x27;<span class="number">0x6f</span>&#x27;, &#x27;<span class="number">0x72</span>&#x27;, &#x27;<span class="number">0x79</span>&#x27;, &#x27;<span class="number">0x2</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x4</span>&#x27;, &#x27;<span class="number">0x6d</span>&#x27;, &#x27;<span class="number">0x61</span>&#x27;, &#x27;<span class="number">0x69</span>&#x27;, &#x27;<span class="number">0x6e</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0xa</span>&#x27;, &#x27;<span class="number">0x8a</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x1</span>&#x27;, &#x27;<span class="number">0x84</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x80</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x0</span>&#x27;, &#x27;<span class="number">0x41</span>&#x27;, &#x27;<span class="number">0x2a</span>&#x27;, &#x27;<span class="number">0xb</span>&#x27;]</span><br></pre></td></tr></table></figure>
+
+
+<p>一步步分析:<br>前八个字节表示的东西是固定的。<code>&#39;0x0&#39;, &#39;0x61&#39;, &#39;0x73&#39;, &#39;0x6d&#39;</code>前四个字节表示<code>\0asm</code>.<code>&#39;0x1&#39;, &#39;0x0&#39;, &#39;0x0&#39;, &#39;0x0&#39;</code>表示为1的版本号。</p>
+<p>wasm采用LEB128编码:<br>谷歌为了省点空间，在安卓中用了这个压缩标准，其原理就是一个4字节32位的数字，一般很少占满，比如数字1，2等，它其实用几位就可以表示。下面看看它的工作原理：<br>1）忽略高字节的正负代表位。<br>2）每七位组成一组，待编码。<br>3）有符号和无符号的分成不同的情况来处理。<br>4）无符号，最高位为0表示结束，1表示还有后续字节。待编码的七位为数据。<br>5）有符号的处理，同上，但需要处理高位为0的不同情况。<br>6）有符号的处理，同上，需要处理高位为1的不同情况。<br>从上面可以看出无符号比较简单，有符号还需要处理几种情况，这里举一个无符号的例子，简单理解一下，更多请查阅相关资料：<br>编码：<br>十六进制数字：0x238 ========&gt; 二进制 0000 0010 0011 1000<br>分成两个七位的组：0000100(高位)， 0111000（低位）<br>0000100后面没数据了，所以前面加一个0；0111000后面还有一个字节，所以高为为1，则变为：<br>00000100(即：0x04),10111000(0x70)</p>
+<p>则小端存放的数据为：0x70,0x04<br>解码：<br>正好相反，把数据拆开，按编码逆向过程即可。</p>
+<p>对于rust，我们可以直接用现有的crate:<a target="_blank" rel="noopener" href="https://github.com/paritytech/parity-wasm">parity-wasm</a>对wasm进行解析。</p>
+<h2 id="wasm解析器"><a href="#wasm解析器" class="headerlink" title="wasm解析器"></a>wasm解析器</h2><p><a target="_blank" rel="noopener" href="https://github.com/paritytech/wasmi">wasmi</a></p>
+<h2 id="可运行wasm的虚拟机"><a href="#可运行wasm的虚拟机" class="headerlink" title="可运行wasm的虚拟机"></a>可运行wasm的虚拟机</h2><p><a target="_blank" rel="noopener" href="https://github.com/openethereum/openethereum/tree/master/ethcore/wasm">vm</a></p>
+<h2 id="生成可被wasmi执行的合约"><a href="#生成可被wasmi执行的合约" class="headerlink" title="生成可被wasmi执行的合约"></a>生成可被wasmi执行的合约</h2><h3 id="pwasm-abi"><a href="#pwasm-abi" class="headerlink" title="pwasm-abi"></a><a target="_blank" rel="noopener" href="https://github.com/openethereum/pwasm-abi">pwasm-abi</a></h3><p>使用过程宏生成类型solidity合约代码结构的rust合约,并最终编译为wasm-unkonwn-unkonwn(wasm).</p>
+<p>最终生成的合约:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#![no_std]</span></span><br><span class="line"><span class="meta">#![allow(non_snake_case)]</span></span><br><span class="line"><span class="meta">#![feature(proc_macro_hygiene)]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">crate</span> pwasm_std;</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">crate</span> pwasm_ethereum;</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">crate</span> pwasm_abi;</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">crate</span> pwasm_abi_derive;</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">crate</span> alloc;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> array &#123;</span><br><span class="line">    <span class="keyword">use</span> pwasm_ethereum;</span><br><span class="line">    <span class="keyword">use</span> pwasm_abi::types::*;</span><br><span class="line">    <span class="keyword">use</span> pwasm_abi_derive::eth_abi;</span><br><span class="line">    <span class="keyword">use</span> alloc::collections::BTreeMap;</span><br><span class="line">    <span class="keyword">use</span> alloc::format;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">#[eth_abi(TokenEndpoint, TokenClient)]</span></span><br><span class="line">    <span class="keyword">pub</span> <span class="class"><span class="keyword">trait</span> <span class="title">ArrayInterface</span></span> &#123;</span><br><span class="line">        <span class="function"><span class="keyword">fn</span> <span class="title">constructor</span></span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>);</span><br><span class="line">        <span class="function"><span class="keyword">fn</span> <span class="title">double_array</span></span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>,x:U256,y:U256)-&gt; U256;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">pub</span> <span class="class"><span class="keyword">struct</span> <span class="title">ArrayContract</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">impl</span> ArrayInterface <span class="keyword">for</span> ArrayContract&#123;</span><br><span class="line">        <span class="function"><span class="keyword">fn</span> <span class="title">double_array</span></span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>,x:U256,y:U256) -&gt; U256&#123;</span><br><span class="line">            U256::from(x) + U256::from(x)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">fn</span> <span class="title">constructor</span></span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>) &#123;</span><br><span class="line">        </span><br><span class="line">        &#125;        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> pwasm_abi::eth::EndpointInterface;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">call</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> endpoint = array::TokenEndpoint::new(array::ArrayContract&#123;&#125;);</span><br><span class="line">    <span class="comment">// Read http://solidity.readthedocs.io/en/develop/abi-spec.html#formal-specification-of-the-encoding for details</span></span><br><span class="line">    pwasm_ethereum::ret(&amp;endpoint.dispatch(&amp;pwasm_ethereum::input()));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">deploy</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> endpoint = array::TokenEndpoint::new(array::ArrayContract&#123;&#125;);</span><br><span class="line">    endpoint.dispatch_ctor(&amp;pwasm_ethereum::input());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的合约通过<code>eth_abi</code>这个过程宏生成了wasm合约.<br>宏展开的部分代码如下:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">dispatch</span></span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>, payload: &amp;[<span class="built_in">u8</span>]) -&gt; <span class="built_in">Vec</span>&lt;<span class="built_in">u8</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> inner = &amp;<span class="keyword">mut</span> <span class="keyword">self</span>.inner;</span><br><span class="line">    <span class="keyword">if</span> payload.len() &lt; <span class="number">4</span> &#123;</span><br><span class="line">        ::core::panicking::panic(<span class="string">&quot;Invalid abi invoke&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> method_id = ((payload[<span class="number">0</span>] <span class="keyword">as</span> <span class="built_in">u32</span>) &lt;&lt; <span class="number">24</span>)</span><br><span class="line">        + ((payload[<span class="number">1</span>] <span class="keyword">as</span> <span class="built_in">u32</span>) &lt;&lt; <span class="number">16</span>)</span><br><span class="line">        + ((payload[<span class="number">2</span>] <span class="keyword">as</span> <span class="built_in">u32</span>) &lt;&lt; <span class="number">8</span>)</span><br><span class="line">        + (payload[<span class="number">3</span>] <span class="keyword">as</span> <span class="built_in">u32</span>);</span><br><span class="line">    <span class="keyword">let</span> method_payload = &amp;payload[<span class="number">4</span>..];</span><br><span class="line">    <span class="keyword">match</span> method_id &#123;</span><br><span class="line">        <span class="number">870935635u32</span> =&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span> pwasm_ethereum::value() &gt; <span class="number">0</span>.into() &#123;</span><br><span class="line">                ::core::panicking::panic(</span><br><span class="line">                    <span class="string">&quot;Unable to accept value in non-payable constructor call&quot;</span>,</span><br><span class="line">                );</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">let</span> <span class="keyword">mut</span> stream = pwasm_abi::eth::Stream::new(method_payload);</span><br><span class="line">            <span class="keyword">let</span> result = inner.double_array(</span><br><span class="line">                stream.pop::&lt;U256&gt;().expect(<span class="string">&quot;argument decoding failed&quot;</span>),</span><br><span class="line">                stream.pop::&lt;U256&gt;().expect(<span class="string">&quot;argument decoding failed&quot;</span>),</span><br><span class="line">            );</span><br><span class="line">            <span class="keyword">let</span> <span class="keyword">mut</span> sink = pwasm_abi::eth::Sink::new(<span class="number">1usize</span>);</span><br><span class="line">            sink.push(result);</span><br><span class="line">            sink.finalize_panicking()</span><br><span class="line">        &#125;</span><br><span class="line">        _ =&gt; ::core::panicking::panic(<span class="string">&quot;Invalid method signature&quot;</span>),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">double_array</span></span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>, x: U256, y: U256) -&gt; U256 &#123;</span><br><span class="line">    <span class="meta">#![allow(unused_mut)]</span></span><br><span class="line">    <span class="meta">#![allow(unused_variables)]</span></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> payload = <span class="built_in">Vec</span>::with_capacity(<span class="number">4</span> + <span class="number">2usize</span> * <span class="number">32</span>);</span><br><span class="line">    payload.push((<span class="number">870935635u32</span> &gt;&gt; <span class="number">24</span>) <span class="keyword">as</span> <span class="built_in">u8</span>);</span><br><span class="line">    payload.push((<span class="number">870935635u32</span> &gt;&gt; <span class="number">16</span>) <span class="keyword">as</span> <span class="built_in">u8</span>);</span><br><span class="line">    payload.push((<span class="number">870935635u32</span> &gt;&gt; <span class="number">8</span>) <span class="keyword">as</span> <span class="built_in">u8</span>);</span><br><span class="line">    payload.push(<span class="number">870935635u32</span> <span class="keyword">as</span> <span class="built_in">u8</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> sink = pwasm_abi::eth::Sink::new(<span class="number">2usize</span>);</span><br><span class="line">    sink.push(x);</span><br><span class="line">    sink.push(y);</span><br><span class="line">    sink.drain_to(&amp;<span class="keyword">mut</span> payload);</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> result = [<span class="number">0u8</span>; <span class="number">32</span>];</span><br><span class="line">    pwasm_ethereum::call(</span><br><span class="line">        <span class="keyword">self</span>.gas.unwrap_or(<span class="number">200000</span>),</span><br><span class="line">        &amp;<span class="keyword">self</span>.address,</span><br><span class="line">        <span class="keyword">self</span>.value.clone().unwrap_or(U256::zero()),</span><br><span class="line">        &amp;payload,</span><br><span class="line">        &amp;<span class="keyword">mut</span> result[..],</span><br><span class="line">    )</span><br><span class="line">    .expect(<span class="string">&quot;Call failed; todo: allow handling inside contracts&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> stream = pwasm_abi::eth::Stream::new(&amp;result);</span><br><span class="line">    stream.pop().expect(<span class="string">&quot;failed decode call output&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在合约编译的内部实现中通过需要通过<code>eth_abi</code>接口将函数重命名.<br>这样我们在调用合约时,通过<code>eth_abi</code>编码的数据才能被合约识别运行.</p>
+<p><a target="_blank" rel="noopener" href="https://web3js.readthedocs.io/en/v1.3.0/web3-eth-abi.html#">web3eth_abi编码</a></p>
+<h3 id="wasm-build"><a href="#wasm-build" class="headerlink" title="wasm-build"></a><a target="_blank" rel="noopener" href="https://github.com/paritytech/wasm-utils/tree/master/cli/build">wasm-build</a></h3><p>已生成的wasm合约不能直接被vm运行,wasm-build将由pwasm写的合约再次处理转化为可被vm执行的wasm合约文件.</p>
+<p>wasm-build的工作:<br>1.解析wasm module提取以下section:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="keyword">let</span> <span class="literal">Some</span>(section) = sections.pop() &#123;</span><br><span class="line">  <span class="keyword">match</span> section &#123;</span><br><span class="line">    elements::Section::Type(sect) =&gt; &#123; types = <span class="literal">Some</span>(sect); &#125;</span><br><span class="line">    elements::Section::Import(sect) =&gt; &#123; import = <span class="literal">Some</span>(sect); &#125;</span><br><span class="line">    elements::Section::Function(sect) =&gt; &#123; funcs = <span class="literal">Some</span>(sect); &#125;</span><br><span class="line">    elements::Section::Table(sect) =&gt; &#123; table = <span class="literal">Some</span>(sect); &#125;</span><br><span class="line">    elements::Section::Memory(sect) =&gt; &#123; memory = <span class="literal">Some</span>(sect); &#125;</span><br><span class="line">    elements::Section::Global(sect) =&gt; &#123; global = <span class="literal">Some</span>(sect); &#125;</span><br><span class="line">    elements::Section::Export(sect) =&gt; &#123; export = <span class="literal">Some</span>(sect); &#125;</span><br><span class="line">    elements::Section::Start(index) =&gt; &#123; start = <span class="literal">Some</span>(index); &#125;</span><br><span class="line">    elements::Section::Element(sect) =&gt; &#123; element = <span class="literal">Some</span>(sect); &#125;</span><br><span class="line">    elements::Section::Code(sect) =&gt; &#123; code = <span class="literal">Some</span>(sect); &#125;</span><br><span class="line">    elements::Section::Data(sect) =&gt; &#123; data = <span class="literal">Some</span>(sect); &#125;</span><br><span class="line">    _ =&gt; &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>将wasm的module优化为:</p>
+<ul>
+<li>Type</li>
+<li>Import</li>
+<li>Function</li>
+<li>Table</li>
+<li>Memory</li>
+<li>Global</li>
+<li>Export</li>
+<li>Start</li>
+<li>Code</li>
+<li>Data</li>
+<li>other</li>
+</ul>
+<p>2.优化函数名及构造函数deploy,call,end等模块.</p>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%86%E5%A4%87"><span class="toc-text">准备</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90wasm%E5%AD%97%E8%8A%82%E7%A0%81"><span class="toc-text">解析wasm字节码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wasm%E8%A7%A3%E6%9E%90%E5%99%A8"><span class="toc-text">wasm解析器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E8%BF%90%E8%A1%8Cwasm%E7%9A%84%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="toc-text">可运行wasm的虚拟机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E5%8F%AF%E8%A2%ABwasmi%E6%89%A7%E8%A1%8C%E7%9A%84%E5%90%88%E7%BA%A6"><span class="toc-text">生成可被wasmi执行的合约</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pwasm-abi"><span class="toc-text">pwasm-abi</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wasm-build"><span class="toc-text">wasm-build</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>原文链接: <a href="https://60ke.github.io/old_blogs/2020/09/22/ewasm虚拟机开发/">https://60ke.github.io/old_blogs/2020/09/22/ewasm虚拟机开发/</a></p>
+              <p>版权声明: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+    <div class="article-reward">
+        <a id="reward-btn" href="javascript:;">打赏</a>
+        <div id="reward-content">
+            <h6 class="reward-tit">“感谢你的支持，我会继续努力！”</h6>
+            <div>
+                <div class="reward-code">
+                    <img class="type-code" src="/old_blogs/css/images/wechat.jpg">
+                    <img class="er-code" src="/css/images/wechat-pay.jpeg">
+                </div>
+                <div class="reward-code">
+                    <img class="type-code" src="/old_blogs/css/images/alipay.jpg">
+                    <img class="er-code" src="/css/images/alipay-pay.jpeg">
+                </div>
+            </div>
+            <p class="reward-desc">扫码打赏，感谢支持</p>
+        </div>
+    </div>
+
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/old_blogs/tags/rust/" rel="tag">rust</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/old_blogs/tags/wasm/" rel="tag">wasm</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/old_blogs/2020/11/17/rust-From-T/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          rust From&lt;T&gt;
+        
+      </div>
+    </a>
+  
+  
+    <a href="/old_blogs/2020/09/22/hexo%E6%9B%B4%E6%94%B9post%E6%A8%A1%E6%9D%BF/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">hexo更改post模板</div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+  <div id="comments"></div>
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> 最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/old_blogs/2022/03/29/go%E6%B3%9B%E5%9E%8B%E5%AE%9E%E8%B7%B5/">go泛型实践</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/12/20/go%E7%9A%84%E6%84%9A%E8%A0%A2bug/">go的愚蠢bug</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/12/13/go%E6%B1%87%E7%BC%96/">go汇编</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/11/08/golang%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/10/29/%E5%BD%BB%E5%BA%95%E6%90%9E%E6%87%82gcc/">彻底搞懂gcc</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/old_blogs/tags/blog/" style="font-size: 10px;">blog</a> <a href="/old_blogs/tags/c/" style="font-size: 11.67px;">c</a> <a href="/old_blogs/tags/emacs/" style="font-size: 11.67px;">emacs</a> <a href="/old_blogs/tags/gcc/" style="font-size: 10px;">gcc</a> <a href="/old_blogs/tags/go/" style="font-size: 15px;">go</a> <a href="/old_blogs/tags/golang/" style="font-size: 15px;">golang</a> <a href="/old_blogs/tags/go%E6%B1%87%E7%BC%96/" style="font-size: 10px;">go汇编</a> <a href="/old_blogs/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/old_blogs/tags/ios/" style="font-size: 10px;">ios</a> <a href="/old_blogs/tags/linux/" style="font-size: 15px;">linux</a> <a href="/old_blogs/tags/lisp/" style="font-size: 10px;">lisp</a> <a href="/old_blogs/tags/mac/" style="font-size: 16.67px;">mac</a> <a href="/old_blogs/tags/maomaomao/" style="font-size: 10px;">maomaomao</a> <a href="/old_blogs/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/old_blogs/tags/other/" style="font-size: 10px;">other</a> <a href="/old_blogs/tags/others/" style="font-size: 15px;">others</a> <a href="/old_blogs/tags/pycharm/" style="font-size: 10px;">pycharm</a> <a href="/old_blogs/tags/python/" style="font-size: 18.33px;">python</a> <a href="/old_blogs/tags/python%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">python基础</a> <a href="/old_blogs/tags/rust/" style="font-size: 20px;">rust</a> <a href="/old_blogs/tags/scrapy/" style="font-size: 13.33px;">scrapy</a> <a href="/old_blogs/tags/sgx/" style="font-size: 11.67px;">sgx</a> <a href="/old_blogs/tags/shell/" style="font-size: 11.67px;">shell</a> <a href="/old_blogs/tags/sublime/" style="font-size: 10px;">sublime</a> <a href="/old_blogs/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/old_blogs/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/old_blogs/tags/xpath/" style="font-size: 10px;">xpath</a> <a href="/old_blogs/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a> <a href="/old_blogs/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">并发编程</a> <a href="/old_blogs/tags/%E5%BC%80%E5%8F%91/" style="font-size: 10px;">开发</a> <a href="/old_blogs/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/old_blogs/tags/%E6%AD%A3%E5%88%99/" style="font-size: 10px;">正则</a> <a href="/old_blogs/tags/%E6%B3%9B%E5%9E%8B/" style="font-size: 10px;">泛型</a> <a href="/old_blogs/tags/%E7%88%AC%E8%99%AB/" style="font-size: 15px;">爬虫</a> <a href="/old_blogs/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 11.67px;">笔记</a> <a href="/old_blogs/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" style="font-size: 10px;">跨平台</a> <a href="/old_blogs/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/" style="font-size: 10px;">路由器</a> <a href="/old_blogs/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/MySQL/">MySQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/default/">default</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/go/">go</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/mac/">mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/old/">old</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/others/">others</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/php/">php</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/python/">python</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/python%E7%88%AC%E8%99%AB/">python爬虫</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/rust/">rust</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/wasm/">wasm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/%E5%A5%B9/">她</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/%E6%9D%82%E7%BB%AA/">杂绪</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2022/">2022年03月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2021/">2021年12月</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2020/">2020年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2019/">2019年12月</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2018/">2018年12月</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2017/">2017年11月</a><span class="archive-list-count">45</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2016/">2016年12月</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/old_blogs/sitemap.xml">网站地图</a>
+        <span> | </span><a href="/old_blogs/atom.xml">订阅本站</a>
+        <span> | </span><a href="/old_blogs/about/">联系博主</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2022 lsk.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        
+            <span>Count by <a href="http://busuanzi.ibruce.info/" target="_blank">busuanzi.</a></span>
+        
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+<script src="/old_blogs/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/old_blogs/js/search.json.js"></script>
+
+
+  
+<script src="/old_blogs/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/old_blogs/js/script.js"></script>
+
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a4bf52d7269ab655ac8b068d702a6ef7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+  
+<script src="/old_blogs/localshare/js/social-share.js"></script>
+
+  
+<script src="/old_blogs/localshare/js/qrcode.js"></script>
+
+
+
+
+
+  
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+
+  <script>
+    var gitalk = new Gitalk({
+      clientID: 'e28ce6e16ddbf9316a0d',
+      clientSecret: '89597d2b5d6ebeb5badc6d5930da2c08b76283dd',
+      repo: '60ke.github.io',
+      owner: '60ke',
+      admin: ['60ke'],
+      id: md5(window.location.pathname),
+      distractionFreeMode: false,
+      language: 'zh-CN',
+      pagerDirection: 'last'
+    });
+    gitalk.render('comments');
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</body>
+</html>

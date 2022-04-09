@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>write a antlr4 visitor with golang | LookForAdmin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <meta name="description" content="学如逆水行舟,不进则退;心似平原跑马易放难收。">
+  
+  
+  
+    <link rel="alternate" href="/old_blogs/atom.xml" title="LookForAdmin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/old_blogs/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/old_blogs/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/old_blogs/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/old_blogs/localshare/css/share.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/old_blogs/" id="logo">LookForAdmin</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/old_blogs/" id="subtitle">已是乾坤大，更怜草木青</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/old_blogs/."><i class="fa fa-home"></i> 首页</a>
+        
+          <a class="main-nav-link" href="/old_blogs/archives/"><i class="fa fa-archive"></i> 归档</a>
+        
+          <a class="main-nav-link" href="/old_blogs/about/"><i class="fa fa-user"></i> 关于</a>
+        
+          <a class="main-nav-link" href="/old_blogs/atom.xml"><i class="fa fa-rss"></i> 订阅</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-antlr4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      write a antlr4 visitor with golang
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2021-05-11T18:29:58.000Z" itemprop="datePublished">2021年05月11日</time>
+</span>
+      
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+<a href="/old_blogs/2021/05/11/antlr4/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  留言
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>ANTLR（全名：ANother Tool for Language Recognition）是基于LL(*)算法实现的语法解析器生成器（parser generator），用Java语言编写，使用自上而下（top-down）的递归下降LL剖析器方法。由旧金山大学的Terence Parr博士等人于1989年开始发展。<br>目前网上的antlr示例大多为java,python,c++等,其github上虽有关于go的一个文档:<a target="_blank" rel="noopener" href="https://github.com/antlr/antlr4/blob/master/doc/go-target.md">go-target.md</a>,但是是基于listener模式实现的,而本文是基于visitor实现的一个简单计算器</p>
+<h2 id="install-antlr"><a href="#install-antlr" class="headerlink" title="install antlr"></a>install antlr</h2><h3 id="安装java"><a href="#安装java" class="headerlink" title="安装java"></a>安装java</h3><p>antlr是基于Java开发的的,其运行依赖java环境。<br>当前(2021年05月11日18:39:11) mac可使用<code>homebrew</code>命令<code>brew install openjdk</code>但是M1的openjdk兼容性有问题,使用antlr生成<code>AST</code>树的图片时总会异常退出,最终选择使用<a target="_blank" rel="noopener" href="https://cdn.azul.com/zulu/bin/zulu16.30.15-ca-jdk16.0.1-macosx_aarch64.dmg">Azul Zulu的dmg二进制安装</a>可正常运行</p>
+<h3 id="安装antlr"><a href="#安装antlr" class="headerlink" title="安装antlr"></a>安装antlr</h3><p><a target="_blank" rel="noopener" href="https://www.antlr.org/">antlr官网</a>首页已经给出了安装教程:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">OS X</span><br><span class="line">$ <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/lib</span><br><span class="line">$ sudo curl -O https://www.antlr.org/download/antlr-4.9.2-complete.jar</span><br><span class="line">$ <span class="built_in">export</span> CLASSPATH=<span class="string">&quot;.:/usr/local/lib/antlr-4.9.2-complete.jar:<span class="variable">$CLASSPATH</span>&quot;</span></span><br><span class="line">$ <span class="built_in">alias</span> antlr4=<span class="string">&#x27;java -jar /usr/local/lib/antlr-4.9.2-complete.jar&#x27;</span></span><br><span class="line">$ <span class="built_in">alias</span> grun=<span class="string">&#x27;java org.antlr.v4.gui.TestRig&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="运行示例测试"><a href="#运行示例测试" class="headerlink" title="运行示例测试"></a>运行示例测试</h3><ul>
+<li>编写Expr.g4  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">grammar Expr;		</span><br><span class="line">prog:	(expr NEWLINE)* ;</span><br><span class="line">expr:	expr (&#39;*&#39;|&#39;&#x2F;&#39;) expr</span><br><span class="line">    |	expr (&#39;+&#39;|&#39;-&#39;) expr</span><br><span class="line">    |	INT</span><br><span class="line">    |	&#39;(&#39; expr &#39;)&#39;</span><br><span class="line">    ;</span><br><span class="line">NEWLINE : [\r\n]+ ;</span><br><span class="line">INT     : [0-9]+ ;</span><br></pre></td></tr></table></figure></li>
+<li>运行antlr工具  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ antlr4 Expr.g4</span><br><span class="line">$ javac Expr*.java</span><br><span class="line">$ grun Expr prog -gui</span><br><span class="line">100+2*34</span><br></pre></td></tr></table></figure>
+  <code>ctrl + d</code>看到<code>AST</code>图片<br>  <img src="https://gitee.com/worileqing/upic/raw/master/uPic/G6vRb4.png" alt="G6vRb4">,说明我们antlr安装成功且可以正常运行。</li>
+</ul>
+<h2 id="golang-visitor实现"><a href="#golang-visitor实现" class="headerlink" title="golang visitor实现"></a>golang visitor实现</h2><h3 id="antlr-grammar文件编写"><a href="#antlr-grammar文件编写" class="headerlink" title="antlr grammar文件编写"></a>antlr grammar文件编写</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">grammar Calculantlr;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; non-terminals expressed as context-free grammar (BNF)</span><br><span class="line">expr:	left&#x3D;expr op&#x3D;(&#39;*&#39;|&#39;&#x2F;&#39;) right&#x3D;expr  # OpExpr</span><br><span class="line">    |	left&#x3D;expr op&#x3D;(&#39;+&#39;|&#39;-&#39;) right&#x3D;expr  # OpExpr</span><br><span class="line">    |	atom&#x3D;INT                           # AtomExpr</span><br><span class="line">    |	&#39;(&#39; expr &#39;)&#39;                       # ParenExpr</span><br><span class="line">    ;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; tokens expressed as regular expressions</span><br><span class="line">INT : [0-9]+ ;</span><br><span class="line">WS  :   [ \t]+ -&gt; skip ;</span><br></pre></td></tr></table></figure>
+<h3 id="使用antlr生成相关的go文件"><a href="#使用antlr生成相关的go文件" class="headerlink" title="使用antlr生成相关的go文件"></a>使用antlr生成相关的go文件</h3><p><code>antlr4 -Dlanguage=Go -o parser -package parser -visitor -no-listener Expression.g4</code><br>上面的命令参数作用一目了然不在赘述,需要注意的是antlr默认会生成listenner模式的相关文件,所以我们使用了<code>-no-listener</code>参数阻止</p>
+<h3 id="编写go的main程序"><a href="#编写go的main程序" class="headerlink" title="编写go的main程序"></a>编写go的<code>main</code>程序</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;antlrtest/parser&quot;</span></span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;strconv&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="string">&quot;github.com/antlr/antlr4/runtime/Go/antlr&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Visitor <span class="keyword">struct</span> &#123;</span><br><span class="line">	parser.CalculantlrVisitor</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(v *Visitor)</span> <span class="title">Visit</span><span class="params">(tree antlr.ParseTree)</span> <span class="title">float64</span></span> &#123;</span><br><span class="line">	<span class="keyword">switch</span> val := tree.(<span class="keyword">type</span>) &#123;</span><br><span class="line">	<span class="keyword">case</span> *parser.AtomExprContext:</span><br><span class="line">		<span class="keyword">return</span> v.VisitAtomExpr(val)</span><br><span class="line">	<span class="keyword">case</span> *parser.ParenExprContext:</span><br><span class="line">		<span class="keyword">return</span> v.VisitParenExpr(val)</span><br><span class="line">	<span class="keyword">case</span> *parser.OpExprContext:</span><br><span class="line">		<span class="keyword">return</span> v.VisitOpExpr(val)</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">&quot;Unknown context&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(v *Visitor)</span> <span class="title">VisitAtomExpr</span><span class="params">(ctx *parser.AtomExprContext)</span> <span class="title">float64</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">&quot;atom&quot;</span>, ctx.GetText())</span><br><span class="line">	i1, _ := strconv.ParseFloat(ctx.GetText(), <span class="number">64</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> i1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(v *Visitor)</span> <span class="title">VisitParenExpr</span><span class="params">(ctx *parser.ParenExprContext)</span> <span class="title">float64</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">&quot;parent&quot;</span>, ctx.GetText())</span><br><span class="line">	tar := v.Visit(ctx.Expr())</span><br><span class="line">	<span class="keyword">return</span> tar</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(v *Visitor)</span> <span class="title">VisitOpExpr</span><span class="params">(ctx *parser.OpExprContext)</span> <span class="title">float64</span></span> &#123;</span><br><span class="line">	<span class="comment">// fmt.Println(&quot;op&quot;)</span></span><br><span class="line">	l := v.Visit(ctx.GetLeft())</span><br><span class="line">	r := v.Visit(ctx.GetRight())</span><br><span class="line">	op := ctx.GetOp().GetText()</span><br><span class="line">	<span class="comment">// if op == &quot;+&quot; &#123;</span></span><br><span class="line">	<span class="comment">// 	return l + r</span></span><br><span class="line">	<span class="comment">// &#125;</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;op&quot;</span>, op)</span><br><span class="line">	<span class="keyword">switch</span> op &#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&quot;+&quot;</span>:</span><br><span class="line">		<span class="keyword">return</span> l + r</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&quot;-&quot;</span>:</span><br><span class="line">		<span class="keyword">return</span> l - r</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&quot;*&quot;</span>:</span><br><span class="line">		<span class="keyword">return</span> l * r</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&quot;/&quot;</span>:</span><br><span class="line">		<span class="keyword">return</span> l / r</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// func (this *TreeShapeListener) EnterEveryRule(ctx antlr.ParserRuleContext) &#123;</span></span><br><span class="line"><span class="comment">// 	fmt.Println(ctx.GetText())</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	expression := <span class="string">&quot;100 + 3 * 4 + 5&quot;</span></span><br><span class="line">	<span class="comment">// input, _ := antlr.NewFileStream(os.Args[1])</span></span><br><span class="line">	input := antlr.NewInputStream(expression)</span><br><span class="line"></span><br><span class="line">	lexer := parser.NewCalculantlrLexer(input)</span><br><span class="line"></span><br><span class="line">	stream := antlr.NewCommonTokenStream(lexer, <span class="number">0</span>)</span><br><span class="line">	p := parser.NewCalculantlrParser(stream)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// p.AddErrorListener(antlr.NewDiagnosticErrorListener(true))</span></span><br><span class="line">	p.BuildParseTrees = <span class="literal">true</span></span><br><span class="line">	tree := p.Expr()</span><br><span class="line">	<span class="keyword">var</span> visitor = Visitor&#123;&#125;</span><br><span class="line">	<span class="keyword">var</span> result = visitor.Visit(tree)</span><br><span class="line">	fmt.Println(expression, <span class="string">&quot;=&quot;</span>, result)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>其它关于go的mod的一些基础操作这里不提,运行<code>go run test.go</code>可以看到以下输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">atom 100</span><br><span class="line">atom 3</span><br><span class="line">atom 4</span><br><span class="line">op *</span><br><span class="line">op +</span><br><span class="line">atom 5</span><br><span class="line">op +</span><br><span class="line">100 + 3 * 4 + 5 &#x3D; 117</span><br></pre></td></tr></table></figure>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#install-antlr"><span class="toc-text">install antlr</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85java"><span class="toc-text">安装java</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85antlr"><span class="toc-text">安装antlr</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%A4%BA%E4%BE%8B%E6%B5%8B%E8%AF%95"><span class="toc-text">运行示例测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#golang-visitor%E5%AE%9E%E7%8E%B0"><span class="toc-text">golang visitor实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#antlr-grammar%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99"><span class="toc-text">antlr grammar文件编写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8antlr%E7%94%9F%E6%88%90%E7%9B%B8%E5%85%B3%E7%9A%84go%E6%96%87%E4%BB%B6"><span class="toc-text">使用antlr生成相关的go文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99go%E7%9A%84main%E7%A8%8B%E5%BA%8F"><span class="toc-text">编写go的main程序</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>原文链接: <a href="https://60ke.github.io/old_blogs/2021/05/11/antlr4/">https://60ke.github.io/old_blogs/2021/05/11/antlr4/</a></p>
+              <p>版权声明: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+    <div class="article-reward">
+        <a id="reward-btn" href="javascript:;">打赏</a>
+        <div id="reward-content">
+            <h6 class="reward-tit">“感谢你的支持，我会继续努力！”</h6>
+            <div>
+                <div class="reward-code">
+                    <img class="type-code" src="/old_blogs/css/images/wechat.jpg">
+                    <img class="er-code" src="/css/images/wechat-pay.jpeg">
+                </div>
+                <div class="reward-code">
+                    <img class="type-code" src="/old_blogs/css/images/alipay.jpg">
+                    <img class="er-code" src="/css/images/alipay-pay.jpeg">
+                </div>
+            </div>
+            <p class="reward-desc">扫码打赏，感谢支持</p>
+        </div>
+    </div>
+
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/old_blogs/tags/golang/" rel="tag">golang</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/old_blogs/2021/08/10/go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F8-5-goroutine%E8%A7%A3%E6%83%91/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          go语言圣经8.5--goroutine解惑
+        
+      </div>
+    </a>
+  
+  
+    <a href="/old_blogs/2021/04/29/python%E8%A7%A3%E9%87%8A%E5%99%A8%E5%88%9D%E6%8E%A2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">python解释器初探</div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+  <div id="comments"></div>
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> 最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/old_blogs/2022/03/29/go%E6%B3%9B%E5%9E%8B%E5%AE%9E%E8%B7%B5/">go泛型实践</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/12/20/go%E7%9A%84%E6%84%9A%E8%A0%A2bug/">go的愚蠢bug</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/12/13/go%E6%B1%87%E7%BC%96/">go汇编</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/11/08/golang%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/10/29/%E5%BD%BB%E5%BA%95%E6%90%9E%E6%87%82gcc/">彻底搞懂gcc</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/old_blogs/tags/blog/" style="font-size: 10px;">blog</a> <a href="/old_blogs/tags/c/" style="font-size: 11.67px;">c</a> <a href="/old_blogs/tags/emacs/" style="font-size: 11.67px;">emacs</a> <a href="/old_blogs/tags/gcc/" style="font-size: 10px;">gcc</a> <a href="/old_blogs/tags/go/" style="font-size: 15px;">go</a> <a href="/old_blogs/tags/golang/" style="font-size: 15px;">golang</a> <a href="/old_blogs/tags/go%E6%B1%87%E7%BC%96/" style="font-size: 10px;">go汇编</a> <a href="/old_blogs/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/old_blogs/tags/ios/" style="font-size: 10px;">ios</a> <a href="/old_blogs/tags/linux/" style="font-size: 15px;">linux</a> <a href="/old_blogs/tags/lisp/" style="font-size: 10px;">lisp</a> <a href="/old_blogs/tags/mac/" style="font-size: 16.67px;">mac</a> <a href="/old_blogs/tags/maomaomao/" style="font-size: 10px;">maomaomao</a> <a href="/old_blogs/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/old_blogs/tags/other/" style="font-size: 10px;">other</a> <a href="/old_blogs/tags/others/" style="font-size: 15px;">others</a> <a href="/old_blogs/tags/pycharm/" style="font-size: 10px;">pycharm</a> <a href="/old_blogs/tags/python/" style="font-size: 18.33px;">python</a> <a href="/old_blogs/tags/python%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">python基础</a> <a href="/old_blogs/tags/rust/" style="font-size: 20px;">rust</a> <a href="/old_blogs/tags/scrapy/" style="font-size: 13.33px;">scrapy</a> <a href="/old_blogs/tags/sgx/" style="font-size: 11.67px;">sgx</a> <a href="/old_blogs/tags/shell/" style="font-size: 11.67px;">shell</a> <a href="/old_blogs/tags/sublime/" style="font-size: 10px;">sublime</a> <a href="/old_blogs/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/old_blogs/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/old_blogs/tags/xpath/" style="font-size: 10px;">xpath</a> <a href="/old_blogs/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a> <a href="/old_blogs/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">并发编程</a> <a href="/old_blogs/tags/%E5%BC%80%E5%8F%91/" style="font-size: 10px;">开发</a> <a href="/old_blogs/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/old_blogs/tags/%E6%AD%A3%E5%88%99/" style="font-size: 10px;">正则</a> <a href="/old_blogs/tags/%E6%B3%9B%E5%9E%8B/" style="font-size: 10px;">泛型</a> <a href="/old_blogs/tags/%E7%88%AC%E8%99%AB/" style="font-size: 15px;">爬虫</a> <a href="/old_blogs/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 11.67px;">笔记</a> <a href="/old_blogs/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" style="font-size: 10px;">跨平台</a> <a href="/old_blogs/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/" style="font-size: 10px;">路由器</a> <a href="/old_blogs/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/MySQL/">MySQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/default/">default</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/go/">go</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/mac/">mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/old/">old</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/others/">others</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/php/">php</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/python/">python</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/python%E7%88%AC%E8%99%AB/">python爬虫</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/rust/">rust</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/wasm/">wasm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/%E5%A5%B9/">她</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/%E6%9D%82%E7%BB%AA/">杂绪</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2022/">2022年03月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2021/">2021年12月</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2020/">2020年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2019/">2019年12月</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2018/">2018年12月</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2017/">2017年11月</a><span class="archive-list-count">45</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2016/">2016年12月</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/old_blogs/sitemap.xml">网站地图</a>
+        <span> | </span><a href="/old_blogs/atom.xml">订阅本站</a>
+        <span> | </span><a href="/old_blogs/about/">联系博主</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2022 lsk.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        
+            <span>Count by <a href="http://busuanzi.ibruce.info/" target="_blank">busuanzi.</a></span>
+        
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+<script src="/old_blogs/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/old_blogs/js/search.json.js"></script>
+
+
+  
+<script src="/old_blogs/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/old_blogs/js/script.js"></script>
+
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a4bf52d7269ab655ac8b068d702a6ef7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+  
+<script src="/old_blogs/localshare/js/social-share.js"></script>
+
+  
+<script src="/old_blogs/localshare/js/qrcode.js"></script>
+
+
+
+
+
+  
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+
+  <script>
+    var gitalk = new Gitalk({
+      clientID: 'e28ce6e16ddbf9316a0d',
+      clientSecret: '89597d2b5d6ebeb5badc6d5930da2c08b76283dd',
+      repo: '60ke.github.io',
+      owner: '60ke',
+      admin: ['60ke'],
+      id: md5(window.location.pathname),
+      distractionFreeMode: false,
+      language: 'zh-CN',
+      pagerDirection: 'last'
+    });
+    gitalk.render('comments');
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</body>
+</html>

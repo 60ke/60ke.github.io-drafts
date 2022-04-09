@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>flask自建证书及测试 | LookForAdmin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <meta name="description" content="学如逆水行舟,不进则退;心似平原跑马易放难收。">
+  
+  
+  
+    <link rel="alternate" href="/old_blogs/atom.xml" title="LookForAdmin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/old_blogs/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/old_blogs/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/old_blogs/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/old_blogs/localshare/css/share.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/old_blogs/" id="logo">LookForAdmin</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/old_blogs/" id="subtitle">已是乾坤大，更怜草木青</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/old_blogs/."><i class="fa fa-home"></i> 首页</a>
+        
+          <a class="main-nav-link" href="/old_blogs/archives/"><i class="fa fa-archive"></i> 归档</a>
+        
+          <a class="main-nav-link" href="/old_blogs/about/"><i class="fa fa-user"></i> 关于</a>
+        
+          <a class="main-nav-link" href="/old_blogs/atom.xml"><i class="fa fa-rss"></i> 订阅</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-flask自建证书及测试" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      flask自建证书及测试
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2019-12-19T12:08:35.000Z" itemprop="datePublished">2019年12月19日</time>
+</span>
+      
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+<a href="/old_blogs/2019/12/19/flask%E8%87%AA%E5%BB%BA%E8%AF%81%E4%B9%A6%E5%8F%8A%E6%B5%8B%E8%AF%95/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  留言
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>生成密钥、证书<br>第一步，为服务器端和客户端准备公钥、私钥</p>
+<h1 id="生成服务器端私钥"><a href="#生成服务器端私钥" class="headerlink" title="生成服务器端私钥"></a>生成服务器端私钥</h1><p>openssl genrsa -out server.key 1024</p>
+<h1 id="生成服务器端公钥"><a href="#生成服务器端公钥" class="headerlink" title="生成服务器端公钥"></a>生成服务器端公钥</h1><p>openssl rsa -in server.key -pubout -out server.pem</p>
+<h1 id="生成客户端私钥"><a href="#生成客户端私钥" class="headerlink" title="生成客户端私钥"></a>生成客户端私钥</h1><p>openssl genrsa -out client.key 1024</p>
+<h1 id="生成客户端公钥"><a href="#生成客户端公钥" class="headerlink" title="生成客户端公钥"></a>生成客户端公钥</h1><p>openssl rsa -in client.key -pubout -out client.pem<br>第二步，生成 CA 证书</p>
+<h1 id="生成-CA-私钥"><a href="#生成-CA-私钥" class="headerlink" title="生成 CA 私钥"></a>生成 CA 私钥</h1><p>openssl genrsa -out ca.key 1024</p>
+<h1 id="X-509-Certificate-Signing-Request-CSR-Management"><a href="#X-509-Certificate-Signing-Request-CSR-Management" class="headerlink" title="X.509 Certificate Signing Request (CSR) Management."></a>X.509 Certificate Signing Request (CSR) Management.</h1><p>openssl req -new -key ca.key -out ca.csr</p>
+<h1 id="X-509-Certificate-Data-Management"><a href="#X-509-Certificate-Data-Management" class="headerlink" title="X.509 Certificate Data Management."></a>X.509 Certificate Data Management.</h1><p>openssl x509 -req -in ca.csr -signkey ca.key -out ca.crt<br>在执行第二步时会出现：</p>
+<p>➜ keys openssl req -new -key ca.key -out ca.csr<br>You are about to be asked to enter information that will be incorporated<br>into your certificate request.<br>What you are about to enter is what is called a Distinguished Name or a DN.<br>There are quite a few fields but you can leave some blank<br>For some fields there will be a default value,<br>If you enter ‘.’, the field will be left blank.</p>
+<hr>
+<p>Country Name (2 letter code) [AU]:CN<br>State or Province Name (full name) [Some-State]:Zhejiang<br>Locality Name (eg, city) []:Hangzhou<br>Organization Name (eg, company) [Internet Widgits Pty Ltd]:My CA<br>Organizational Unit Name (eg, section) []:<br>Common Name (e.g. server FQDN or YOUR name) []:localhost<br>Email Address []:<br>注意，这里的 Organization Name (eg, company) [Internet Widgits Pty Ltd]: 后面生成客户端和服务器端证书的时候也需要填写，不要写成一样的！！！可以随意写如：My CA, My Server, My Client。</p>
+<p>然后 Common Name (e.g. server FQDN or YOUR name) []: 这一项，是最后可以访问的域名，我这里为了方便测试，写成 localhost，如果是为了给我的网站生成证书，需要写成 barretlee.com。</p>
+<p>第三步，生成服务器端证书和客户端证书</p>
+<h1 id="服务器端需要向-CA-机构申请签名证书，在申请签名证书之前依然是创建自己的-CSR-文件"><a href="#服务器端需要向-CA-机构申请签名证书，在申请签名证书之前依然是创建自己的-CSR-文件" class="headerlink" title="服务器端需要向 CA 机构申请签名证书，在申请签名证书之前依然是创建自己的 CSR 文件"></a>服务器端需要向 CA 机构申请签名证书，在申请签名证书之前依然是创建自己的 CSR 文件</h1><p>openssl req -new -key server.key -out server.csr</p>
+<h1 id="向自己的-CA-机构申请证书，签名过程需要-CA-的证书和私钥参与，最终颁发一个带有-CA-签名的证书"><a href="#向自己的-CA-机构申请证书，签名过程需要-CA-的证书和私钥参与，最终颁发一个带有-CA-签名的证书" class="headerlink" title="向自己的 CA 机构申请证书，签名过程需要 CA 的证书和私钥参与，最终颁发一个带有 CA 签名的证书"></a>向自己的 CA 机构申请证书，签名过程需要 CA 的证书和私钥参与，最终颁发一个带有 CA 签名的证书</h1><p>openssl x509 -req -CA ca.crt -CAkey ca.key -CAcreateserial -in server.csr -out server.crt</p>
+<h1 id="client-端"><a href="#client-端" class="headerlink" title="client 端"></a>client 端</h1><p>openssl req -new -key client.key -out client.csr</p>
+<h1 id="client-端到-CA-签名"><a href="#client-端到-CA-签名" class="headerlink" title="client 端到 CA 签名"></a>client 端到 CA 签名</h1><p>openssl x509 -req -CA ca.crt -CAkey ca.key -CAcreateserial -in client.csr -out client.crt<br>此时，我们的 keys 文件夹下已经有如下内容了：</p>
+<p>.<br>├── https-client.js<br>├── https-server.js<br>└── keys<br>├── ca.crt<br>├── ca.csr<br>├── ca.key<br>├── ca.pem<br>├── ca.srl<br>├── client.crt<br>├── client.csr<br>├── client.key<br>├── client.pem<br>├── server.crt<br>├── server.csr<br>├── server.key<br>└── server.pem<br>看到上面两个 js 文件了么，我们来跑几个demo。</p>
+<p>HTTPS本地测试<br>服务器代码：</p>
+<p>// file http-server.js<br>var https = require(‘https’);<br>var fs = require(‘fs’);</p>
+<p>var options = {<br>key: fs.readFileSync(‘./keys/server.key’),<br>cert: fs.readFileSync(‘./keys/server.crt’)<br>};</p>
+<p>https.createServer(options, function(req, res) {<br>res.writeHead(200);<br>res.end(‘hello world’);<br>}).listen(8000);<br>短短几行代码就构建了一个简单的 https 服务器，options 将私钥和证书带上。然后利用 curl 测试：</p>
+<p>➜ https curl //localhost:8000<br>curl: (60) SSL certificate problem: Invalid certificate chain<br>More details here: <a target="_blank" rel="noopener" href="http://curl.haxx.se/docs/sslcerts.html">http://curl.haxx.se/docs/sslcerts.html</a></p>
+<p>curl performs SSL certificate verification by default, using a “bundle”<br>of Certificate Authority (CA) public keys (CA certs). If the default<br>bundle file isn’t adequate, you can specify an alternate file<br>using the –cacert option.<br>If this HTTPS server uses a certificate signed by a CA represented in<br>the bundle, the certificate verification probably failed due to a<br>problem with the certificate (it might be expired, or the name might<br>not match the domain name in the URL).<br>If you’d like to turn off curl’s verification of the certificate, use<br>the -k (or –insecure) option.<br>当我们直接访问时，curl //localhost:8000 一堆提示，原因是没有经过 CA 认证，添加 -k 参数能够解决这个问题：</p>
+<p>➜ https curl -k //localhost:8000<br>hello world%<br>这样的方式是不安全的，存在我们上面提到的中间人攻击问题。可以搞一个客户端带上 CA 证书试试：</p>
+<p>// file http-client.js<br>var https = require(‘https’);<br>var fs = require(‘fs’);</p>
+<p>var options = {<br>hostname: “localhost”,<br>port: 8000,<br>path: ‘/‘,<br>methed: ‘GET’,<br>key: fs.readFileSync(‘./keys/client.key’),<br>cert: fs.readFileSync(‘./keys/client.crt’),<br>ca: [fs.readFileSync(‘./keys/ca.crt’)]<br>};</p>
+<p>options.agent = new https.Agent(options);</p>
+<p>var req = https.request(options, function(res) {<br>res.setEncoding(‘utf-8’);<br>res.on(‘data’, function(d) {<br>console.log(d);<br>});<br>});<br>req.end();</p>
+<p>req.on(‘error’, function(e) {<br>console.log(e);<br>});<br>先打开服务器 node http-server.js，然后执行</p>
+<p>➜ https node https-client.js<br>hello world<br>如果你的代码没有输出 hello world，说明证书生成的时候存在问题。也可以通过浏览器访问：</p>
+<p>https证书问题</p>
+<p>提示错误：</p>
+<p>此服务器无法证明它是localhost；您计算机的操作系统不信任其安全证书。出现此问题的原因可能是配置有误或您的连接被拦截了。</p>
+<p>原因是浏览器没有 CA 证书，只有 CA 证书，服务器才能够确定，这个用户就是真实的来自 localhost 的访问请求（比如不是代理过来的）。</p>
+<p>你可以点击 继续前往localhost（不安全） 这个链接，相当于执行 curl -k //localhost:8000。如果我们的证书不是自己颁发，而是去靠谱的机构去申请的，那就不会出现这样的问题，因为靠谱机构的证书会放到浏览器中，浏览器会帮我们做很多事情。初次尝试的同学可以去 startssl.com 申请一个免费的证书。</p>
+<p>Nginx 部署<br>ssh 到你的服务器，对 Nginx 做如下配置：</p>
+<p>server_names barretlee.com *.barretlee.com<br>ssl on;<br>ssl_certificate /etc/nginx/ssl/barretlee.com.crt;<br>ssl_certificate_key /etc/nginx/ssl/barretlee.com.key;<br>ssl_protocols TLSv1 TLSv1.1 TLSv1.2;<br>ssl_ciphers “EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !MEDIUM”;</p>
+<h1 id="Add-perfect-forward-secrecy"><a href="#Add-perfect-forward-secrecy" class="headerlink" title="Add perfect forward secrecy"></a>Add perfect forward secrecy</h1><p>ssl_prefer_server_ciphers on;<br>add_header Strict-Transport-Security “max-age=31536000; includeSubdomains”;<br>会发现，网页 URL 地址框左边已经多出了一个小绿锁。当然，部署好了之后可以去这个网站看看测评分数，如果分数是 A+，说明你的 HTTPS 的各项配置都还不错，速度也很快。</p>
+<h2 id="使用CA签名过的证书和私钥导出P12格式个人证书"><a href="#使用CA签名过的证书和私钥导出P12格式个人证书" class="headerlink" title="使用CA签名过的证书和私钥导出P12格式个人证书"></a>使用CA签名过的证书和私钥导出P12格式个人证书</h2><p><code>openssl pkcs12 -export -inkey clientkey.pem -in client.crt -out client.p12</code></p>
+<h1 id="启动flask"><a href="#启动flask" class="headerlink" title="启动flask"></a>启动flask</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>,methods=[<span class="string">&#x27;POST&#x27;</span>,<span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;hello world&#x27;</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment">#app.run(host=&#x27;0.0.0.0&#x27;,ssl_context=&#x27;adhoc&#x27;)</span></span><br><span class="line">    app.run(host=<span class="string">&#x27;0.0.0.0&#x27;</span>, ssl_context=(</span><br><span class="line">        <span class="string">&quot;server.crt&quot;</span>, <span class="string">&quot;server.key&quot;</span>))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="requests测试"><a href="#requests测试" class="headerlink" title="requests测试"></a>requests测试</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">rep = requests.get(<span class="string">&#x27;https://127.0.0.1:5000/&#x27;</span>,</span><br><span class="line">                   cert=(<span class="string">&#x27;/Users/k/Desktop/scp/flask/client/client-cert.pem&#x27;</span>, <span class="string">&#x27;/Users/k/Desktop/scp/flask/client/client-key.pem&#x27;</span>), verify=<span class="literal">False</span>)</span><br><span class="line"><span class="built_in">print</span>(rep.text)</span><br><span class="line"><span class="comment"># rep = requests.get(&#x27;https://127.0.0.1:5000/&#x27;,verify=False)</span></span><br><span class="line"><span class="comment"># print(rep.text)</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+<p>源自：<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liyulong1982/p/6106129.html">https://www.cnblogs.com/liyulong1982/p/6106129.html</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/yannanxiu/article/details/70670225">https://blog.csdn.net/yannanxiu/article/details/70670225</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/5ea147e03255">https://www.jianshu.com/p/5ea147e03255</a></p>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%A7%81%E9%92%A5"><span class="toc-text">生成服务器端私钥</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E5%85%AC%E9%92%A5"><span class="toc-text">生成服务器端公钥</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%A7%81%E9%92%A5"><span class="toc-text">生成客户端私钥</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%85%AC%E9%92%A5"><span class="toc-text">生成客户端公钥</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%9F%E6%88%90-CA-%E7%A7%81%E9%92%A5"><span class="toc-text">生成 CA 私钥</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#X-509-Certificate-Signing-Request-CSR-Management"><span class="toc-text">X.509 Certificate Signing Request (CSR) Management.</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#X-509-Certificate-Data-Management"><span class="toc-text">X.509 Certificate Data Management.</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E9%9C%80%E8%A6%81%E5%90%91-CA-%E6%9C%BA%E6%9E%84%E7%94%B3%E8%AF%B7%E7%AD%BE%E5%90%8D%E8%AF%81%E4%B9%A6%EF%BC%8C%E5%9C%A8%E7%94%B3%E8%AF%B7%E7%AD%BE%E5%90%8D%E8%AF%81%E4%B9%A6%E4%B9%8B%E5%89%8D%E4%BE%9D%E7%84%B6%E6%98%AF%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84-CSR-%E6%96%87%E4%BB%B6"><span class="toc-text">服务器端需要向 CA 机构申请签名证书，在申请签名证书之前依然是创建自己的 CSR 文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%91%E8%87%AA%E5%B7%B1%E7%9A%84-CA-%E6%9C%BA%E6%9E%84%E7%94%B3%E8%AF%B7%E8%AF%81%E4%B9%A6%EF%BC%8C%E7%AD%BE%E5%90%8D%E8%BF%87%E7%A8%8B%E9%9C%80%E8%A6%81-CA-%E7%9A%84%E8%AF%81%E4%B9%A6%E5%92%8C%E7%A7%81%E9%92%A5%E5%8F%82%E4%B8%8E%EF%BC%8C%E6%9C%80%E7%BB%88%E9%A2%81%E5%8F%91%E4%B8%80%E4%B8%AA%E5%B8%A6%E6%9C%89-CA-%E7%AD%BE%E5%90%8D%E7%9A%84%E8%AF%81%E4%B9%A6"><span class="toc-text">向自己的 CA 机构申请证书，签名过程需要 CA 的证书和私钥参与，最终颁发一个带有 CA 签名的证书</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#client-%E7%AB%AF"><span class="toc-text">client 端</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#client-%E7%AB%AF%E5%88%B0-CA-%E7%AD%BE%E5%90%8D"><span class="toc-text">client 端到 CA 签名</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Add-perfect-forward-secrecy"><span class="toc-text">Add perfect forward secrecy</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8CA%E7%AD%BE%E5%90%8D%E8%BF%87%E7%9A%84%E8%AF%81%E4%B9%A6%E5%92%8C%E7%A7%81%E9%92%A5%E5%AF%BC%E5%87%BAP12%E6%A0%BC%E5%BC%8F%E4%B8%AA%E4%BA%BA%E8%AF%81%E4%B9%A6"><span class="toc-text">使用CA签名过的证书和私钥导出P12格式个人证书</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8flask"><span class="toc-text">启动flask</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#requests%E6%B5%8B%E8%AF%95"><span class="toc-text">requests测试</span></a></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>原文链接: <a href="https://60ke.github.io/old_blogs/2019/12/19/flask自建证书及测试/">https://60ke.github.io/old_blogs/2019/12/19/flask自建证书及测试/</a></p>
+              <p>版权声明: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+    <div class="article-reward">
+        <a id="reward-btn" href="javascript:;">打赏</a>
+        <div id="reward-content">
+            <h6 class="reward-tit">“感谢你的支持，我会继续努力！”</h6>
+            <div>
+                <div class="reward-code">
+                    <img class="type-code" src="/old_blogs/css/images/wechat.jpg">
+                    <img class="er-code" src="/css/images/wechat-pay.jpeg">
+                </div>
+                <div class="reward-code">
+                    <img class="type-code" src="/old_blogs/css/images/alipay.jpg">
+                    <img class="er-code" src="/css/images/alipay-pay.jpeg">
+                </div>
+            </div>
+            <p class="reward-desc">扫码打赏，感谢支持</p>
+        </div>
+    </div>
+
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/old_blogs/tags/others/" rel="tag">others</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/old_blogs/2019/12/19/CA%E8%AF%81%E4%B9%A6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          CA证书
+        
+      </div>
+    </a>
+  
+  
+    <a href="/old_blogs/2019/10/10/rust%E5%AE%8F%E5%B1%95%E5%BC%80/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">rust宏展开</div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+  <div id="comments"></div>
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> 最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/old_blogs/2022/03/29/go%E6%B3%9B%E5%9E%8B%E5%AE%9E%E8%B7%B5/">go泛型实践</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/12/20/go%E7%9A%84%E6%84%9A%E8%A0%A2bug/">go的愚蠢bug</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/12/13/go%E6%B1%87%E7%BC%96/">go汇编</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/11/08/golang%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+          </li>
+        
+          <li>
+            <a href="/old_blogs/2021/10/29/%E5%BD%BB%E5%BA%95%E6%90%9E%E6%87%82gcc/">彻底搞懂gcc</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/old_blogs/tags/blog/" style="font-size: 10px;">blog</a> <a href="/old_blogs/tags/c/" style="font-size: 11.67px;">c</a> <a href="/old_blogs/tags/emacs/" style="font-size: 11.67px;">emacs</a> <a href="/old_blogs/tags/gcc/" style="font-size: 10px;">gcc</a> <a href="/old_blogs/tags/go/" style="font-size: 15px;">go</a> <a href="/old_blogs/tags/golang/" style="font-size: 15px;">golang</a> <a href="/old_blogs/tags/go%E6%B1%87%E7%BC%96/" style="font-size: 10px;">go汇编</a> <a href="/old_blogs/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/old_blogs/tags/ios/" style="font-size: 10px;">ios</a> <a href="/old_blogs/tags/linux/" style="font-size: 15px;">linux</a> <a href="/old_blogs/tags/lisp/" style="font-size: 10px;">lisp</a> <a href="/old_blogs/tags/mac/" style="font-size: 16.67px;">mac</a> <a href="/old_blogs/tags/maomaomao/" style="font-size: 10px;">maomaomao</a> <a href="/old_blogs/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/old_blogs/tags/other/" style="font-size: 10px;">other</a> <a href="/old_blogs/tags/others/" style="font-size: 15px;">others</a> <a href="/old_blogs/tags/pycharm/" style="font-size: 10px;">pycharm</a> <a href="/old_blogs/tags/python/" style="font-size: 18.33px;">python</a> <a href="/old_blogs/tags/python%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">python基础</a> <a href="/old_blogs/tags/rust/" style="font-size: 20px;">rust</a> <a href="/old_blogs/tags/scrapy/" style="font-size: 13.33px;">scrapy</a> <a href="/old_blogs/tags/sgx/" style="font-size: 11.67px;">sgx</a> <a href="/old_blogs/tags/shell/" style="font-size: 11.67px;">shell</a> <a href="/old_blogs/tags/sublime/" style="font-size: 10px;">sublime</a> <a href="/old_blogs/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/old_blogs/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/old_blogs/tags/xpath/" style="font-size: 10px;">xpath</a> <a href="/old_blogs/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a> <a href="/old_blogs/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">并发编程</a> <a href="/old_blogs/tags/%E5%BC%80%E5%8F%91/" style="font-size: 10px;">开发</a> <a href="/old_blogs/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/old_blogs/tags/%E6%AD%A3%E5%88%99/" style="font-size: 10px;">正则</a> <a href="/old_blogs/tags/%E6%B3%9B%E5%9E%8B/" style="font-size: 10px;">泛型</a> <a href="/old_blogs/tags/%E7%88%AC%E8%99%AB/" style="font-size: 15px;">爬虫</a> <a href="/old_blogs/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 11.67px;">笔记</a> <a href="/old_blogs/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" style="font-size: 10px;">跨平台</a> <a href="/old_blogs/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/" style="font-size: 10px;">路由器</a> <a href="/old_blogs/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/MySQL/">MySQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/default/">default</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/go/">go</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/hexo/">hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/mac/">mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/old/">old</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/others/">others</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/php/">php</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/python/">python</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/python%E7%88%AC%E8%99%AB/">python爬虫</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/rust/">rust</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/wasm/">wasm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/%E5%A5%B9/">她</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/old_blogs/categories/%E6%9D%82%E7%BB%AA/">杂绪</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2022/">2022年03月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2021/">2021年12月</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2020/">2020年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2019/">2019年12月</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2018/">2018年12月</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2017/">2017年11月</a><span class="archive-list-count">45</span></li><li class="archive-list-item"><a class="archive-list-link" href="/old_blogs/archives/2016/">2016年12月</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/old_blogs/sitemap.xml">网站地图</a>
+        <span> | </span><a href="/old_blogs/atom.xml">订阅本站</a>
+        <span> | </span><a href="/old_blogs/about/">联系博主</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2022 lsk.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        
+            <span>Count by <a href="http://busuanzi.ibruce.info/" target="_blank">busuanzi.</a></span>
+        
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+<script src="/old_blogs/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/old_blogs/js/search.json.js"></script>
+
+
+  
+<script src="/old_blogs/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/old_blogs/js/script.js"></script>
+
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a4bf52d7269ab655ac8b068d702a6ef7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+  
+<script src="/old_blogs/localshare/js/social-share.js"></script>
+
+  
+<script src="/old_blogs/localshare/js/qrcode.js"></script>
+
+
+
+
+
+  
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+
+  <script>
+    var gitalk = new Gitalk({
+      clientID: 'e28ce6e16ddbf9316a0d',
+      clientSecret: '89597d2b5d6ebeb5badc6d5930da2c08b76283dd',
+      repo: '60ke.github.io',
+      owner: '60ke',
+      admin: ['60ke'],
+      id: md5(window.location.pathname),
+      distractionFreeMode: false,
+      language: 'zh-CN',
+      pagerDirection: 'last'
+    });
+    gitalk.render('comments');
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</body>
+</html>
